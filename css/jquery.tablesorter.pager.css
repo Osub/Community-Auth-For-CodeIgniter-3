@@ -1,0 +1,33 @@
+/*
+Community Auth - jquery.tablesorter.pager.css
+Copyright (c) 2011 Robert Brian Gottier
+https://bitbucket.org/skunkbad/community-auth
+
+Licensed under the BSD licence:
+http://www.opensource.org/licenses/bsd-license.php
+*/
+#pager {
+	float:left;width:100%;margin-top:4px;
+}
+div.tablesorterPager {
+	padding: 10px 0 10px 0;
+	background-color: #D6D2C2;
+	text-align: center;
+}
+div.tablesorterPager span {
+	padding: 0 5px 0 5px;
+}
+div.tablesorterPager input.prev {
+	width: auto;
+	margin-right: 10px;
+}
+div.tablesorterPager input.next {
+	width: auto;
+	margin-left: 10px;
+}
+div.tablesorterPager input {
+	font-size: 8px;
+	width: 50px;
+	border: 1px solid #330000;
+	text-align: center;
+}
