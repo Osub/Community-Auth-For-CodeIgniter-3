@@ -90,9 +90,9 @@
 				<div id="downloads">
 					<h3>Downloads</h3>
 					<ul>
-						<li><a href="https://bitbucket.org/skunkbad/community-auth/get/tip.zip">Tip <span>(Installed in CodeIgniter)</span></a></li>
-						<li><a href="https://bitbucket.org/skunkbad/community-auth/get/<?php echo TAG; ?>.zip"><?php echo TAG; ?> <span>(Installed in CodeIgniter)</span></a></li>
-						<li><a href="https://bitbucket.org/skunkbad/community-auth/downloads/community-auth-<?php echo TAG; ?>-isolated.zip"><?php echo TAG; ?> Files Only <span>(Without CodeIgniter)</span></a></li>
+						<li><a href="https://bitbucket.org/skunkbad/community-auth-git-version/get/tip.zip">Tip <span>(Installed in CodeIgniter)</span></a></li>
+						<li><a href="https://bitbucket.org/skunkbad/community-auth-git-version/get/<?php echo TAG; ?>.zip"><?php echo TAG; ?> <span>(Installed in CodeIgniter)</span></a></li>
+						<li><a href="https://bitbucket.org/skunkbad/community-auth-git-version/downloads/community-auth-<?php echo TAG; ?>-isolated.zip"><?php echo TAG; ?> Files Only <span>(Without CodeIgniter)</span></a></li>
 					</ul>
 				</div>
 			<?php
@@ -107,7 +107,7 @@
 						?>
 					</li>
 					<li>
-						<a href="https://bitbucket.org/skunkbad/community-auth/downloads">Download</a>
+						<a href="https://bitbucket.org/skunkbad/community-auth-git-version/downloads">Download</a>
 					</li>
 					<li>
 						<?php 

@@ -10,7 +10,7 @@ Release Information
 
 This repo contains in development code for future releases. To download the
 latest stable release please visit the Tags tab on the `Download
-<https://bitbucket.org/skunkbad/community-auth/downloads>`_ page. An "isolated" version is also available on the Downloads page. The isolated version is not pre-installed in CodeIgniter.
+<https://bitbucket.org/skunkbad/community-auth-git-version/downloads>`_ page. An "isolated" version is also available on the Downloads page. The isolated version is not pre-installed in CodeIgniter.
 
 ************
 Installation

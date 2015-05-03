@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div class="modal-row">
-				If you need help with Community Auth, have comments, or would like to make a suggestion, please either submit a new issue at the Community Auth repository on <a href="https://bitbucket.org/skunkbad/community-auth/issues/new">Bitbucket</a>, or post to the <a href="http://codeigniter.com/forums/">CodeIgniter forum</a>.
+				If you need help with Community Auth, have comments, or would like to make a suggestion, please either submit a new issue at the Community Auth repository on <a href="https://bitbucket.org/skunkbad/community-auth-git-version/issues/new">Bitbucket</a>, or post to the <a href="http://codeigniter.com/forums/">CodeIgniter forum</a>.
 			</div>
 			<form class="std-form">
 				<div id="buttons-row">

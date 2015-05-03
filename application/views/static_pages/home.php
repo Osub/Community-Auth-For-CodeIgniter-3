@@ -71,7 +71,7 @@
 			</p>
 			<h3>Repositories</h3>
 			<p>
-				Community Auth currently has repositories at <a href="https://bitbucket.org/skunkbad/community-auth" rel="external">Bitbucket</a> and <a href="https://github.com/skunkbad/Community-Auth">GitHub</a>.
+				Community Auth currently has a git repository at <a href="https://bitbucket.org/skunkbad/community-auth-git-version" rel="external">Bitbucket</a>.
 			</p>
 			<h3>Quick Start</h3>
 			<p>If you're an experienced user of CodeIgniter, you can get started quite easily.</p>

@@ -89,7 +89,7 @@
 						?>
 					</li>
 					<li>
-						<a href="https://bitbucket.org/skunkbad/community-auth/downloads">Download</a>
+						<a href="https://bitbucket.org/skunkbad/community-auth-git-version/downloads">Download</a>
 					</li>
 					<li>
 						<?php 
