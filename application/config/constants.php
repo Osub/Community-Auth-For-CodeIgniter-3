@@ -4,11 +4,11 @@
 | -----------------------------------------------------------------
 | LAST COMMUNITY AUTH REPO TAG
 | -----------------------------------------------------------------
-| The last tagged version in the repository
-| 
+| The last tagged version in the repository.
+| As of May 2015, the tag will be more in sync with the CI 2.X stable repo.
 */
 
-	define('TAG', 'v2.0.3');
+	define('TAG', 'v2.2.2.01');
 
 /*
 | -----------------------------------------------------------------
