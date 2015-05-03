@@ -87,7 +87,7 @@
 			<p>For more detailed instructions on how to install, configure, and use Community Auth, please check out the <?php echo anchor('documentation','documentation'); ?> for Community Auth, which takes you step by step through the process of getting up and running.</p>
 			<h3>Support</h3>
 			<p>
-				If you need help, feel free to start a new thread in the <a href="http://codeigniter.com/forums/" rel="external">CodeIgniter Forum</a>. I'm "skunkbad" in the forum, and I'll help whenever possible. Due to my busy work schedule, I may not always be able to help. Work does come first, and that said, if you are willing to pay for support, please feel free to contact me on my website, <a href="http://brianswebdesign.com" rel="external">http://brianswebdesign.com</a>.
+				If you need help, feel free to start a new thread in the <a href="http://forum.codeigniter.com" rel="external">CodeIgniter Forum</a>. I'm "skunkbad" in the forum, and I'll help whenever possible. Due to my busy work schedule, I may not always be able to help. Work does come first, and that said, if you are willing to pay for support, please feel free to contact me on my website, <a href="http://brianswebdesign.com" rel="external">http://brianswebdesign.com</a>.
 			</p>
 			<h3>License</h3>
 			<p>

@@ -137,7 +137,7 @@
 </ul>
 <h3>More!</h3>
 <p>
-	There are more ways to use Community Auth, and if you look at MY_Controller.php you will see some functions that you may or may not use. For now, I hope you will have learned enough to get you going. Usage really is quite simple. If you can't figure something out, please ask questions in the <a href="http://codeigniter.com/forums/" rel="external">CodeIgniter Forum</a>.
+	There are more ways to use Community Auth, and if you look at MY_Controller.php you will see some functions that you may or may not use. For now, I hope you will have learned enough to get you going. Usage really is quite simple. If you can't figure something out, please ask questions in the <a href="http://forum.codeigniter.com" rel="external">CodeIgniter Forum</a>.
 </p>
 <p>
 	For paid support, you may also contact me directly at <a href="http://brianswebdesign.com" rel="external">http://brianswebdesign.com</a>.

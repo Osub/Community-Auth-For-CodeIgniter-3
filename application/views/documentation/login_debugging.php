@@ -99,7 +99,7 @@ DEBUG - 2012-09-15 11:27:17 -->
 </p>
 <h2>Debugging Summary</h2>
 <p>
-	I hope I've provided enough information for you to debug your application. In my daily use of applications built on Community Auth, the error messages explained above are all I would need to quickly diagnose a problem logging in or staying logged in. If you need extra help, please ask for help on the <a href="http://codeigniter.com/forums/" rel="external">CodeIgniter Forum</a>.
+	I hope I've provided enough information for you to debug your application. In my daily use of applications built on Community Auth, the error messages explained above are all I would need to quickly diagnose a problem logging in or staying logged in. If you need extra help, please ask for help on the <a href="http://forum.codeigniter.com" rel="external">CodeIgniter Forum</a>.
 </p>
 <?php
 

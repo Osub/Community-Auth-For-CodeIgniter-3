@@ -35,7 +35,7 @@
 					The message form is temporarily offline, and not functional.
 				</p>
 				<p style="margin:.6em 0 .3em 0;">
-					If you need help with Community Auth, have comments, or would like to make a suggestion, please either submit a new issue at the Community Auth repository on <a href="https://bitbucket.org/skunkbad/community-auth-git-version/issues/new">Bitbucket</a>, or post to the <a href="http://codeigniter.com/forums/">CodeIgniter forum</a>.
+					If you need help with Community Auth, have comments, or would like to make a suggestion, please either submit a new issue at the Community Auth repository on <a href="https://bitbucket.org/skunkbad/community-auth-git-version/issues/new">Bitbucket</a>, or post to the <a href="http://forum.codeigniter.com">CodeIgniter forum</a>.
 				</p>
 			</div>
 		';
