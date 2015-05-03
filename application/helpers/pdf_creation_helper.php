@@ -1,16 +1,16 @@
 <?php if( ! defined('BASEPATH') ) exit('No direct script access allowed');
 /**
  * Community Auth - PDF Creation Helper (uses DOMPDF)
- *
- * Community Auth is an open source authentication application for CodeIgniter 2.2.0
- *
+ * 
  * In order to use this helper, DOMPDF must be installed in the 
  * same directory, "application/helpers". DOMPDF is available
  * at http://code.google.com/p/dompdf/
  *
+ * Community Auth is an open source authentication application for CodeIgniter 2.2.2
+ *
  * @package     Community Auth
  * @author      Robert B Gottier
- * @copyright   Copyright (c) 2011 - 2014, Robert B Gottier. (http://brianswebdesign.com/)
+ * @copyright   Copyright (c) 2011 - 2015, Robert B Gottier. (http://brianswebdesign.com/)
  * @license     BSD - http://www.opensource.org/licenses/BSD-3-Clause
  * @link        http://community-auth.com
  */

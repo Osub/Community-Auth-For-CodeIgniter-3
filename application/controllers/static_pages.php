@@ -2,15 +2,15 @@
 /**
  * Community Auth - Static Pages Controller
  *
- * Community Auth is an open source authentication application for CodeIgniter 2.2.0
+ * Community Auth is an open source authentication application for CodeIgniter 2.2.2
  *
  * @package     Community Auth
  * @author      Robert B Gottier
- * @copyright   Copyright (c) 2011 - 2014, Robert B Gottier. (http://brianswebdesign.com/)
+ * @copyright   Copyright (c) 2011 - 2015, Robert B Gottier. (http://brianswebdesign.com/)
  * @license     BSD - http://www.opensource.org/licenses/BSD-3-Clause
  * @link        http://community-auth.com
  *
- * This controller servers to clean up some controllers that were just used for 
+ * This controller serves to clean up some controllers that were just used for 
  * simple static content where there was very little logic, calculations, or 
  * much of anything worth having a whole controller for.
  */

@@ -3,7 +3,7 @@
  * Version 1.1.1 - December 9, 2011
  * @ requires jQuery
  *
- * Copyright (c) 2011 - 2014, Robert B Gottier. (http://brianswebdesign.com/)
+ * Copyright (c) 2011 - 2015, Robert B Gottier. (http://brianswebdesign.com/)
  *
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php

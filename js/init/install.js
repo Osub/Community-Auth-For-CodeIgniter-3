@@ -1,7 +1,7 @@
 /*
  * COMMUNITY AUTH INSTALLATION JAVASCRIPT
  *
- * Copyright (c) 2011 - 2014, Robert B Gottier. (http://brianswebdesign.com/)
+ * Copyright (c) 2011 - 2015, Robert B Gottier. (http://brianswebdesign.com/)
  * http://community-auth.com
  *
  * Licensed under the BSD licence:
