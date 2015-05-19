@@ -1,12 +1,12 @@
 <?php if( ! defined('BASEPATH') ) exit('No direct script access allowed');
 /**
- * Community Auth - Form Tokens Library (derived from former CSRF library)
- *
- * Community Auth is an open source authentication application for CodeIgniter 2.2.2
+ * Community Auth - Form Tokens Library - V1.0.1
+ * 
+ * Community Auth is an open source authentication application for CodeIgniter 2.2.0
  *
  * @package     Community Auth
  * @author      Robert B Gottier
- * @copyright   Copyright (c) 2011 - 2015, Robert B Gottier. (http://brianswebdesign.com/)
+ * @copyright   Copyright (c) 2011 - 2014, Robert B Gottier. (http://brianswebdesign.com/)
  * @license     BSD - http://www.opensource.org/licenses/BSD-3-Clause
  * @link        http://community-auth.com
  */
@@ -43,7 +43,7 @@ class tokens
 	 * @var array
 	 * @access public
 	 */
-	public $jar = array();
+	public $jar = [];
 
 	/**
 	 * Whether or not the posted token matches one in the jar
@@ -138,7 +138,7 @@ class tokens
 					// Dump all tokens ?
 					if( $dump_jar_on_match )
 					{
-						$this->jar = array();
+						$this->jar = [];
 
 						$this->save_tokens_cookie();
 					}
@@ -151,6 +151,9 @@ class tokens
 
 						// Remove the matching token from the jar
 						unset( $this->jar[ $matching_key ] );
+
+						// Auto generate a new token
+						$this->generate_form_token();
 					}
 
 					if( $this->debug )
@@ -170,29 +173,32 @@ class tokens
 	// -----------------------------------------------------------------------
 
 	/**
-	 * Generate a form token
+	 * Generate a form token. (a "singleton" type method)
 	 */
 	public function generate_form_token()
 	{
-		// Create a unique token
-		$this->token = substr(md5(uniqid() . microtime() . rand()), 0, 8);
-
-		// Add the new token to the token jar array
-		$this->jar[] = $this->token;
-
-		// The token jar can only hold so many tokens
-		while( count( $this->jar ) > config_item('token_jar_size') )
+		if( ! $this->token )
 		{
-			array_shift( $this->jar );
-		}
+			// Create a unique token
+			$this->token = substr(md5(uniqid() . microtime() . rand()), 0, 8);
 
-		if( $this->debug )
-		{
-			$this->CI->fb->log( count( $this->jar ) . '@generate_form_token' );
-			$this->CI->fb->log( $this->jar );
-		}
+			// Add the new token to the token jar array
+			$this->jar[] = $this->token;
 
-		$this->save_tokens_cookie();
+			// The token jar can only hold so many tokens
+			while( count( $this->jar ) > config_item('token_jar_size') )
+			{
+				array_shift( $this->jar );
+			}
+
+			if( $this->debug )
+			{
+				$this->CI->fb->log( count( $this->jar ) . '@generate_form_token' );
+				$this->CI->fb->log( $this->jar );
+			}
+
+			$this->save_tokens_cookie();
+		}
 
 		return $this->token;
 	}
@@ -257,7 +263,7 @@ class tokens
 		{
 			$this->jar = ( isset( $_COOKIE[ $token_cookie_name ] ) ) 
 				? $this->unpack_tokens( $token_cookie_name )
-				: array();
+				: [];
 		}
 
 		if( $this->debug )
