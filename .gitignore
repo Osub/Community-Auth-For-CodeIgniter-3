@@ -1,0 +1,8 @@
+application/config/development/
+application/logs/
+community_auth_ci_3.sublime-project
+community_auth_ci_3.sublime-workspace
+lost_directory/
+system/
+upload_directory/
+user_guide/

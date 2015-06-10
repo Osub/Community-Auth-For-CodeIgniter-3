@@ -1,0 +1,23 @@
+# MAKE SURE TO LEAVE THE NEXT TWO LINES HERE.
+# BEGIN DENY LIST --
+# END DENY LIST --
+
+Options -Indexes
+
+RewriteEngine On
+RewriteBase /
+
+# Remove WWW
+#RewriteCond %{HTTP_HOST} !^your-domain\.com$ [NC]
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^(.*)$ http://your-domain.com/$1 [L,R=301]
+
+RewriteRule ^(system|application|cgi-bin) - [F,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# NORMAL SERVER ( COMMENT OUT IF GODADDY )
+RewriteRule .* index.php/$0 [PT,L]
+
+# SPECIAL GODADDY LINE ( UNCOMMENT IF GODADDY )
+#RewriteRule ^(.*)$ /index.php?/$1 [L]
