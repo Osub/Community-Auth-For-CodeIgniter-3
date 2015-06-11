@@ -127,7 +127,7 @@ class Auth_model extends MY_Model {
 			// If the session ID was NOT regenerated, the session IDs should match
 			if( is_null( $this->session->regenerated_session_id ) )
 			{
-				$this->db->where( 'user_session_id', $this->session->userdata('session_id') );
+				$this->db->where( 'user_session_id', $this->session->session_id );
 			}
 
 			// If it was regenerated, we can only compare the old session ID for this request

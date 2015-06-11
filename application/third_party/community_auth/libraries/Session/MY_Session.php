@@ -4,6 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Session extends CI_Session {
 
+	public $pre_regenerated_session_id = NULL;
+	public $regenerated_session_id     = NULL;
+
 	public function __construct(array $params = array())
 	{
 		parent::__construct($params);
@@ -90,4 +93,25 @@ class MY_Session extends CI_Session {
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Session regenerate
+	 *
+	 * Legacy CI_Session compatibility method
+	 *
+	 * @param	bool	$destroy	Destroy old session data flag
+	 * @return	void
+	 */
+	public function sess_regenerate($destroy = FALSE)
+	{
+		$this->pre_regenerated_session_id = $this->session_id;
+
+		$_SESSION['__ci_last_regenerate'] = time();
+		session_regenerate_id($destroy);
+
+		$this->regenerated_session_id = $this->session_id;
+
+		return $this->session_id;
+	}
+
+	// ------------------------------------------------------------------------
 }
