@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Community Auth - Special Controller
+ * Community Auth - Examples Controller
  *
  * Community Auth is an open source authentication application for CodeIgniter 3
  *
@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class Special extends MY_Controller{
+class Examples extends MY_Controller{
 	
 	public function __construct()
 	{
@@ -96,5 +96,5 @@ class Special extends MY_Controller{
 	// --------------------------------------------------------------
 }
 
-/* End of file Special.php */
-/* Location: /application/controllers/Special.php */
+/* End of file Examples.php */
+/* Location: /application/controllers/Examples.php */

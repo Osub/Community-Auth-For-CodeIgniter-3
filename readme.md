@@ -59,10 +59,10 @@ Installation
 * Create a database if not already available.
 * Run community_auth/sql/install.sql.
 * Configure CodeIgniter to use the database in config/database.php.
-* Edit create_user method in special controller.
-* Run /special/create_user.
+* Edit create_user method in Examples controller.
+* Run /examples/create_user.
 
-12) If you did everything right, you should be able to go to /special and log in.
+12) If you did everything right, you should be able to go to /examples and log in.
 
 13) Going to /user/logout will log you out.
 
