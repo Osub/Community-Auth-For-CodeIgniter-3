@@ -29,7 +29,8 @@ class Examples extends MY_Controller{
 	 * Demonstrate being redirected to login.
 	 * If you are logged in and request this method, 
 	 * you'll see the message, otherwise you will be 
-	 * shown the login form.
+	 * shown the login form. Once login is achieved, 
+	 * you will be redirected back to this method.
 	 */
 	public function index()
 	{
