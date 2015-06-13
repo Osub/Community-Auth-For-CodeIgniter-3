@@ -59,12 +59,12 @@ Installation
 * Create a database if not already available.
 * Run community_auth/sql/install.sql.
 * Configure CodeIgniter to use the database in config/database.php.
-* Edit create_user method in Examples controller.
-* Run /examples/create_user.
 
-12) If you did everything right, you should be able to go to /examples and log in.
+12) Create a user for testing purposes by editing the user_data array that is inside the create_user method, which is in the Examples controller. When specifying a user level, be aware of the "levels_and_roles" array located in config/authentication. Run /examples/create_user in your browser to create the user.
 
-13) Going to /user/logout will log you out.
+13) If you did everything right, you should be able to go to /examples and log in.
+
+14) Going to /user/logout will log you out.
 
 License
 -------

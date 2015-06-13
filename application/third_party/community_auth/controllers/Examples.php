@@ -36,7 +36,7 @@ class Examples extends MY_Controller{
 	{
 		if( $this->require_role('admin') )
 		{
-			echo 'Logged in</br>' . secure_site_url('user/logout', 'Logout');
+			echo 'Logged in</br>' . secure_anchor('user/logout', 'Logout');
 		}
 	}
 	
@@ -49,11 +49,12 @@ class Examples extends MY_Controller{
 	 */
 	public function create_user()
 	{
+		// Customize this array for your user
 		$user_data = array(
-			'user_name'     => 'skunkbad',
+			'user_name'     => 'skunkbot',
 			'user_pass'     => 'Something1',
-			'user_email'    => 'example@gmail.com',
-			'user_level'    => 9,
+			'user_email'    => 'example@hotmail.com',
+			'user_level'    => 1,
 			'user_id'       => $this->_get_unused_id(),
 			'user_salt'     => $this->authentication->random_salt(),
 			'user_date'     => time(),
@@ -62,9 +63,14 @@ class Examples extends MY_Controller{
 
 		$user_data['user_pass'] = $this->authentication->hash_passwd( $user_data['user_pass'], $user_data['user_salt'] );
 
-		// Insert data in user table
 		$this->db->set($user_data)
 			->insert( config_item('user_table'));
+
+		if( $this->db->affected_rows() == 1 )
+		{
+			echo 'User ' . $user_data['user_name'] . ' was created.';
+		}
+
 	}
 	
 	// -----------------------------------------------------------------------
