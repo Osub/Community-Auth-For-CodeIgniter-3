@@ -246,6 +246,18 @@ $config['delete_session_cookie_on_logout'] = FALSE;
 
 $config['show_login_form_on_logout'] = TRUE;
 
+/*
+| -----------------------------------------------------------------
+|				ALLOWED PAGES FOR LOGIN							
+| -----------------------------------------------------------------
+| Logins may only happen from specified pages on the website.
+| So, for instance, we don't want somebody posting directly to 
+| an old LOGIN_PAGE, or some random page. LOGIN_PAGE is automatically 
+| added, so you just put in optional login pages here.
+*/
+
+$config['allowed_pages_for_login'] = [];
+
 
 /* End of file authentication.php */
 /* Location: /application/config/authentication.php */

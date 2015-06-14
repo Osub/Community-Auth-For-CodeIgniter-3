@@ -132,7 +132,8 @@ class Authentication
 			$string     !== FALSE && 
 			$password   !== FALSE && 
 			$form_token !== FALSE && 
-			! empty( $token_jar )
+			! empty( $token_jar ) && 
+			$this->_login_page_is_allowed()
 		)
 		{
 			// Verify that the form token and flash session token are the same
@@ -692,6 +693,38 @@ class Authentication
 
 		// Update user record in database
 		$this->CI->auth_model->login_update( $auth_data->user_id, $login_time, $session_id );
+	}
+	
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Just make sure that the login is not on any page
+	 * except for the ones we define in authentication config.
+	 */
+	private function _login_page_is_allowed()
+	{
+		// Get the current URI string
+		$uri_string = $this->CI->uri->uri_string();
+
+		// Get all of the allowed login pages
+		$allowed_pages = config_item('allowed_pages_for_login');
+
+		// Add LOGIN_PAGE to the allowed login pages
+		$allowed_pages[] = LOGIN_PAGE;
+
+		// If there is a match for the URI string, all is well
+		if( in_array( $uri_string, $allowed_pages ) )
+		{
+			return TRUE;
+		}
+
+		// No match for URI string, so log it
+		log_message(
+			'debug',
+			"\n URI STRING FROM LOGIN = " . $uri_string
+		);
+
+		return FALSE;
 	}
 	
 	// -----------------------------------------------------------------------
