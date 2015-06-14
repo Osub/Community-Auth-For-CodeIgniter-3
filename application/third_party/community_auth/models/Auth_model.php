@@ -310,13 +310,13 @@ class Auth_model extends MY_Model {
 		 */
 		else if( 
 			$count > config_item('max_allowed_attempts') && 
-			$count >= config_item('deny_access') 
+			$count >= config_item('deny_access_at') 
 		)
 		{
 			// Send an email to 
 			die('Send email to admin ...');
 
-			if( config_item('deny_access') > 0 )
+			if( config_item('deny_access_at') > 0 )
 			{
 				// Log the IP address in the denied_access database
 				$data = array(

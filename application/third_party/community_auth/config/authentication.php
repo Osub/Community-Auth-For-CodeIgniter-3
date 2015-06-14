@@ -59,7 +59,7 @@ $config['max_allowed_attempts'] = 5;
 
 /*
 | -----------------------------------------------------------------
-|							DENY_ACCESS						
+|						DENY_ACCESS	AT					
 | -----------------------------------------------------------------
 | If for some reason login attempts exceed the max_login_attempts
 | value, then when they reach the number held in this definition,
@@ -70,7 +70,7 @@ $config['max_allowed_attempts'] = 5;
 | 
 */
 
-$config['deny_access'] = 10;
+$config['deny_access_at'] = 10;
 
 /*
 | -----------------------------------------------------------------

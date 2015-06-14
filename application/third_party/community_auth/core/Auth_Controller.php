@@ -367,7 +367,7 @@ class Auth_Controller extends CI_Controller {
 		 * member to TRUE, there'd be no reason to continue. Keep in mind that 
 		 * since an IP address may legitimately change, we shouldn't do anything 
 		 * drastic unless this happens more than an acceptable amount of times.
-		 * See the 'deny_access' config setting in config/authentication.php
+		 * See the 'deny_access_at' config setting in config/authentication.php
 		 */
 		if( $this->authentication->on_hold === TRUE )
 		{
