@@ -48,14 +48,6 @@ class Auth_Controller extends CI_Controller {
 	public $auth_role;
 
 	/**
-	 * The location of the main template view which most other views get nested inside
-	 *
-	 * @var string
-	 * @access public
-	 */
-	public $template = 'templates/main_template';
-
-	/**
 	 * The logged-in user's authentication data,
 	 * which is their user table record, but could
 	 * be whatever you want it to be if you modify 
