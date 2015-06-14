@@ -15,7 +15,7 @@ Installation
 * If on linux or mac, if there is no existing application and no reason to worry about overwriting existing files, cd to application directory, then execute ./third_party/community_auth/sh/.install.sh, then **skip to step 8**. You will probably need to set permissions of .install.sh to allow execution. After execution, remove permissions to execute or remove the file completely.
 * If not on linux or mac, or if you already have an existing application, **proceed to step 4**.
 
-4) Copy MY_Controller.php, MY_Input.php, and MY_Model.php from community_auth/core to application/core. If you already had these files, merge them with your existing files.
+4) Copy MY_Controller.php, MY_Input.php, MY_Log.php, and MY_Model.php from community_auth/core to application/core. If you already had these files, merge them with your existing files.
 
 5) Copy auth_constants.php from community_auth/hooks to application/hooks.
 

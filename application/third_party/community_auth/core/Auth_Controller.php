@@ -73,16 +73,6 @@ class Auth_Controller extends CI_Controller {
 		parent::__construct();
 
 		/**
-		 * If the production environment, FirePHP is disabled.
-		 * This is handy because FirePHP debugging code can be left 
-		 * within the application with no potential risks.
-		 */
-		if( ENVIRONMENT == 'production' && $this->load->is_loaded('fb') )
-		{
-			$this->fb->setEnabled( FALSE );
-		}
-
-		/**
 		 * Set no-cache headers so pages are never cached by the browser.
 		 * This is necessary because if the browser caches a page, the 
 		 * login or logout link and user specific data may not change when 

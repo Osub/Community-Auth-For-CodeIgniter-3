@@ -160,8 +160,8 @@ class tokens
 
 					if( $this->debug )
 					{
-						$this->CI->fb->log( count( $this->jar ) . '@token_check' );
-						$this->CI->fb->log( $this->jar );
+						$this->CI->log->console( count( $this->jar ) . '@token_check' );
+						$this->CI->log->console( $this->jar );
 					}
 
 					return TRUE;
@@ -195,8 +195,8 @@ class tokens
 
 			if( $this->debug )
 			{
-				$this->CI->fb->log( count( $this->jar ) . '@generate_form_token' );
-				$this->CI->fb->log( $this->jar );
+				$this->CI->log->console( count( $this->jar ) . '@generate_form_token' );
+				$this->CI->log->console( $this->jar );
 			}
 
 			$this->save_tokens_cookie();
@@ -232,8 +232,8 @@ class tokens
 
 		if( $this->debug )
 		{
-			$this->CI->fb->log( count( $this->jar ) . '@save_tokens_cookie' );
-			$this->CI->fb->log( $this->jar );
+			$this->CI->log->console( count( $this->jar ) . '@save_tokens_cookie' );
+			$this->CI->log->console( $this->jar );
 		}
 
 		setcookie(
@@ -270,8 +270,8 @@ class tokens
 
 		if( $this->debug )
 		{
-			$this->CI->fb->log( count( $this->jar ) . '@_set_jar' );
-			$this->CI->fb->log( $this->jar );
+			$this->CI->log->console( count( $this->jar ) . '@_set_jar' );
+			$this->CI->log->console( $this->jar );
 		}
 
 		return $this->jar;
