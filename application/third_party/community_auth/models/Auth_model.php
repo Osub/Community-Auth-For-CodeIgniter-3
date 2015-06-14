@@ -25,11 +25,9 @@ class Auth_model extends MY_Model {
 
 	/**
 	 * Check the user table to see if a user exists by username or email address.
-	 * If there was a matching record, combine with select profile data and 
-	 * return merged object.
 	 *
 	 * While this query is rather limited, you could easily join with
-	 * other tables.
+	 * other custom tables, and return specific user profile data.
 	 * 
 	 * @param   string  either the username or email address of a user
 	 * @return  mixed   either query data as object or FALSE

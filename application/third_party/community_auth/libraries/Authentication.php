@@ -555,7 +555,7 @@ class Authentication
 		// Is this a login attempt
 		if( $user_pass )
 		{
-			// Check if the posted password matches the one in the user profile
+			// Check if the posted password matches the one in the user record
 			$wrong_password = ( ! $this->check_passwd( $auth_data->user_pass, $auth_data->user_salt, $user_pass ) );
 
 			// Check for disallowed multiple logins doesn't apply to login attempt
@@ -627,23 +627,6 @@ class Authentication
 
 		// Initialize the HTTP user cookie data
 		$http_user_cookie_data['_user_name'] = $auth_data->user_name;
-
-		// Get the array of selected profile columns
-		$selected_profile_columns = config_item('selected_profile_columns');
-
-		// If selected profile columns are to be added to the HTTP user cookie
-		if( ! empty( $selected_profile_columns ) )
-		{
-			// Loop through the auth data
-			foreach( (array) $auth_data as $k => $v )
-			{
-				// If a selected profile column
-				if( in_array( $k, $selected_profile_columns ) )
-				{
-					$http_user_cookie_data['_' . $k] = $v;
-				}
-			}
-		}
 
 		// Serialize the HTTP user cookie data
 		$http_user_cookie['value'] = serialize_data( $http_user_cookie_data );

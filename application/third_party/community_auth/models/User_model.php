@@ -30,52 +30,12 @@ class User_model extends MY_Model {
 	 *
 	 * @param  int     the user ID to update
 	 * @param  array   the data to update in the user table
-	 * @param  array   the data to update in the profile table
 	 * @return bool
 	 */
-	public function update_user_raw_data( $the_user, $user_data = array(), $profile_data = array() )
+	public function update_user_raw_data( $the_user, $user_data = array() )
 	{
-		// Perform transaction
-		$this->db->trans_start();
-
-		// Update user record
-		if( ! empty( $user_data ) )
-		{
-			$this->db->where('user_id', $the_user)
-					->update( config_item('user_table'), $user_data );
-		}
-
-		// Update profile record
-		if( ! empty( $profile_data ) )
-		{
-			// Get the user_level so we know what profile table to update
-			$query = $this->db->select('user_level')
-				->where('user_id', $the_user)
-				->limit(1)
-				->get( config_item('user_table') );
-
-			if( $query->num_rows() == 1 )
-			{
-				$row = $query->row();
-
-				// Get the user's role
-				$role = $this->authentication->roles[$row->user_level];
-
-				$this->db->where('user_id', $the_user)
-					->update( config_item( $role . '_profiles_table'), $profile_data );
-			}
-		}
-
-		// Complete transaction
-		$this->db->trans_complete();
-
-		// Verify transaction was successful
-		if( $this->db->trans_status() !== FALSE )
-		{
-			return TRUE;
-		}
-
-		return FALSE;
+		$this->db->where('user_id', $the_user)
+			->update( config_item('user_table'), $user_data );
 	}
 
 	// --------------------------------------------------------------
