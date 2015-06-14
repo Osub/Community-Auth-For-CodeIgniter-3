@@ -53,7 +53,9 @@ Installation
 
 11) Enable hooks and make sure there is an encryption key set in config/config.
 
-12) Define Community Auth constants hook by adding it to config/hooks.
+12) While not critical for most Community Auth usage, check out and configure community_auth/config/authentication.php as needed.
+
+13) Define Community Auth constants hook by adding it to config/hooks.
 
 	$hook['pre_system'] = array(
 		'function' => 'auth_constants',
@@ -61,17 +63,17 @@ Installation
 		'filepath' => 'hooks'
 	);
 
-13) Database
+14) Database
 
 * Create a database if not already available.
 * Run community_auth/sql/install.sql.
 * Configure CodeIgniter to use the database in config/database.php.
 
-14) Create a user for testing purposes by editing the user_data array that is inside the create_user method, which is in the Examples controller. When specifying a user level, be aware of the "levels_and_roles" array located in config/authentication. Run /examples/create_user in your browser to create the user.
+15) Create a user for testing purposes by editing the user_data array that is inside the create_user method, which is in the Examples controller. When specifying a user level, be aware of the "levels_and_roles" array located in config/authentication. Run /examples/create_user in your browser to create the user.
 
-15) If you did everything right, you should be able to go to /examples and log in.
+16) If you did everything right, you should be able to go to /examples and log in.
 
-16) Going to /user/logout will log you out.
+17) Going to /user/logout will log you out.
 
 License
 -------
