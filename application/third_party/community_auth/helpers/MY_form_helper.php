@@ -18,7 +18,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * Creates the opening portion of the form.
  *
- * Modified to accomodate HTTPS actions
+ * Modified to accomodate HTTPS actions, and also auto 
+ * injects a hidden input for a token. (See Tokens library)
  *
  * @param  string  the URI segments of the form destination
  * @param  array   a key/value pair of attributes
