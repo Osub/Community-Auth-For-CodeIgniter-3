@@ -57,6 +57,14 @@ if( ! function_exists('is_serialized') )
 	}
 }
 
+// ------------------------------------------------------------------------
+
+/**
+ * Serialize some data.
+ * 
+ * @param mixed Random variable, array, object, etc.
+ * @return string The serialized data.
+ */
 if( ! function_exists('serialize_data') )
 {
 	function serialize_data($data)
@@ -83,6 +91,15 @@ if( ! function_exists('serialize_data') )
 	}
 }
 
+// ------------------------------------------------------------------------
+
+/**
+ * Unserialize some data.
+ * 
+ * @param string The serialized data.
+ * @return mixed Whatever was unserialized, or whatever was passed to 
+ *               this function if it was not serialized.
+ */
 if( ! function_exists('unserialize_data') )
 {
 	function unserialize_data($data)
@@ -112,6 +129,8 @@ if( ! function_exists('unserialize_data') )
 		return $data;
 	}
 }
+
+// ------------------------------------------------------------------------
 
 /* End of file serialization_helper.php */
 /* Location: ./application/helpers/serialization_helper.php */
