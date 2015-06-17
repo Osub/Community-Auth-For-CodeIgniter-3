@@ -21,7 +21,7 @@ Installation
 
 **6)** Copy the controllers in community_auth/controllers to CodeIgniter's application/controllers directory.
 
-**7)** If not already removing index.php from URLs, the .htaccess file in community_auth/public_root can be moved to CodeIgniter's public root directory. Notice the lines at the top that allow for access denial. If you already have an .htaccess file, make sure to include those lines at the top of it.
+**7)** The .htaccess file in community_auth/public_root can be moved to CodeIgniter's public root directory. Notice the lines at the top that allow for access denial. If you already have an .htaccess file, make sure to include those lines at the top of it.
 
 **8)** If the site has a security certificate, change value of USE_SSL to 1 in application/hooks/auth_constants.php. While you are there you should review the other constants, as all are configurable.
 
