@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Community Auth - Form Tokens Library - V1.0.1
+ * Community Auth - Form Tokens Library - V1.0.2
  * 
  * Community Auth is an open source authentication application for CodeIgniter 3
  *
@@ -72,11 +72,8 @@ class tokens
 	private $scheme = 'http';
 
 	/**
-	 * Whether or not allow FirePHP debugging data.
-	 * IT'S IMPORTANT TO KEEP THIS SET TO FALSE
-	 * ON A PRODUCTION ENVIRONMENT, since the 
-	 * disabling of FirePHP happens in MY_Controller,
-	 * which is AFTER the constructor runs.
+	 * Whether or not allow CI debug level 
+	 * logging for the token jar.
 	 *
 	 * @var bool
 	 * @access public
@@ -160,8 +157,8 @@ class tokens
 
 					if( $this->debug )
 					{
-						$this->CI->log->console( count( $this->jar ) . '@token_check' );
-						$this->CI->log->console( $this->jar );
+						log_message( 'debug', count( $this->jar ) . '@token_check' );
+						log_message( 'debug', json_encode( $this->jar ) );
 					}
 
 					return TRUE;
@@ -195,8 +192,8 @@ class tokens
 
 			if( $this->debug )
 			{
-				$this->CI->log->console( count( $this->jar ) . '@generate_form_token' );
-				$this->CI->log->console( $this->jar );
+				log_message( 'debug', count( $this->jar ) . '@generate_form_token' );
+				log_message( 'debug', json_encode( $this->jar ) );
 			}
 
 			$this->save_tokens_cookie();
@@ -232,8 +229,8 @@ class tokens
 
 		if( $this->debug )
 		{
-			$this->CI->log->console( count( $this->jar ) . '@save_tokens_cookie' );
-			$this->CI->log->console( $this->jar );
+			log_message( 'debug', count( $this->jar ) . '@save_tokens_cookie' );
+			log_message( 'debug', json_encode( $this->jar ) );
 		}
 
 		setcookie(
@@ -270,8 +267,8 @@ class tokens
 
 		if( $this->debug )
 		{
-			$this->CI->log->console( count( $this->jar ) . '@_set_jar' );
-			$this->CI->log->console( $this->jar );
+			log_message( 'debug', count( $this->jar ) . '@_set_jar' );
+			log_message( 'debug', json_encode( $this->jar ) );
 		}
 
 		return $this->jar;

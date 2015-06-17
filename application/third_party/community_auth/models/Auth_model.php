@@ -473,7 +473,7 @@ class Auth_model extends MY_Model {
 		// Write the new file contents
 		if ( ! write_file( $htaccess, $string ) )
 		{
-		     $this->log->console('Could not write to Apache configuration file');
+		     die('Could not write to Apache configuration file');
 		}
 
 		// Change the file permissions back to what they were before the read/write
