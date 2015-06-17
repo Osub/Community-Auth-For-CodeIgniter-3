@@ -86,8 +86,7 @@ if( isset( $disabled ) )
 				You have exceeded the maximum login attempts or exceeded the 
 				allowed number of password recovery attempts. 
 				Please wait ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' 
-				minutes, or ' . secure_anchor('contact','Contact') . ' ' . WEBSITE_NAME . ' 
-				if you require assistance gaining access to your account.
+				minutes, or contact us if you require assistance gaining access to your account.
 			</p>
 		</div>
 	';

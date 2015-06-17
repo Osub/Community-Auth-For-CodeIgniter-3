@@ -22,15 +22,14 @@ if( isset( $disabled ) )
 	echo '
 		<div style="border:1px solid red;">
 			<p>
-				Account recovery is disabled.
+				Account Recovery is Disabled.
 			</p>
 			<p>
 				If you have exceeded the maximum login attempts, or exceeded
 				the allowed number of password recovery attempts, account recovery 
 				will be disabled for a short period of time. 
 				Please wait ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' 
-				minutes, or ' . secure_anchor('contact','Contact') . ' ' . WEBSITE_NAME . ' 
-				if you require assistance gaining access to your account.
+				minutes, or contact us if you require assistance gaining access to your account.
 			</p>
 		</div>
 	';
@@ -40,13 +39,13 @@ else if( isset( $user_banned ) )
 	echo '
 		<div style="border:1px solid red;">
 			<p>
-				Account locked by ' . WEBSITE_NAME . '.
+				Account Locked.
 			</p>
 			<p>
 				You have attempted to use the password recovery system using 
 				an email address that belongs to an account that has been 
 				purposely denied access to the authenticated areas of this website. 
-				If you feel this is an error, you may ' . secure_anchor('contact','Contact') . ' ' . WEBSITE_NAME . ' 
+				If you feel this is an error, you may contact us  
 				to make an inquiry regarding the status of the account.
 			</p>
 		</div>
@@ -83,7 +82,7 @@ else
 		<p>
 			If you\'ve forgotten your password and/or username, 
 			enter the email address used for your account, 
-			and ' . WEBSITE_NAME . ' will send you an e-mail 
+			and we will send you an e-mail 
 			with instructions on how to access your account.
 		</p>
 	';

@@ -109,14 +109,14 @@ if( ! isset( $on_hold_message ) )
 				</p>
 				<p>
 					You have exceeded the maximum number of failed login<br />
-					attempts that the ' . WEBSITE_NAME . ' website will allow.
+					attempts that this website will allow.
 				<p>
 				<p>
 					Your access to login and account recovery has been blocked for ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes.
 				</p>
 				<p>
 					Please use the ' . secure_anchor('user/recover','Account Recovery') . ' after ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes has passed,<br />
-					or ' . secure_anchor('contact','Contact') . ' ' . WEBSITE_NAME . '  if you require assistance gaining access to your account.
+					or contact us if you require assistance gaining access to your account.
 				</p>
 			</div>
 		';

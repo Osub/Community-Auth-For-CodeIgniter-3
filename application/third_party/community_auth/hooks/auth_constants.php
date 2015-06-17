@@ -17,18 +17,6 @@ function auth_constants(){
 
 /*
 | -----------------------------------------------------------------
-| WEBSITE_NAME
-| -----------------------------------------------------------------
-| Set to the human readable name of your business or website.
-| By default this is set to the domain name of your website, 
-| but you will probably change this to a string value.
-| 
-*/
-
-	define('WEBSITE_NAME', $_SERVER['HTTP_HOST']);
-
-/*
-| -----------------------------------------------------------------
 | USE_SSL
 | -----------------------------------------------------------------
 | Set to 1 for standard SSL certificate.
