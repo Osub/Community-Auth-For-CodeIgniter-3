@@ -51,7 +51,7 @@ Installation
 
 	$route[LOGIN_PAGE] = 'user/login';
 
-**11)** Enable hooks and make sure there is an encryption key set in config/config.
+**11)** Enable hooks and make sure there is an encryption key set in config/config.php.
 
 **12)** While not critical for basic Community Auth usage, check out and configure community_auth/config/authentication.php as needed.
 
