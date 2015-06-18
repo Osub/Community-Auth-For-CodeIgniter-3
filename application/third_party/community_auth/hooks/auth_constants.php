@@ -39,63 +39,6 @@ function auth_constants(){
 
 	define('LOGIN_PAGE', 'login');
 
-/*
-| -----------------------------------------------------------------
-| REDIRECT_TO_HTTPS
-| -----------------------------------------------------------------
-| Set to 1 to allow redirection to an HTTPS page when forcing SSL.
-| Set to 0 to show a 404 error if not HTTPS.
-| 
-*/
-
-	define('REDIRECT_TO_HTTPS', 0);
-
-/*
-| -----------------------------------------------------------------
-| MIN_CHARS_4_USERNAME
-| -----------------------------------------------------------------
-| Sets the minimum character length to enforce for usernames.
-| 
-*/
-
-	define('MIN_CHARS_4_USERNAME',8);
-
-/*
-| -----------------------------------------------------------------
-| MAX_CHARS_4_USERNAME
-| -----------------------------------------------------------------
-| Sets the maximum character length to enforce for usernames.
-| If a change is made, the database needs to be adjusted!
-| 
-*/
-
-	define('MAX_CHARS_4_USERNAME',12);
-
-/*
-| -----------------------------------------------------------------
-| MIN_CHARS_4_PASSWORD
-| -----------------------------------------------------------------
-| Sets the minimum character length to enforce for passwords.
-| 
-*/
-
-	define('MIN_CHARS_4_PASSWORD',8);
-
-/*
-| -----------------------------------------------------------------
-| MAX_CHARS_4_PASSWORD
-| -----------------------------------------------------------------
-| Sets the maximum character length to enforce for passwords.
-| The default of 256 is more than generous, but if for some reason
-| you think you need to allow bigger passwords, remember that
-| the password hashing functions can be expensive in terms of 
-| CPU usage. For most sites, this setting could be in the 
-| range of 32 to 64.
-| 
-*/
-
-	define('MAX_CHARS_4_PASSWORD',256);
-
 }
 
 /* End of file constants.php */

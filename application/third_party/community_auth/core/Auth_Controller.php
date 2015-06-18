@@ -410,7 +410,7 @@ class Auth_Controller extends CI_Controller {
 		if( USE_SSL !== 0 && $this->protocol == 'http' )
 		{
 			// Allow redirect to the HTTPS page
-			if( REDIRECT_TO_HTTPS !== 0 )
+			if( config_item('redirect_to_https') !== 0 )
 			{
 				// Load string helper for trim_slashes function
 				$this->load->helper('string');

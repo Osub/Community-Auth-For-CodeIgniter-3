@@ -24,7 +24,7 @@ class Formval_callbacks extends CI_Model {
 	 */
 	public function _check_password_strength( $password, $argument )
 	{
-		// (?=.{' . MIN_CHARS_4_PASSWORD . ',}) means string should be at least length specified in site definitions hook
+		// (?=.{' . config_item('min_chars_for_password') . ',}) means string should be at least length specified in site definitions hook
 
 		// (?=.*\d) means string should have at least one digit
 
@@ -43,7 +43,7 @@ class Formval_callbacks extends CI_Model {
 			// If the password is not required, and if it is empty, no reason to proceed
 			return TRUE;
 		}
-		else if( preg_match( '/^(?=.{' . MIN_CHARS_4_PASSWORD . ',' . MAX_CHARS_4_PASSWORD . '})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?!.*[\\\\\'"]).*$/', $password, $matches ) )
+		else if( preg_match( '/^(?=.{' . config_item('min_chars_for_password') . ',' . config_item('max_chars_for_password') . '})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?!.*[\\\\\'"]).*$/', $password, $matches ) )
 		{
 			return $password;
 		}
@@ -53,8 +53,8 @@ class Formval_callbacks extends CI_Model {
 				'external_callbacks', 
 				'<span class="redfield">%s</span> must contain:
 					<ol>
-						<li>At least ' . MIN_CHARS_4_PASSWORD . ' characters</li>
-						<li>Not more than ' . MAX_CHARS_4_PASSWORD . ' characters</li>
+						<li>At least ' . config_item('min_chars_for_password') . ' characters</li>
+						<li>Not more than ' . config_item('max_chars_for_password') . ' characters</li>
 						<li>One number</li><li>One lower case letter</li>
 						<li>One upper case letter</li>
 						<li>No space characters</li>

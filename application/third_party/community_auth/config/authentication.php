@@ -241,6 +241,34 @@ $config['show_login_form_on_logout'] = TRUE;
 
 $config['allowed_pages_for_login'] = [];
 
+/*
+| -----------------------------------------------------------------
+|				REDIRECT TO HTTPS						
+| -----------------------------------------------------------------
+| If a page is supposed to be viewed using an encrypted connection, 
+| you can either redirect to the HTTPS version, or serve up a 404 error.
+*/
+
+$config['redirect_to_https'] = FALSE;
+
+/*
+| -----------------------------------------------------------------
+|				MIN CHARS FOR PASSWORD						
+| -----------------------------------------------------------------
+| The lease amount of characters for a valid password
+*/
+
+$config['min_chars_for_password'] = 8;
+
+/*
+| -----------------------------------------------------------------
+|				MAX CHARS FOR PASSWORD						
+| -----------------------------------------------------------------
+| The maximum amount of characters for a valid password
+*/
+
+$config['max_chars_for_password'] = 256;
+
 
 /* End of file authentication.php */
 /* Location: /application/config/authentication.php */

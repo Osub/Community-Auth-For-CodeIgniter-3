@@ -69,7 +69,7 @@ if( ! isset( $on_hold_message ) )
 		<input type="text" name="login_string" id="login_string" class="form_input" autocomplete="off" maxlength="255" />
 
 		<label for="login_pass" class="form_label">Password</label>
-		<input type="password" name="login_pass" id="login_pass" class="form_input password" autocomplete="off" maxlength="<?php echo MAX_CHARS_4_PASSWORD; ?>" />
+		<input type="password" name="login_pass" id="login_pass" class="form_input password" autocomplete="off" maxlength="<?php echo config_item('max_chars_for_password'); ?>" />
 
 
 		<?php

@@ -122,7 +122,7 @@ if( $showform == 1 )
 									'name'       => 'user_pass',
 									'id'         => 'user_pass',
 									'class'      => 'form_input password',
-									'max_length' => MAX_CHARS_4_PASSWORD
+									'max_length' => config_item('max_chars_for_password')
 								);
 								echo form_password($input_data);
 							?>
@@ -138,7 +138,7 @@ if( $showform == 1 )
 									'name'       => 'user_pass_confirm',
 									'id'         => 'user_pass_confirm',
 									'class'      => 'form_input password',
-									'max_length' => MAX_CHARS_4_PASSWORD
+									'max_length' => config_item('max_chars_for_password')
 								);
 								echo form_password($input_data);
 							?>
