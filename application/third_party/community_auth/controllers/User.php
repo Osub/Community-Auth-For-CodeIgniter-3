@@ -119,7 +119,7 @@ class User extends MY_Controller {
 
 						$view_data['special_link'] = secure_anchor( 
 							'user/recovery_verification/' . $user_data->user_id . '/' . $recovery_code, 
-							secure_base_url() . 'user/recovery_verification/' . $user_data->user_id . '/' . $recovery_code, 
+							secure_site_url( 'user/recovery_verification/' . $user_data->user_id . '/' . $recovery_code ), 
 							'target ="_blank"' 
 						);
 
