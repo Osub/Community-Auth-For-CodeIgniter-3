@@ -1,7 +1,8 @@
 Community Auth For CodeIgniter 3
 ================================
-
 This version of Community Auth is a user authentication package for CodeIgniter 3.
+
+Website: [http://community-auth.com](http://community-auth.com)
 
 Installation
 ------------
