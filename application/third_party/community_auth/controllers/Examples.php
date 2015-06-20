@@ -43,6 +43,39 @@ class Examples extends MY_Controller{
 	// -----------------------------------------------------------------------
 
 	/**
+	 * Demonstrate an optional login.
+	 * Remember to add "examples/optional_login_test" to the 
+	 * allowed_pages_for_login array in config/authentication.php.
+	 *
+	 * Notice that we are using verify_min_level to check if 
+	 * a user is already logged in.
+	 */
+	public function optional_login_test()
+	{
+		if( $this->verify_min_level(1) )
+		{
+			echo 'Optionally logged in</br>' . secure_anchor('user/logout', 'Logout');
+		}
+		else if( $this->tokens->match && $this->optional_login() )
+		{
+			// Let Community Auth handle the login attempt ...
+		}
+		else
+		{
+			// Show your form here ...
+			echo '<p>You are not logged in, but can still see this page.</p>';
+
+			$this->setup_login_form();
+
+			$this->load->vars([ 'optional_login' => TRUE ]);
+
+			$this->load->view( 'auth/login_form' );
+		}
+	}
+	
+	// -----------------------------------------------------------------------
+
+	/**
 	 * Most minimal user creation. You will of course make your 
 	 * own interface for adding users, and you may even let users
 	 * register and create their own accounts.
