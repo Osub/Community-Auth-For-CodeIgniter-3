@@ -79,6 +79,15 @@ class Examples extends MY_Controller{
 	 * Most minimal user creation. You will of course make your 
 	 * own interface for adding users, and you may even let users
 	 * register and create their own accounts.
+	 *
+	 * The password used in the $user_data array needs to meet the 
+	 * following default strength requirements:
+	 *   - Must be at least 8 characters long
+	 *   - Must have at least one digit
+	 *   - Must have at least one lower case letter
+	 *   - Must have at least one upper case letter
+	 *   - Must not have any space, tab, or other whitespace characters
+	 *   - No backslash, apostrophe or quote chars are allowed
 	 */
 	public function create_user()
 	{
@@ -87,7 +96,7 @@ class Examples extends MY_Controller{
 			'user_name'     => 'skunkbot',
 			'user_pass'     => 'Something1',
 			'user_email'    => 'example@hotmail.com',
-			'user_level'    => 1,
+			'user_level'    => 1, // 9 if you want to login @ examples/index.
 			'user_id'       => $this->_get_unused_id(),
 			'user_salt'     => $this->authentication->random_salt(),
 			'user_date'     => time(),
