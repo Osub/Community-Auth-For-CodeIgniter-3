@@ -12,5 +12,6 @@ application/views/
 system/
 user_guide/
 /index.php
+/.htaccess
 community_auth_ci_3.sublime-project
 community_auth_ci_3.sublime-workspace
