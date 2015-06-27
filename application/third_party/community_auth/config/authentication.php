@@ -128,6 +128,18 @@ $config['disallow_multiple_logins'] = TRUE;
 
 /*
 | -----------------------------------------------------------------
+|						ENCRYPT AUTH IDENTIFIER					
+| -----------------------------------------------------------------
+| This setting will encrypt the authentication identifier, which is
+| stored in the session. CodeIgniter removed session encryption in
+| CodeIgniter 3, so we have to do the encyption if we want (or not).
+|
+*/
+
+$config['encrypt_auth_identifier'] = FALSE;
+
+/*
+| -----------------------------------------------------------------
 |						ENCRYPT ALL COOKIES					
 | -----------------------------------------------------------------
 | This setting allows you to encrypt all of the cookies that 

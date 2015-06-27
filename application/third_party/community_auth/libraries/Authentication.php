@@ -83,6 +83,13 @@ class Authentication
 
 		// Get the auth identifier from the session if it exists
 		$this->auth_identifier = $this->CI->session->userdata('auth_identifier');
+
+		// Decrypt the auth identifier if necessary
+		if( ! empty( $this->auth_identifier ) && config_item('encrypt_auth_identifier') )
+		{
+			$this->CI->load->library('encryption');
+			$this->auth_identifier = $this->CI->encryption->decrypt( $this->auth_identifier );
+		}
 	}
 
 	// --------------------------------------------------------------
@@ -661,15 +668,21 @@ class Authentication
 
 		$this->CI->input->set_cookie( $http_user_cookie );
 
-		// Set CI session cookie
-		$this->CI->session->set_userdata( 
-			'auth_identifier',
-			$this->create_auth_identifier(
-				$auth_data->user_id,
-				$auth_data->user_modified,
-				$login_time
-			)
+		// Create the auth identifier
+		$auth_identifier = $this->create_auth_identifier(
+			$auth_data->user_id,
+			$auth_data->user_modified,
+			$login_time
 		);
+
+		// Encrypt the auth identifier if necessary
+		if( config_item('encrypt_auth_identifier') )
+		{
+			$auth_identifier = $this->CI->encryption->encrypt( $auth_identifier );
+		}
+
+		// Set CI session cookie
+		$this->CI->session->set_userdata( 'auth_identifier', $auth_identifier );
 
 		// For security, force regenerate the session ID
 		$session_id = $this->CI->session->sess_regenerate( TRUE );
