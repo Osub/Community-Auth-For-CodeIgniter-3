@@ -105,7 +105,7 @@ class MY_Input extends CI_Input {
 		 *
 		 * If the session is being encrypted, we may as well encrypt the cookie value too.
 		 */
-		if( config_item('sess_encrypt_cookie') === TRUE )
+		if( config_item('encrypt_all_cookies') === TRUE )
 		{
 			$CI =& get_instance();
 
@@ -135,7 +135,7 @@ class MY_Input extends CI_Input {
 	{
 		$value = $this->_fetch_from_array($_COOKIE, $index, $xss_clean);
 
-		if( config_item('sess_encrypt_cookie') === TRUE && $index != config_item('sess_cookie_name') )
+		if( config_item('encrypt_all_cookies') === TRUE && $index != config_item('sess_cookie_name') )
 		{
 			$CI =& get_instance();
 
