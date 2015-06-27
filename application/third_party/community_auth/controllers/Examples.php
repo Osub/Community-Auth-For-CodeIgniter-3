@@ -120,12 +120,12 @@ class Examples extends MY_Controller{
 	/**
 	 * Get an unused ID for user creation
 	 * 
-	 * @return  int
+	 * @return  int between 1200 and 4294967295
 	 */
 	private function _get_unused_id()
 	{
 		// Create a random user id
-		$random_unique_int = mt_rand(1200,999999999);
+		$random_unique_int = mt_rand(1200,4294967295);
 
 		// Make sure the random user_id isn't already in use
 		$query = $this->db->where('user_id', $random_unique_int)
