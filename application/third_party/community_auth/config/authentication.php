@@ -132,7 +132,8 @@ $config['disallow_multiple_logins'] = TRUE;
 | -----------------------------------------------------------------
 | This setting allows you to encrypt all of the cookies that 
 | Community Auth sets. Be aware that the tokens cookie encryption 
-| is turned off/on in the Tokens library.
+| is turned off/on in the Tokens library. This setting does not 
+| affect the session cookie.
 |
 */
 
