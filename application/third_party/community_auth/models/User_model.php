@@ -70,10 +70,12 @@ class User_model extends MY_Model {
 	 */
 	public function get_recovery_verification_data( $user_id )
 	{
+		$recovery_code_expiration = date('Y-m-d H:i:s', time() - config_item('recovery_code_expiration') );
+
 		$query = $this->db->select('user_name,user_salt,passwd_recovery_code')
 			->from( config_item('user_table') )
 			->where( 'user_id', $user_id )
-			->where( 'passwd_recovery_date >', time() - config_item('recovery_code_expiration') )
+			->where( 'passwd_recovery_date >', $recovery_code_expiration )
 			->limit(1)
 			->get();
 

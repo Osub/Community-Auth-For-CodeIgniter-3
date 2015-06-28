@@ -113,7 +113,7 @@ class User extends MY_Controller {
 							$user_data->user_id,
 							array(
 								'passwd_recovery_code' => $hashed_recovery_code,
-								'passwd_recovery_date' => time()
+								'passwd_recovery_date' => date('Y-m-d H:i:s')
 							)
 						);
 

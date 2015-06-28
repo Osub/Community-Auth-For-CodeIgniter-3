@@ -69,11 +69,11 @@ class Auth_model extends MY_Model {
 	 * 
 	 * @param  array  the user's user table data 
 	 */
-	public function login_update( $user_id, $login_time, $session_id )
+	public function login_update( $user_id, $user_login_time, $session_id )
 	{
 		$data = array(
-			'user_last_login'   => $login_time,
-			'user_login_time'   => $login_time,
+			'user_last_login'   => $user_login_time,
+			'user_login_time'   => $user_login_time,
 			'user_agent_string' => md5( $this->input->user_agent() ),
 			'user_session_id'   => $session_id
 		);
@@ -97,7 +97,7 @@ class Auth_model extends MY_Model {
 	 * @param   int    the user ID
 	 * @return  mixed  either query data as an object or FALSE
 	 */
-	public function check_login_status( $user_last_mod, $user_id, $login_time )
+	public function check_login_status( $user_modified, $user_id, $user_login_time )
 	{
 		// Selected user table data
 		$selected_columns = array(
@@ -111,7 +111,7 @@ class Auth_model extends MY_Model {
 
 		$this->db->select( $selected_columns );
 		$this->db->from( config_item('user_table') );
-		$this->db->where( 'user_modified', $user_last_mod );
+		$this->db->where( 'user_modified', $user_modified );
 		$this->db->where( 'user_id', $user_id );
 
 		/**
@@ -120,7 +120,7 @@ class Auth_model extends MY_Model {
 		 */
 		if( config_item('disallow_multiple_logins') === TRUE )
 		{
-			$this->db->where( 'user_login_time', $login_time );
+			$this->db->where( 'user_login_time', $user_login_time );
 
 			// If the session ID was NOT regenerated, the session IDs should match
 			if( is_null( $this->session->regenerated_session_id ) )
@@ -170,11 +170,11 @@ class Auth_model extends MY_Model {
 	 */
 	public function clear_expired_holds()
 	{
-		$duration = time() - config_item('seconds_on_hold');
+		$expiration = date('Y-m-d H:i:s', time() - config_item('seconds_on_hold') );
 
-		$this->db->delete( config_item('IP_hold_table'), array( 'time <' => $duration ) );
+		$this->db->delete( config_item('IP_hold_table'), array( 'time <' => $expiration ) );
 
-		$this->db->delete( config_item('username_or_email_hold_table'), array( 'time <' => $duration ) );
+		$this->db->delete( config_item('username_or_email_hold_table'), array( 'time <' => $expiration ) );
 	}
 
 	// --------------------------------------------------------------
@@ -184,9 +184,9 @@ class Auth_model extends MY_Model {
 	 */
 	public function clear_login_errors()
 	{
-		$duration = time() - config_item('seconds_on_hold');
+		$expiration = date('Y-m-d H:i:s', time() - config_item('seconds_on_hold') );
 
-		$this->db->delete( config_item('errors_table'), array( 'time <' => $duration ) );
+		$this->db->delete( config_item('errors_table'), array( 'time <' => $expiration ) );
 	}
 
 	// --------------------------------------------------------------
@@ -296,7 +296,7 @@ class Auth_model extends MY_Model {
 			// Place the IP on hold
 			$data = array(
 				'IP_address' => $ip_address,
-				'time'       => time()
+				'time'       => date('Y-m-d H:i:s')
 			);
 
 			$this->db->set( $data )
@@ -313,15 +313,16 @@ class Auth_model extends MY_Model {
 			$count >= config_item('deny_access_at') 
 		)
 		{
-			// Send an email to 
-			die('Send email to admin ...');
+			/**
+			 * Send email to admin here ******************
+			 */
 
 			if( config_item('deny_access_at') > 0 )
 			{
 				// Log the IP address in the denied_access database
 				$data = array(
 					'IP_address'  => $ip_address,
-					'time'        => time(),
+					'time'        => date('Y-m-d H:i:s'),
 					'reason_code' => '1'
 				);
 
@@ -344,7 +345,7 @@ class Auth_model extends MY_Model {
 				// Place the username/email-address on hold
 				$data = array(
 					'username_or_email' => $string,
-					'time'              => time()
+					'time'              => date('Y-m-d H:i:s')
 				);
 
 				$this->db->set( $data )
@@ -460,7 +461,7 @@ class Auth_model extends MY_Model {
 		$initial_file_permissions = fileperms( $htaccess );
 
 		// Change the file permissions so we can read/write
-		chmod( $htaccess, 0644);
+		@chmod( $htaccess, 0644);
 
 		// Read in the contents of the Apache config file
 		$string = read_file( $htaccess );
@@ -477,7 +478,7 @@ class Auth_model extends MY_Model {
 		}
 
 		// Change the file permissions back to what they were before the read/write
-		chmod( $htaccess, $initial_file_permissions );
+		@chmod( $htaccess, $initial_file_permissions );
 	}
 
 	// --------------------------------------------------------------

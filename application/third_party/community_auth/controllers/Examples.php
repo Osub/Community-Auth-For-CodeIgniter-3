@@ -127,8 +127,8 @@ class Examples extends MY_Controller
 			$user_data['user_salt']     = $this->authentication->random_salt();
 			$user_data['user_pass']     = $this->authentication->hash_passwd($user_data['user_pass'], $user_data['user_salt']);
 			$user_data['user_id']       = $this->_get_unused_id();
-			$user_data['user_date']     = time();
-			$user_data['user_modified'] = time();
+			$user_data['user_date']     = date('Y-m-d H:i:s');
+			$user_data['user_modified'] = date('Y-m-d H:i:s');
 
 			$this->db->set($user_data)
 				->insert(config_item('user_table'));

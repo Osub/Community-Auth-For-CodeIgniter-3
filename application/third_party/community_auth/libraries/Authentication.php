@@ -393,7 +393,7 @@ class Authentication
 		$data = array(
 			'username_or_email' => $string,
 			'IP_address'        => $this->CI->input->ip_address(),
-			'time'              => time()
+			'time'              => date('Y-m-d H:i:s')
 		);
 
 		$this->CI->auth_model->create_login_error( $data );
@@ -561,7 +561,7 @@ class Authentication
 		header( "Location: " . $url, TRUE, 302 );
 
 		// Store login time in database and cookie
-		$user_login_time = time();
+		$user_login_time = date('Y-m-d H:i:s');
 
 		/**
 		 * Since the session cookie needs to be able to use
