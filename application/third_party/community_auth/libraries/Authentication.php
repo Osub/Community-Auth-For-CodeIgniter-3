@@ -58,13 +58,13 @@ class Authentication
 	public $on_hold = FALSE;
 
 	/**
-	 * A large number holding the user ID, last login time, 
-	 * and last modified time for a logged-in user
+	 * An array holding the user ID, login time, 
+	 * and last modified time for a logged-in user.
 	 *
-	 * @var int
+	 * @var array
 	 * @access private
 	 */
-	private $auth_identifier;
+	private $auth_identifiers = array();
 
 	// --------------------------------------------------------------
 
@@ -81,18 +81,34 @@ class Authentication
 		// Make levels available by role name (string) => user_level (int)
 		$this->levels = array_flip( $this->roles );
 
-		// Get the auth identifier from the session if it exists
-		$this->auth_identifier = $this->CI->session->userdata('auth_identifier');
-
-		// Decrypt the auth identifier if necessary
-		if( ! empty( $this->auth_identifier ) && config_item('encrypt_auth_identifier') )
-		{
-			$this->CI->load->library('encryption');
-			$this->auth_identifier = $this->CI->encryption->decrypt( $this->auth_identifier );
-		}
+		// Set the auth identifiers if exists
+		$this->_set_auth_identifiers();
 	}
 
 	// --------------------------------------------------------------
+
+	/**
+	 * If user is logged in they will have an auth identifier in the session, 
+	 * and this method will set the user ID, user's last modification time,
+	 * and the user's last login time as array elements of $this->auth_identifiers.
+	 */
+	private function _set_auth_identifiers()
+	{
+		// Get the auth identifier from the session if it exists
+		if( $auth_identifiers = $this->CI->session->userdata('auth_identifiers') )
+		{
+			// Decrypt the auth identifiers if necessary
+			if( config_item('encrypt_auth_identifiers') )
+			{
+				$this->CI->load->library('encryption');
+				$auth_identifiers = $this->CI->encryption->decrypt( $auth_identifiers );
+			}
+
+			$this->auth_identifiers = unserialize( $auth_identifiers );
+		}
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Handle a login attempt, or determine if user already logged in.
@@ -125,7 +141,7 @@ class Authentication
 		}
 
 		// Check to see if a user is already logged in
-		if( $this->auth_identifier )
+		if( ! empty( $this->auth_identifiers ) )
 		{
 			// Check login, and return user's data or FALSE if not logged in
 			if( $auth_data = $this->check_login( $requirement ) )
@@ -276,20 +292,16 @@ class Authentication
 	 */
 	public function check_login( $requirement )
 	{
-		// Check that the auth identifier is not empty
-		if( ! $this->auth_identifier )
+		// No reason to continue if auth identifiers is empty
+		if( empty( $this->auth_identifiers ) )
 		{
 			return FALSE;
 		}
 
-		// Get the last user modification time from the session
-		$user_last_mod = $this->expose_user_last_mod( $this->auth_identifier );
-
-		// Get the user ID from the session
-		$user_id = $this->expose_user_id( $this->auth_identifier );
-
-		// Get the last login time from the session
-		$login_time = $this->expose_login_time( $this->auth_identifier );
+		// Use contents of auth identifiers
+		$user_id         = $this->auth_identifiers['user_id'];
+		$user_modified   = $this->auth_identifiers['user_modified'];
+		$user_login_time = $this->auth_identifiers['user_login_time'];
 
 		/*
 		 * Check database for matching user record:
@@ -297,7 +309,7 @@ class Authentication
 		 * 2) user ID matches
 		 * 3) login time matches ( not applicable if multiple logins allowed )
 		 */
-		$auth_data = $this->CI->auth_model->check_login_status( $user_last_mod, $user_id, $login_time );
+		$auth_data = $this->CI->auth_model->check_login_status( $user_modified, $user_id, $user_login_time );
 
 		// If the query produced a match
 		if( $auth_data !== FALSE )
@@ -331,15 +343,15 @@ class Authentication
 			// Auth Data === FALSE because no user matching in DB ...
 			log_message(
 				'debug',
-				"\n last user modification time from session = " . $user_last_mod . 
+				"\n last user modification time from session = " . $user_modified . 
 				"\n user id from session                     = " . $user_id . 
-				"\n last login time from session             = " . $login_time . 
+				"\n last login time from session             = " . $user_login_time . 
 				"\n disallowed multiple logins               = " . ( config_item('disallow_multiple_logins') ? 'true' : 'false' )
 			);
 		}
 
 		// Unset session
-		$this->CI->session->unset_userdata('auth_identifier');
+		$this->CI->session->unset_userdata('auth_identifiers');
 
 		return FALSE;
 	}
@@ -362,75 +374,6 @@ class Authentication
 
 		// Check to see if the IP or posted username/email-address is now on hold
 		return $this->CI->auth_model->check_holds( $recovery );
-	}
-
-	// --------------------------------------------------------------
-
-	/**
-	 * Create the auth identifier, which contains 
-	 * the user ID and last modification time.
-	 * 
-	 * @param   int  the user ID 
-	 * @param   int  an epoch time that the user account was last modified
-	 * @return  int  the auth identifier
-	 */
-	public function create_auth_identifier( $user_id, $user_modified, $login_time )
-	{
-		$umod_split = str_split( $user_modified , 5 );
-
-		$login_time_split = str_split( $login_time , 5 );
-
-		return $login_time_split[0] .
-			rand(0,9) .
-			$umod_split[1] .
-			rand(0,9) .
-			$user_id .
-			rand(0,9) .
-			$umod_split[0] .
-			rand(0,9) .
-			rand(0,9) .
-			$login_time_split[1];
-	}
-
-	// --------------------------------------------------------------
-
-	/**
-	 * Reveal the user ID hiding within the auth identifier
-	 * 
-	 * @param   int  the auth identifier
-	 * @return  int  the user ID
-	 */
-	public function expose_user_id( $auth_identifier )
-	{
-		$temp = substr( $auth_identifier , 12 );
-
-		return substr_replace( $temp , '' , -13 );
-	}
-
-	// --------------------------------------------------------------
-
-	/**
-	 * Reveal the last modification time hiding within the auth identifier
-	 * 
-	 * @param   int  the auth identifier
-	 * @return  int  the user's last modified data
-	 */
-	public function expose_user_last_mod( $auth_identifier )
-	{
-		return substr( $auth_identifier , -12 , 5 ) . substr( $auth_identifier , 6 , 5 );
-	}
-
-	// --------------------------------------------------------------
-
-	/**
-	 * Reveal the login time hiding within the auth identifier
-	 * 
-	 * @param   int  the auth identifier
-	 * @return  int  the user's last login time
-	 */
-	public function expose_login_time( $auth_identifier )
-	{
-		return substr( $auth_identifier , 0 , 5 ) . substr( $auth_identifier , -5 , 5 );
 	}
 
 	// --------------------------------------------------------------
@@ -466,10 +409,11 @@ class Authentication
 	public function logout()
 	{
 		// Get the user ID from the session
-		$user_id = $this->expose_user_id( $this->auth_identifier );
-
-		// Delete last login time from user record
-		$this->CI->auth_model->logout( $user_id );
+		if( isset( $this->auth_identifiers['user_id'] ) )
+		{
+			// Delete last login time from user record
+			$this->CI->auth_model->logout( $this->auth_identifiers['user_id'] );
+		}
 
 		if( config_item('delete_session_cookie_on_logout') )
 		{
@@ -479,7 +423,7 @@ class Authentication
 		else
 		{
 			// Unset auth identifier
-			$this->CI->session->unset_userdata('auth_identifier');
+			$this->CI->session->unset_userdata('auth_identifiers');
 		}
 
 		$this->CI->load->helper('cookie');
@@ -617,7 +561,7 @@ class Authentication
 		header( "Location: " . $url, TRUE, 302 );
 
 		// Store login time in database and cookie
-		$login_time = time();
+		$user_login_time = time();
 
 		/**
 		 * Since the session cookie needs to be able to use
@@ -669,26 +613,26 @@ class Authentication
 		$this->CI->input->set_cookie( $http_user_cookie );
 
 		// Create the auth identifier
-		$auth_identifier = $this->create_auth_identifier(
-			$auth_data->user_id,
-			$auth_data->user_modified,
-			$login_time
-		);
+		$auth_identifiers = serialize( array(
+			'user_id'         => $auth_data->user_id,
+			'user_modified'   => $auth_data->user_modified,
+			'user_login_time' => $user_login_time
+		));
 
 		// Encrypt the auth identifier if necessary
-		if( config_item('encrypt_auth_identifier') )
+		if( config_item('encrypt_auth_identifiers') )
 		{
-			$auth_identifier = $this->CI->encryption->encrypt( $auth_identifier );
+			$auth_identifiers = $this->CI->encryption->encrypt( $auth_identifiers );
 		}
 
 		// Set CI session cookie
-		$this->CI->session->set_userdata( 'auth_identifier', $auth_identifier );
+		$this->CI->session->set_userdata( 'auth_identifiers', $auth_identifiers );
 
 		// For security, force regenerate the session ID
 		$session_id = $this->CI->session->sess_regenerate( TRUE );
 
 		// Update user record in database
-		$this->CI->auth_model->login_update( $auth_data->user_id, $login_time, $session_id );
+		$this->CI->auth_model->login_update( $auth_data->user_id, $user_login_time, $session_id );
 	}
 	
 	// -----------------------------------------------------------------------
