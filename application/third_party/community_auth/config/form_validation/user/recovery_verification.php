@@ -25,9 +25,6 @@ $config['recovery_verification'] = array(
 		'rules' => 'trim|required'
 	),
 	array(
-		'field' => 'user_name'
-	),
-	array(
 		'field' => 'recovery_code'
 	),
 	array(

@@ -88,7 +88,7 @@ class Examples extends MY_Controller
         // Customize this array for your user
         $user_data = array(
             'user_name'     => 'skunkbot',
-            'user_pass'     => 'Something1',
+            'user_pass'     => 'PepeLePew7',
             'user_email'    => 'skunkbot@example.com',
             'user_level'    => '1', // 9 if you want to login @ examples/index.
         );
@@ -101,7 +101,7 @@ class Examples extends MY_Controller
 			array(
 				'field' => 'user_name',
 				'label' => 'user_name',
-				'rules' => 'required|max_length[12]'
+				'rules' => 'max_length[12]'
 			),
 			array(
 				'field' => 'user_pass',
@@ -129,6 +129,12 @@ class Examples extends MY_Controller
 			$user_data['user_id']       = $this->_get_unused_id();
 			$user_data['user_date']     = date('Y-m-d H:i:s');
 			$user_data['user_modified'] = date('Y-m-d H:i:s');
+
+            // If username is not used, it must be entered into the record as NULL
+            if( empty( $user_data['user_name'] ) )
+            {
+                $user_data['user_name'] = NULL;
+            }
 
 			$this->db->set($user_data)
 				->insert(config_item('user_table'));

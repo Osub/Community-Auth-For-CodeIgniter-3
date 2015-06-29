@@ -95,16 +95,21 @@ if( isset( $disabled ) )
 }
 if( $showform == 1 )
 {
-	if( isset( $user_name, $recovery_code, $user_id ) )
+	if( isset( $recovery_code, $user_id ) )
 	{
 		if( isset( $display_instructions ) )
 		{
-			echo '
-				<p>
+			if( isset( $user_name ) )
+			{
+				echo '<p>
 					Your login user name is <i>' . $user_name . '</i><br />
 					Please write this down, and change your password now:
-				</p>
-			';
+				</p>';
+			}
+			else
+			{
+				echo '<p>Please change your password now:</p>';
+			}
 		}
 
 		?>
@@ -149,10 +154,7 @@ if( $showform == 1 )
 						<div>
 
 							<?php
-								// USER NAME *****************************************************************
-								echo form_hidden('user_name',$user_name);
-
-								// OLD PASS *****************************************************************
+								// RECOVERY CODE *****************************************************************
 								echo form_hidden('recovery_code',$recovery_code);
 
 								// USER ID *****************************************************************

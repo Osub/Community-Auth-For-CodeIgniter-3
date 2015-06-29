@@ -577,10 +577,16 @@ class Authentication
 		);
 
 		// Initialize the HTTP user cookie data
-		$http_user_cookie_data['_user_name'] = $auth_data->user_name;
+		if( ! empty( $auth_data->user_name ) )
+		{
+			$http_user_cookie_data['_user_name'] = $auth_data->user_name;
+		}
 
 		// Serialize the HTTP user cookie data
-		$http_user_cookie['value'] = serialize_data( $http_user_cookie_data );
+		if( isset( $http_user_cookie_data ) )
+		{
+			$http_user_cookie['value'] = serialize_data( $http_user_cookie_data );
+		}
 
 		// Check if remember me requested, and set cookie if yes
 		if( config_item('allow_remember_me') && $this->CI->input->post('remember_me') )
@@ -610,7 +616,11 @@ class Authentication
 			$http_user_cookie['expire'] = 0;
 		}
 
-		$this->CI->input->set_cookie( $http_user_cookie );
+		// Only set the HTTP user cookie is there is data to set.
+		if( isset( $http_user_cookie_data ) )
+		{
+			$this->CI->input->set_cookie( $http_user_cookie );
+		}
 
 		// Create the auth identifier
 		$auth_identifiers = serialize( array(

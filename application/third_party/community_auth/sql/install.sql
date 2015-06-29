@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `username_or_email_on_hold` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(10) unsigned NOT NULL,
-  `user_name` varchar(12) NOT NULL,
+  `user_name` varchar(12) DEFAULT NULL,
   `user_email` varchar(255) NOT NULL,
   `user_pass` varchar(60) NOT NULL,
   `user_salt` varchar(32) NOT NULL,

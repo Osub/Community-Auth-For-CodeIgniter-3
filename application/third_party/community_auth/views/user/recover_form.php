@@ -57,7 +57,7 @@ else if( isset( $confirmation ) )
 		<div style="border:1px solid green;">
 			<p>
 				We have sent you an email with instructions on how 
-				to recover your username and/or password. Because this email did not 
+				to recover your account. Because this email did not 
 				really get sent, your link is shown below:
 			</p>
 			<p>' . $special_link . '</p>

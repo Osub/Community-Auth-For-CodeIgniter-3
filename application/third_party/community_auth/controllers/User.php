@@ -211,14 +211,8 @@ class User extends MY_Controller {
 
 			/**
 			 * If form submission is attempting to change password 
-			 * verify that the user_name was good, because there will only
-			 * be a user_name if everything else was good.
 			 */
-			if( 
-				$this->tokens->match && 
-				isset( $view_data['user_name'] ) && 
-				$view_data['user_name'] !== FALSE 
-			)
+			if( $this->tokens->match )
 			{
 				$this->user_model->recovery_password_change();
 			}
