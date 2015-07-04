@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Community Auth - Generate Password Library
+ * Community Auth - String Generator Library
  *
  * Community Auth is an open source authentication application for CodeIgniter 3
  *
@@ -17,37 +17,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * EXAMPLES
  * ----------------------
  *
- * A Random 10 character password:
+ * A Random 10 character string:
  * --------------------------------------
- * $this->generate_password->random_string(10)->show();
+ * $this->generate_string->random_string(10)->show();
  *
  *
- * A Password with 5 letters followed by 3 numbers:
+ * A string with 5 letters followed by 3 numbers:
  * ------------------------------------------------------
- * $this->generate_password->letter_string(5)
+ * $this->generate_string->letter_string(5)
  *                         ->number_string(3)
  *                         ->show();
  *
  *
- * Generate a random password, but use lowercase 
+ * Generate a random string, but use lowercase 
  * letters instead of lowercase and uppercase:
  * -------------------------------------------------
- * $this->generate_password->set_options( array( 'letters' => 'abcdefghjkmnpqrstuvwxyz' ) )
+ * $this->generate_string->set_options( array( 'letters' => 'abcdefghjkmnpqrstuvwxyz' ) )
  *                         ->random_string(10)
  *                         ->show();
  *
  *
- * Generate a random password, but exclude special chars:
+ * Generate a random string, but exclude special chars:
  * -----------------------------------------------------------
- * $this->generate_password->set_options( array( 'exclude' => array( 'char' ) ) )
+ * $this->generate_string->set_options( array( 'exclude' => array( 'char' ) ) )
  *                         ->random_string(10)
  *                         ->show();
  */
 
-class Generate_password {
+class Generate_string {
 
 	/**
-	 * The letters that will be used in password creation
+	 * The letters that will be used in string creation
 	 *
 	 * @var string
 	 * @access private
@@ -55,7 +55,7 @@ class Generate_password {
 	private $letters   = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz';
 
 	/**
-	 * The special chars that will be used in password creation
+	 * The special chars that will be used in string creation
 	 *
 	 * @var string
 	 * @access private
@@ -71,12 +71,12 @@ class Generate_password {
 	private $exclude   = array();
 
 	/**
-	 * The created password
+	 * The created string
 	 *
 	 * @var string
 	 * @access private
 	 */
-	private $password = '';
+	private $string = '';
 
 	// --------------------------------------------------------------
 
@@ -84,7 +84,7 @@ class Generate_password {
 	 * Set Options
 	 *
 	 * @param   array   Allows for changing the letters and 
-	 *                  characters used in password creation.
+	 *                  characters used in string creation.
 	 */
 	public function set_options( $config = array() )
 	{
@@ -186,7 +186,7 @@ class Generate_password {
 			// Combine that value with _string
 			$method = $method_prefix . '_string';
 
-			// Run the method for a single character of the password
+			// Run the method for a single character of the string
 			$this->$method(1);
 
 			$i++;
@@ -215,7 +215,7 @@ class Generate_password {
 				// Get that letter
 				$tmp = substr( $this->letters, $num, 1 );
 
-				// Add the character to the password
+				// Add the character to the string
 				$pass = $pass . $tmp;
 
 				$i++;
@@ -225,7 +225,7 @@ class Generate_password {
 		if( $length > 0 )
 		{
 			// Return the letter string
-			return $this->password .= $pass;
+			return $this->string .= $pass;
 		}
 
 		return FALSE;
@@ -257,7 +257,7 @@ class Generate_password {
 		if( $length > 0 )
 		{
 			// Return the random number
-			return $this->password .= mt_rand( $start, $end );
+			return $this->string .= mt_rand( $start, $end );
 		}
 
 		return FALSE;
@@ -283,7 +283,7 @@ class Generate_password {
 				// Get that char
 				$tmp = substr($this->chars, $num, 1);
 
-				// Add the char to the password
+				// Add the char to the string
 				$pass = $pass . $tmp;
 
 				$i++;
@@ -293,7 +293,7 @@ class Generate_password {
 		if( $length > 0 )
 		{
 			// Return the char string
-			return $this->password .= $pass;
+			return $this->string .= $pass;
 		}
 
 		return FALSE;
@@ -318,28 +318,28 @@ class Generate_password {
 	// --------------------------------------------------------------
 
 	/**
-	 * Output the temp password
+	 * Output the temp string
 	 */
 	public function show()
 	{
-		return $this->password;
+		return $this->string;
 	}
 
 	// --------------------------------------------------------------
 
 	/**
-	 * Reset the class so we can make another password
+	 * Reset the class so we can make another string
 	 */
 	public function reset()
 	{
 		$this->letters  = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz';
 		$this->chars    = '~#$%^&*+=?';
 		$this->exclude  = array();
-		$this->password = '';
+		$this->string   = '';
 	}
 
 	// --------------------------------------------------------------
 }
 
-/* End of file generate_password.php */
-/* Location: /application/libraries/generate_password.php */
+/* End of file generate_string.php */
+/* Location: /libraries/generate_string.php */

@@ -16,29 +16,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Form_validation extends CI_Form_validation {
 
 	/**
-	 * Get the value from a form
-	 *
-	 * Permits you to repopulate a form field with the value it was submitted
-	 * with, or, if that value doesn't exist, with the default
-	 *
-	 * Modification made to set_value to keep $field as a complete array if array
-	 *
-	 * @param  string  the field name
-	 * @param  string  the replacement value if none exists
-	 */
-	public function set_value($field = '', $default = '')
-	{
-		if ( ! isset($this->_field_data[$field]))
-		{
-			return $default;
-		}
-
-		return $this->_field_data[$field]['postdata'];
-	}
-
-	// --------------------------------------------------------------
-
-	/**
 	 * Access to protected $_error_array
 	 */
 	public function get_error_array()
@@ -58,16 +35,6 @@ class MY_Form_validation extends CI_Form_validation {
 	{
 		if( isset( $this->_error_array[$field] ) ) 
 			unset( $this->_error_array[$field] );
-	}
-
-	// --------------------------------------------------------------
-
-	/**
-	 * Access to protected $_field_data array
-	 */
-	public function get_field_data()
-	{
-		return $this->_field_data;
 	}
 
 	// --------------------------------------------------------------
@@ -156,28 +123,6 @@ class MY_Form_validation extends CI_Form_validation {
 		return $callback_result;
 	}
 	
-	// --------------------------------------------------------------
-
-	/**
-	 * Reset the class so we can run form validation again
-	 */
-	public function reset($rules = array())
-	{
-		$this->_field_data     = array();
-		$this->_config_rules   = array();
-		$this->_error_array    = array();
-		$this->_error_messages = array();
-		$this->_error_prefix   = '<p>';
-		$this->_error_suffix   = '</p>';
-		$this->error_string    = '';
-		$this->_safe_form_data = FALSE;
-
-		// Validation rules can be stored in a config file.
-		$this->_config_rules = $rules;
-
-		log_message('debug', "Form Validation Class Reset");
-	}
-
 	// --------------------------------------------------------------
 
 }

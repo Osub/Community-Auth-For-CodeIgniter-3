@@ -265,11 +265,11 @@ class Examples extends MY_Controller
                     else
                     {
                         /**
-                         * Use the password generator to create a random string
+                         * Use the string generator to create a random string
                          * that will be hashed and stored as the password recovery key.
                          */
-                        $this->load->library('generate_password');
-                        $recovery_code = $this->generate_password->set_options( 
+                        $this->load->library('generate_string');
+                        $recovery_code = $this->generate_string->set_options( 
                             array( 'exclude' => array( 'char' ) ) 
                         )->random_string(64)->show();
 
