@@ -18,7 +18,7 @@ $config['login_rules'] = array(
 	array(
 		'field' => 'login_string',
 		'label' => 'USERNAME OR EMAIL ADDRESS',
-		'rules' => 'trim|required|max_length[255]|xss_clean'
+		'rules' => 'trim|required|max_length[255]'
 	),
 	array(
 		'field' => 'login_pass',

@@ -125,9 +125,9 @@ class Authentication
 
 		// If the request resembles a login attempt in any way
 		if(
-			$string     !== FALSE OR 
-			$password   !== FALSE OR 
-			$form_token !== FALSE
+			! is_null( $string ) OR 
+			! is_null( $password ) OR 
+			! is_null( $form_token )
 		)
 		{
 			// Log as long as error logging threshold allows for debugging
@@ -152,9 +152,9 @@ class Authentication
 
 		// If this is a login attempt, all values must not be empty
 		else if( 
-			$string     !== FALSE && 
-			$password   !== FALSE && 
-			$form_token !== FALSE && 
+			! is_null( $string ) && 
+			! is_null( $password ) && 
+			! is_null( $form_token ) && 
 			! empty( $token_jar ) && 
 			$this->_login_page_is_allowed()
 		)
@@ -182,12 +182,12 @@ class Authentication
 		 * attempt.
 		 */
 		else if(
-			$string      !== FALSE && 
-			$password    !== FALSE
+			! is_null( $string ) && 
+			! is_null( $password )
 		)
 		{
 			// Log the error
-			$this->log_error( $this->CI->security->xss_clean( $string ) );
+			$this->log_error( $string );
 
 			$this->login_error = TRUE;
 		}
@@ -275,7 +275,7 @@ class Authentication
 		}
 
 		// Log the error
-		$this->log_error( $this->CI->security->xss_clean( $user_string ) );
+		$this->log_error( $user_string );
 
 		$this->login_error = TRUE;
 		
