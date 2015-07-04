@@ -306,6 +306,17 @@ $config['min_chars_for_password'] = 8;
 
 $config['max_chars_for_password'] = 256;
 
+/*
+| -----------------------------------------------------------------
+|				LOGIN FORM VALIDATION FILE						
+| -----------------------------------------------------------------
+| The config file that handles the form validation for login attempts.
+| The file must be located in application/config, or in community_auth/config.
+| Make sure to remove any file extension, as this string is passed to config->load().
+*/
+
+$config['login_form_validation_file'] = 'form_validation/examples/login';
+
 
 /* End of file authentication.php */
 /* Location: /application/config/authentication.php */

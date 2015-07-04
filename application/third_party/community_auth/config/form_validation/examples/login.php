@@ -28,4 +28,4 @@ $config['login_rules'] = array(
 );
 
 /* End of file login.php */
-/* Location: /application/config/form_validation/auth/login.php */
+/* Location: /config/form_validation/examples/login.php */
