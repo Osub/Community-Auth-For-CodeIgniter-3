@@ -95,7 +95,7 @@ class Examples_model extends MY_Model {
 	public function recovery_password_change()
 	{
 		// The form validation class doesn't allow for multiple config files, so we do it the old fashion way
-		$this->config->load( 'form_validation/user/recovery_verification' );
+		$this->config->load( 'form_validation/examples/recovery_verification' );
 		$this->validation_rules = config_item('recovery_verification');
 
 		if( $this->validate() )

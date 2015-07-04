@@ -33,4 +33,4 @@ $config['recovery_verification'] = array(
 );
 
 /* End of file recovery_verification.php */
-/* Location: /application/config/form_validation/user/recovery_verification.php */
+/* Location: /config/form_validation/examples/recovery_verification.php */
