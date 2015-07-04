@@ -48,10 +48,10 @@ if( ! isset( $on_hold_message ) )
 	// Redirect to specified page
 	$redirect = $this->input->get('redirect')
 		? '?redirect=' . $this->input->get('redirect') 
-		: '';
+		: '?redirect=' . config_item('default_login_redirect');
 
 	// Redirect to optional login's page
-	if( $redirect == '' && isset( $optional_login ) )
+	if( isset( $optional_login ) )
 	{
 		$redirect = '?redirect=' . urlencode( $this->uri->uri_string() );
 	}
@@ -68,6 +68,8 @@ if( ! isset( $on_hold_message ) )
 		<label for="login_string" class="form_label">Username or Email</label>
 		<input type="text" name="login_string" id="login_string" class="form_input" autocomplete="off" maxlength="255" />
 
+		<br />
+
 		<label for="login_pass" class="form_label">Password</label>
 		<input type="password" name="login_pass" id="login_pass" class="form_input password" autocomplete="off" maxlength="<?php echo config_item('max_chars_for_password'); ?>" />
 
@@ -77,6 +79,8 @@ if( ! isset( $on_hold_message ) )
 			{
 		?>
 
+			<br />
+
 			<label for="remember_me" class="form_label">Remember Me</label>
 			<input type="checkbox" id="remember_me" name="remember_me" value="yes" />
 
@@ -85,7 +89,7 @@ if( ! isset( $on_hold_message ) )
 		?>
 
 		<p>
-			<a href="<?php echo secure_site_url('user/recover'); ?>">
+			<a href="<?php echo secure_site_url('examples/recover'); ?>">
 				Can't access your account?
 			</a>
 		</p>
@@ -115,7 +119,7 @@ if( ! isset( $on_hold_message ) )
 					Your access to login and account recovery has been blocked for ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes.
 				</p>
 				<p>
-					Please use the ' . secure_anchor('user/recover','Account Recovery') . ' after ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes has passed,<br />
+					Please use the ' . secure_anchor('examples/recover','Account Recovery') . ' after ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes has passed,<br />
 					or contact us if you require assistance gaining access to your account.
 				</p>
 			</div>
@@ -123,4 +127,4 @@ if( ! isset( $on_hold_message ) )
 	}
 
 /* End of file login_form.php */
-/* Location: /application/views/auth/login_form.php */ 
+/* Location: /views/examples/login_form.php */ 

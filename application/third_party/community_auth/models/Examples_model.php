@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Community Auth - User_model Model
+ * Community Auth - Examples Model
  *
  * Community Auth is an open source authentication application for CodeIgniter 3
  *
@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class User_model extends MY_Model {
+class Examples_model extends MY_Model {
 
 	/**
 	 * Class Constructor
@@ -204,5 +204,5 @@ class User_model extends MY_Model {
 
 }
 
-/* End of file user_model.php */
-/* Location: /application/models/user_model.php */
+/* End of file examples_model.php */
+/* Location: /models/examples_model.php */

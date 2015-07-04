@@ -256,6 +256,18 @@ $config['show_login_form_on_logout'] = TRUE;
 
 /*
 | -----------------------------------------------------------------
+|				DEFAULT LOGIN REDIRECT							
+| -----------------------------------------------------------------
+| When the user logs in, they will usually be redirected back to 
+| the page they were trying to access, but if for some reason they
+| reached the login page and have no redirect, this URI STRING is where 
+| they will be redirected to. The default is to be redirected to the home page.
+*/
+
+$config['default_login_redirect'] = '';
+
+/*
+| -----------------------------------------------------------------
 |				ALLOWED PAGES FOR LOGIN							
 | -----------------------------------------------------------------
 | Logins may only happen from specified pages on the website.

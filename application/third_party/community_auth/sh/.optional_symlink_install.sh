@@ -22,10 +22,6 @@ if [ ! -f ./controllers/Examples.php ]; then
 	ln -s ../third_party/community_auth/controllers/Examples.php ./controllers/Examples.php 
 fi
 
-if [ ! -f ./controllers/User.php ]; then
-	ln -s ../third_party/community_auth/controllers/User.php ./controllers/User.php
-fi
-
 # public_root
 if [ ! -f ./../.htaccess ]; 
 then

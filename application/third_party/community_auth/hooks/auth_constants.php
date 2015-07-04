@@ -32,7 +32,7 @@ function auth_constants(){
 | -----------------------------------------------------------------
 | This is the uri string to the hidden login route. 
 | We can change this if there is a brute force attack on the login. 
-| You can set this to almost anything except "user/login", unless 
+| You can set this to almost anything except "examples/login", unless 
 | you modify the login method in the User controller.
 | 
 */

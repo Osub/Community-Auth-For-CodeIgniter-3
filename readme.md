@@ -20,7 +20,7 @@ Installation
 
 **5)** Copy auth_constants.php from community_auth/hooks to CodeIgniter's application/hooks directory.
 
-**6)** Copy the controllers in community_auth/controllers to CodeIgniter's application/controllers directory.
+**6)** Copy the Examples controller to CodeIgniter's application/controllers directory.
 
 **7)** The .htaccess file in community_auth/public_root can be moved to CodeIgniter's public root directory. Notice the lines at the top that allow for access denial. If you already have an .htaccess file, make sure to include those lines at the top of it.
 
@@ -50,7 +50,7 @@ Installation
 
 **10)** Add route to login page in config/routes:
 
-	$route[LOGIN_PAGE] = 'user/login';
+	$route[LOGIN_PAGE] = 'examples/login';
 
 **11)** Enable hooks and make sure there is an encryption key set in config/config.php.
 
@@ -74,7 +74,7 @@ Installation
 
 **16)** If you did everything right, you should be able to go to /examples and log in.
 
-**17)** Going to /user/logout will log you out.
+**17)** Going to /examples/logout will log you out.
 
 License
 -------
