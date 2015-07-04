@@ -81,6 +81,35 @@ class Examples extends MY_Controller
     // -----------------------------------------------------------------------
 
     /**
+     * Here we simply verify if a user is logged in, but
+     * not enforcing authentication.
+     */
+    public function simple_verification()
+    {
+        $this->is_logged_in();
+
+        echo $this->load->view('examples/page_header', '', TRUE);
+
+        echo '<p>';
+        if( ! empty( $this->auth_role ) )
+        {
+            echo $this->auth_role . ' logged in!<br />
+                User ID is ' . $this->auth_user_id . '<br />
+                Auth level is ' . $this->auth_level . '<br />
+                Username is ' . $this->auth_user_name;
+        }
+        else
+        {
+            echo 'Nobody logged in.';
+        }
+        echo '</p>';
+
+        echo $this->load->view('examples/page_footer', '', TRUE);
+    }
+    
+    // -----------------------------------------------------------------------
+
+    /**
      * Most minimal user creation. You will of course make your
      * own interface for adding users, and you may even let users
      * register and create their own accounts.

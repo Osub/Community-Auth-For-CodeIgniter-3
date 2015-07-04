@@ -21,7 +21,7 @@ class Auth_Controller extends CI_Controller {
 	 * @var string
 	 * @access public
 	 */
-	public $auth_id;
+	public $auth_user_id;
 
 	/**
 	 * The logged-in user's username

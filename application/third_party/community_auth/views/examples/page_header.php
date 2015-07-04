@@ -26,6 +26,9 @@
 		<li>
 			<?php echo secure_anchor('examples/optional_login_test','Optional Login'); ?>
 		</li>
+		<li>
+			<?php echo secure_anchor('examples/simple_verification','Simple Verification'); ?>
+		</li>
 	</ul>
 </div>
 
