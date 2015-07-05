@@ -63,7 +63,7 @@ class Examples extends MY_Controller
         } else {
             $this->setup_login_form();
 
-            $this->load->vars([ 'optional_login' => TRUE ]);
+            $this->load->vars(Array( 'optional_login' => TRUE ));
 
             $page_content = '<p>You are not logged in, but can still see this page.</p>';
 
