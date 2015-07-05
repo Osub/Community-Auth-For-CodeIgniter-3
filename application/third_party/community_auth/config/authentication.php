@@ -276,7 +276,7 @@ $config['default_login_redirect'] = '';
 | added, so you just put in optional login pages here.
 */
 
-$config['allowed_pages_for_login'] = Array();
+$config['allowed_pages_for_login'] = array();
 
 /*
 | -----------------------------------------------------------------

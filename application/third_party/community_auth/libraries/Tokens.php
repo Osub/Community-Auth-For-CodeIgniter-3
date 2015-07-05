@@ -45,7 +45,7 @@ class tokens
 	 * @var array
 	 * @access public
 	 */
-	public $jar = Array();
+	public $jar = array();
 
 	/**
 	 * Whether or not the posted token matches one in the jar
@@ -137,7 +137,7 @@ class tokens
 					// Dump all tokens ?
 					if( $dump_jar_on_match )
 					{
-						$this->jar = Array();
+						$this->jar = array();
 
 						$this->save_tokens_cookie();
 					}
@@ -262,7 +262,7 @@ class tokens
 		{
 			$this->jar = ( isset( $_COOKIE[ $token_cookie_name ] ) ) 
 				? $this->unpack_tokens( $token_cookie_name )
-				: Array();
+				: array();
 		}
 
 		if( $this->debug )
