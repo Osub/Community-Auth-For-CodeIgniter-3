@@ -337,8 +337,10 @@ class Auth_Controller extends CI_Controller {
 
 	/**
 	 * Show any login error message.
+	 *
+	 * @param  bool  if login is optional or required
 	 */
-	protected function setup_login_form()
+	protected function setup_login_form( $optional_login = FALSE )
 	{
 		$this->tokens->name = 'login_token';
 
@@ -369,10 +371,25 @@ class Auth_Controller extends CI_Controller {
 			$view_data['login_error_mesg'] = 1;
 		}
 
-		if( isset( $view_data ) )
+		// Redirect to specified page
+		$redirect = $this->input->get('redirect')
+			? '?redirect=' . $this->input->get('redirect') 
+			: '?redirect=' . config_item('default_login_redirect');
+
+		// If optional login, redirect to optional login's page
+		if( $optional_login )
 		{
-			$this->load->vars( $view_data );
+			$redirect = '?redirect=' . urlencode( $this->uri->uri_string() );
+
+			$view_data['optional_login'] = TRUE;
 		}
+
+		// Set the login URL
+		$view_data['login_url'] = USE_SSL === 1 
+			? secure_site_url( LOGIN_PAGE . $redirect ) 
+			: site_url( LOGIN_PAGE . $redirect );
+
+		$this->load->vars( $view_data );
 	}
 
 	// --------------------------------------------------------------

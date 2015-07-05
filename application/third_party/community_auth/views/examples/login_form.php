@@ -45,21 +45,6 @@ if( ! isset( $on_hold_message ) )
 		';
 	}
 
-	// Redirect to specified page
-	$redirect = $this->input->get('redirect')
-		? '?redirect=' . $this->input->get('redirect') 
-		: '?redirect=' . config_item('default_login_redirect');
-
-	// Redirect to optional login's page
-	if( isset( $optional_login ) )
-	{
-		$redirect = '?redirect=' . urlencode( $this->uri->uri_string() );
-	}
-
-	$login_url = USE_SSL === 1 
-		? secure_site_url( LOGIN_PAGE . $redirect ) 
-		: site_url( LOGIN_PAGE . $redirect );
-
 	echo form_open( $login_url, array( 'class' => 'std-form' ) ); 
 ?>
 

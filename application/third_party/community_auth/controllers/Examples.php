@@ -61,7 +61,7 @@ class Examples extends MY_Controller
         } elseif ($this->tokens->match && $this->optional_login()) {
             // Let Community Auth handle the login attempt ...
         } else {
-            $this->setup_login_form();
+            $this->setup_login_form(TRUE);
 
             $this->load->vars(array( 'optional_login' => TRUE ));
 
