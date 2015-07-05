@@ -61,9 +61,8 @@ class Examples extends MY_Controller
         } elseif ($this->tokens->match && $this->optional_login()) {
             // Let Community Auth handle the login attempt ...
         } else {
+            // Notice parameter set to TRUE, which designates this as an optional login
             $this->setup_login_form(TRUE);
-
-            $this->load->vars(array( 'optional_login' => TRUE ));
 
             $page_content = '<p>You are not logged in, but can still see this page.</p>';
 
