@@ -9,9 +9,13 @@ application/libraries/
 application/logs/
 application/models/
 application/views/
+application/.htaccess
+application/index.html
 system/
 user_guide/
 /index.php
 /.htaccess
+/license.txt
+/readme.rst
 community_auth_ci_3.sublime-project
 community_auth_ci_3.sublime-workspace
