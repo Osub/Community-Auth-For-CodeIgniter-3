@@ -586,11 +586,19 @@ class Authentication
 			'prefix' => config_item('cookie_prefix'),
 			'secure' => FALSE
 		);
-
+		
 		// Initialize the HTTP user cookie data
-		if( ! empty( $auth_data->user_name ) )
+		$http_user_cookie_elements = config_item('http_user_cookie_elements');
+		if( is_array( $http_user_cookie_elements ) && ! empty( $http_user_cookie_elements ) )
 		{
-			$http_user_cookie_data['_user_name'] = $auth_data->user_name;
+	
+			foreach( $http_user_cookie_elements as $element )
+			{
+				if( isset( $auth_data->$element ) )
+				{
+					$http_user_cookie_data[ $element ] = $auth_data->$element;
+				}
+			}
 		}
 
 		// Serialize the HTTP user cookie data

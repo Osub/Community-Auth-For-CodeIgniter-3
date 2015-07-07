@@ -81,7 +81,10 @@ class Examples extends MY_Controller
 
     /**
      * Here we simply verify if a user is logged in, but
-     * not enforcing authentication.
+     * not enforcing authentication. The presence of auth 
+     * related variables that are not empty indicates 
+     * that somebody is logged in. Also showing how to 
+     * get the contents of the HTTP user cookie.
      */
     public function simple_verification()
     {
@@ -96,6 +99,18 @@ class Examples extends MY_Controller
                 User ID is ' . $this->auth_user_id . '<br />
                 Auth level is ' . $this->auth_level . '<br />
                 Username is ' . $this->auth_user_name;
+
+            if( $http_user_cookie_contents = $this->input->cookie( config_item('http_user_cookie_name') ) )
+            {
+                $http_user_cookie_contents = unserialize( $http_user_cookie_contents );
+                
+                echo '<br />
+                    <pre>';
+
+                print_r( $http_user_cookie_contents );
+
+                echo '</pre>';
+            }
         }
         else
         {

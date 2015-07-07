@@ -200,6 +200,22 @@ $config['http_user_cookie_name'] = 'httpUser';
 
 /*
 | -----------------------------------------------------------------
+|					HTTP USER COOKIE ELEMENTS							
+| -----------------------------------------------------------------
+| This setting allows you to customize the data that is stored 
+| in the HTTP user cookie. By default, only the user_name is stored, 
+| but any element returned in the auth data (when a user logs in)
+| can be added to the array.
+| 
+| DO NOT ADD ELEMENTS THAT ARE CONSIDERED SENSITIVE, 
+| ESPECIALLY IF YOU ARE NOT ENCRYPTING ALL COOKIE CONTENTS!
+|
+*/
+
+$config['http_user_cookie_elements'] = array('user_name');
+
+/*
+| -----------------------------------------------------------------
 |				      TOKEN COOKIES CONFIG						
 | -----------------------------------------------------------------
 | This setting allows you to choose the name of the http token cookie,
