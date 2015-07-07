@@ -24,6 +24,14 @@ class Authentication
 	public $CI;
 
 	/**
+	 * The Auth model, or your extension
+	 *
+	 * @var object
+	 * @access public
+	 */
+	public $auth_model = 'auth_model';
+
+	/**
 	 * An array of all user roles where key is 
 	 * level (int) and value is the role name (string)
 	 *
@@ -74,6 +82,9 @@ class Authentication
 	public function __construct()
 	{
 		$this->CI =& get_instance();
+
+		// Set the auth model
+		$this->auth_model = config_item('declared_auth_model');
 
 		// Make roles available by user_level (int) => role name (string)
 		$this->roles = config_item('levels_and_roles');
@@ -222,7 +233,7 @@ class Authentication
 			if( ! $this->on_hold )
 			{
 				// Get user table data if username or email address matches a record
-				if( $auth_data = $this->CI->auth_model->get_auth_data( $user_string ) )
+				if( $auth_data = $this->CI->{$this->auth_model}->get_auth_data( $user_string ) )
 				{
 					// Confirm user
 					if( ! $this->_user_confirmed( $auth_data, $requirement, $user_pass ) )
@@ -309,7 +320,7 @@ class Authentication
 		 * 2) user ID matches
 		 * 3) login time matches ( not applicable if multiple logins allowed )
 		 */
-		$auth_data = $this->CI->auth_model->check_login_status( $user_modified, $user_id, $user_login_time );
+		$auth_data = $this->CI->{$this->auth_model}->check_login_status( $user_modified, $user_id, $user_login_time );
 
 		// If the query produced a match
 		if( $auth_data !== FALSE )
@@ -332,7 +343,7 @@ class Authentication
 			else
 			{
 				// If session ID was regenerated, we need to update the user record
-				$this->CI->auth_model->update_user_session_id( $auth_data->user_id );
+				$this->CI->{$this->auth_model}->update_user_session_id( $auth_data->user_id );
 
 				// Send the auth data back to the controller
 				return $auth_data;
@@ -370,10 +381,10 @@ class Authentication
 	public function current_hold_status( $recovery = FALSE )
 	{
 		// Clear holds that have expired
-		$this->CI->auth_model->clear_expired_holds();
+		$this->CI->{$this->auth_model}->clear_expired_holds();
 
 		// Check to see if the IP or posted username/email-address is now on hold
-		return $this->CI->auth_model->check_holds( $recovery );
+		return $this->CI->{$this->auth_model}->check_holds( $recovery );
 	}
 
 	// --------------------------------------------------------------
@@ -387,7 +398,7 @@ class Authentication
 	public function log_error( $string )
 	{
 		// Clear up any expired rows in the login errors table
-		$this->CI->auth_model->clear_login_errors();
+		$this->CI->{$this->auth_model}->clear_login_errors();
 
 		// Insert the error
 		$data = array(
@@ -396,9 +407,9 @@ class Authentication
 			'time'              => date('Y-m-d H:i:s')
 		);
 
-		$this->CI->auth_model->create_login_error( $data );
+		$this->CI->{$this->auth_model}->create_login_error( $data );
 
-		$this->CI->auth_model->check_login_attempts( $string );
+		$this->CI->{$this->auth_model}->check_login_attempts( $string );
 	}
 
 	// --------------------------------------------------------------
@@ -412,7 +423,7 @@ class Authentication
 		if( isset( $this->auth_identifiers['user_id'] ) )
 		{
 			// Delete last login time from user record
-			$this->CI->auth_model->logout( $this->auth_identifiers['user_id'] );
+			$this->CI->{$this->auth_model}->logout( $this->auth_identifiers['user_id'] );
 		}
 
 		if( config_item('delete_session_cookie_on_logout') )
@@ -642,7 +653,7 @@ class Authentication
 		$session_id = $this->CI->session->sess_regenerate( TRUE );
 
 		// Update user record in database
-		$this->CI->auth_model->login_update( $auth_data->user_id, $user_login_time, $session_id );
+		$this->CI->{$this->auth_model}->login_update( $auth_data->user_id, $user_login_time, $session_id );
 	}
 	
 	// -----------------------------------------------------------------------

@@ -317,6 +317,20 @@ $config['max_chars_for_password'] = 256;
 
 $config['login_form_validation_file'] = 'form_validation/examples/login';
 
+/*
+| -----------------------------------------------------------------
+|				DECLARED AUTH MODEL						
+| -----------------------------------------------------------------
+| Community Auth makes it easy to extend it's Auth model by allowing 
+| you declare your own model. You will still autoload auth_model, 
+| but you would also autoload your own model AFTER auth_model.
+|
+| When creating your own model, make sure it extends Auth_model,
+| unless you intend to replace the entire Auth model with your own.
+*/
+
+$config['declared_auth_model'] = 'auth_model';
+
 
 /* End of file authentication.php */
 /* Location: /application/config/authentication.php */
