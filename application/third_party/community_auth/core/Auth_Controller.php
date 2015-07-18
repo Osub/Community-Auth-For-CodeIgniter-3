@@ -83,10 +83,9 @@ class Auth_Controller extends CI_Controller {
 		header('Pragma: no-cache');
 
 		/**
-		 * By setting the protocol here, we don't have to test for it 
-		 * everytime we want to know if we are in a secure environment or not.
+		 * Set the request protocol
 		 */
-		if( ! empty( $_SERVER['HTTPS'] ) && strtolower( $_SERVER['HTTPS'] ) !== 'off' )
+		if( is_https() )
 		{
 			$this->protocol = 'https';
 		}

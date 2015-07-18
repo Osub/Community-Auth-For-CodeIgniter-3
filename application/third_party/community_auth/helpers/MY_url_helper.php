@@ -76,7 +76,7 @@ function secure_site_url( $uri = '' )
  */
 function if_secure_site_url( $uri = '' )
 {
-	if( ! empty( $_SERVER['HTTPS'] ) && strtolower( $_SERVER['HTTPS'] ) !== 'off' )
+	if( is_https() )
 	{
 		return secure_site_url( $uri );
 	}
@@ -160,7 +160,7 @@ function if_secure_base_url( $uri = '' )
 
 	$url = $CI->config->base_url( $uri );
 
-	if( ! empty( $_SERVER['HTTPS'] ) && strtolower( $_SERVER['HTTPS'] ) !== 'off' )
+	if( is_https() )
 	{
 		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
 		{
@@ -192,7 +192,7 @@ function current_url()
 
 	$url = $CI->config->site_url( $CI->uri->uri_string() );
 
-	if( ! empty( $_SERVER['HTTPS'] ) && strtolower( $_SERVER['HTTPS'] ) !== 'off' )
+	if( is_https() )
 	{
 		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
 		{

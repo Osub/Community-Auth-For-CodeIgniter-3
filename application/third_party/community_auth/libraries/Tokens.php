@@ -96,7 +96,7 @@ class tokens
 	 */
 	public function __construct()
 	{
-		if( ! empty( $_SERVER['HTTPS'] ) && strtolower( $_SERVER['HTTPS'] ) !== 'off' )
+		if( is_https() )
 		{
 			// Set the current scheme / protocol
 			$this->scheme = 'https';
