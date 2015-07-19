@@ -80,6 +80,41 @@ function if_secure_base_url( $uri = '' )
 // --------------------------------------------------------------
 
 /**
+ * Current URL
+ *
+ * Returns the full URL (including segments) of the page where this
+ * function is placed
+ *
+ * Modified so that current_url() allows for HTTPS. Also modified
+ * so that a specific host (domain) can replace the current one.
+ * This is important if you want to be able to have somebody
+ * switch the current page to another language using i18n domains.
+ *
+ * @param  string  the requested language.
+ */
+function current_url()
+{
+	$CI =& get_instance();
+
+	$url = $CI->config->site_url( $CI->uri->uri_string() );
+
+	if( is_https() )
+	{
+		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
+		{
+			$url = substr( $url, 0, 4 ) . 's' . substr( $url, 4 );
+		}
+	}
+
+	// Return the current URL, making sure to attach any query string that may exist
+	return ( $_SERVER['QUERY_STRING'] )
+		? $url . '?' . $_SERVER['QUERY_STRING']
+		: $url;
+}
+
+// --------------------------------------------------------------
+
+/**
  * Secure Anchor Link
  *
  * Creates a secure anchor based on the local URL, and if USE_SSL is 'on'.
