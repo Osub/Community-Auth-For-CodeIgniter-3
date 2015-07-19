@@ -218,12 +218,8 @@ class Auth_Controller extends CI_Controller {
 			: urlencode( $this->uri->uri_string() );
 
 		// Redirect to the login form
-		$url = USE_SSL === 1 
-			? secure_site_url( LOGIN_PAGE . '?redirect=' . $redirect ) 
-			: site_url( LOGIN_PAGE . '?redirect=' . $redirect );
-
 		header(
-			'Location: ' . $url,
+			'Location: ' . secure_site_url( LOGIN_PAGE . '?redirect=' . $redirect ),
 			TRUE,
 			302
 		);
@@ -384,9 +380,7 @@ class Auth_Controller extends CI_Controller {
 		}
 
 		// Set the login URL
-		$view_data['login_url'] = USE_SSL === 1 
-			? secure_site_url( LOGIN_PAGE . $redirect ) 
-			: site_url( LOGIN_PAGE . $redirect );
+		$view_data['login_url'] = secure_site_url( LOGIN_PAGE . $redirect );
 
 		$this->load->vars( $view_data );
 	}

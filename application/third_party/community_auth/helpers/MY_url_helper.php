@@ -14,54 +14,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 /**
- * Site URL
- *
- * Create a local URL based on your basepath. Segments can be passed via the
- * first parameter either as a string or an array.
- *
- * @param  mixed  either a string reprenting the path or an array of path elements
- */
-function site_url( $uri = '' )
-{
-	$CI =& get_instance();
-
-	$url = $CI->config->site_url( $uri );
-
-	if( parse_url( $url, PHP_URL_SCHEME ) == 'https' )
-	{
-		$url = substr( $url, 0, 4 ) . substr( $url, 5 );
-	}
-
-	return $url;
-}
-
-// --------------------------------------------------------------
-
-/**
  * Secure Site URL
  *
- * If USE_SSL is set to 1, creates a HTTPS version of site_url().
- *
- * Create a local URL based on your basepath. Segments can be passed via the
- * first parameter either as a string or an array.
+ * If USE_SSL is set to 1, creates a HTTPS version of site_url(),
+ * else just creates a standard site URL.
  *
  * @param  mixed either a string reprenting the path or an array of path elements
  */
 function secure_site_url( $uri = '' )
 {
-	$CI =& get_instance();
-
-	$url = $CI->config->site_url( $uri );
-
-	if( USE_SSL === 1 )
-	{
-		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
-		{
-			$url = substr( $url, 0, 4 ) . 's' . substr( $url, 4 );
-		}
-	}
-
-	return $url;
+	return ( USE_SSL === 1 )
+		? site_url( $uri, 'https' )
+		: site_url( $uri );
 }
 
 // --------------------------------------------------------------
@@ -69,76 +33,31 @@ function secure_site_url( $uri = '' )
 /**
  * If Secure Site URL
  *
- * If USE_SSL is set to 1 AND current request is in HTTPS, 
+ * If USE_SSL is set to 1 AND current request is on HTTPS,
  * creates a HTTPS version of site_url(), else a standard HTTP version.
  *
  * @param  mixed either a string reprenting the path or an array of path elements
  */
 function if_secure_site_url( $uri = '' )
 {
-	if( is_https() )
-	{
-		return secure_site_url( $uri );
-	}
-	else
-	{
-		return site_url( $uri );
-	}
-}
+	return ( USE_SSL === 1 && is_https() )
+		? site_url( $uri, 'https' )
+		: site_url( $uri );
 
 // --------------------------------------------------------------
-
-/**
- * Base URL
- * 
- * Create a local URL based on your basepath.
- * Segments can be passed in as a string or an array, same as site_url
- * or a URL to a file can be passed in, e.g. to an image file.
- *
- * @param  mixed  either a string reprenting the path, an array of path elements or a URL to a file
- */
-function base_url( $uri = '' )
-{
-	$CI =& get_instance();
-
-	$url = $CI->config->base_url( $uri );
-
-	if( parse_url( $url, PHP_URL_SCHEME ) == 'https' )
-	{
-		$url = substr( $url, 0, 4 ) . substr( $url, 5 );
-	}
-
-	return $url;
-}
-
-// ---------------------------------------------------------------
 
 /**
  * Secure Base URL
  *
  * If USE_SSL is set to 1, creates a HTTPS version of base_url().
- * 
- * Create a local URL based on your basepath.
- * Segments can be passed in as a string or an array, same as site_url
- * or a URL to a file can be passed in, e.g. to an image file.
  *
  * @param  mixed  either a string reprenting the path, an array of path elements or a URL to a file
  */
 function secure_base_url( $uri = '' )
 {
-	$CI =& get_instance();
-
-	$url = $CI->config->base_url( $uri );
-
-	if( USE_SSL === 1 )
-	{
-		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
-		{
-			$url = substr( $url, 0, 4 ) . 's' . substr( $url, 4 );
-		}
-	}
-
-	return $url;
+	return ( USE_SSL === 1 )
+		? base_url( $uri, 'https' )
+		: base_url( $uri );
 }
 
 // --------------------------------------------------------------
@@ -147,61 +66,14 @@ function secure_base_url( $uri = '' )
  * If Secure Base URL
  *
  * If current request is HTTPS, creates a HTTPS version of base_url().
- * 
- * Create a local URL based on your basepath if current request is HTTPS.
- * Segments can be passed in as a string or an array, same as site_url
- * or a URL to a file can be passed in, e.g. to an image file.
  *
  * @param  mixed  either a string reprenting the path, an array of path elements or a URL to a file
  */
 function if_secure_base_url( $uri = '' )
 {
-	$CI =& get_instance();
-
-	$url = $CI->config->base_url( $uri );
-
-	if( is_https() )
-	{
-		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
-		{
-			$url = substr( $url, 0, 4 ) . 's' . substr( $url, 4 );
-		}
-	}
-
-	return $url;
-}
-
-// --------------------------------------------------------------
-
-/**
- * Current URL
- *
- * Returns the full URL (including segments) of the page where this
- * function is placed
- *
- * Modified so that current_url() allows for HTTPS. Also modified
- * so that a specific host (domain) can replace the current one. 
- * This is important if you want to be able to have somebody 
- * switch the current page to another language using i18n domains.
- *
- * @param  string  the requested language.
- */
-function current_url()
-{
-	$CI =& get_instance();
-
-	$url = $CI->config->site_url( $CI->uri->uri_string() );
-
-	if( is_https() )
-	{
-		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
-		{
-			$url = substr( $url, 0, 4 ) . 's' . substr( $url, 4 );
-		}
-	}
-
-	// Return the current URL, making sure to attach any query string that may exist
-	return ( $_SERVER['QUERY_STRING'] ) ? $url . '?' . $_SERVER['QUERY_STRING'] : $url;
+	return ( USE_SSL === 1 && is_https() )
+		? base_url( $uri, 'https' )
+		: base_url( $uri );
 }
 
 // --------------------------------------------------------------

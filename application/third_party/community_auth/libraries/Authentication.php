@@ -565,9 +565,7 @@ class Authentication
 			? urldecode( $this->CI->input->get('redirect') ) 
 			: '';
 
-		$url = USE_SSL === 1 
-			? secure_site_url( $redirect ) 
-			: site_url( $redirect );
+		$url = secure_site_url( $redirect );
 
 		header( "Location: " . $url, TRUE, 302 );
 
