@@ -43,6 +43,7 @@ function if_secure_site_url( $uri = '' )
 	return ( USE_SSL === 1 && is_https() )
 		? site_url( $uri, 'https' )
 		: site_url( $uri );
+}
 
 // --------------------------------------------------------------
 
