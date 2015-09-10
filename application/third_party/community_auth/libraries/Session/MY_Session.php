@@ -36,13 +36,24 @@ class MY_Session extends CI_Session {
 				? 0 : (int) $expiration;
 		}
 
-		// Begin modification for remember me
+		/**
+		 * Begin modification for remember me ---------------------------
+		 */
 		$CI =& get_instance();
-		if( $CI->config->item('allow_remember_me') )
+
+		// If on login the user chose the remember me option, or already has the cookie
+		$remember_me = ( 
+			$CI->input->post('remember_me') OR 
+			isset( $_COOKIE[ $CI->config->item('remember_me_cookie_name') ] ) 
+		) ? TRUE : FALSE;
+
+		if( $CI->config->item('allow_remember_me') && $remember_me )
 		{
 			$params['cookie_lifetime'] = $CI->config->item('remember_me_expiration');
 		}
-		// End modification for remember me
+		/**
+		 * End modification for remember me ------------------------------
+		 */
 
 		isset($params['cookie_name']) OR $params['cookie_name'] = config_item('sess_cookie_name');
 		if (empty($params['cookie_name']))
