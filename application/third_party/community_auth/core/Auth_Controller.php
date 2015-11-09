@@ -54,9 +54,9 @@ class Auth_Controller extends CI_Controller {
 	 * the queries in the auth model.
 	 *
 	 * @var object
-	 * @access private
+	 * @access protected
 	 */
-	private $auth_data;
+	protected $auth_data;
 
 	/**
 	 * Either 'https' or 'http' depending on the current environment
@@ -299,7 +299,7 @@ class Auth_Controller extends CI_Controller {
 	/**
 	 * Set variables related to authentication, for use in views / controllers.
 	 */
-	private function _set_user_variables()
+	protected function _set_user_variables()
 	{
 		// Set user specific variables to be available in controllers
 		$this->auth_user_id    = $this->auth_data->user_id;
