@@ -21,11 +21,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * @param  mixed either a string reprenting the path or an array of path elements
  */
-function secure_site_url( $uri = '' )
+if( ! function_exists('secure_site_url') )
 {
-	return ( USE_SSL === 1 )
-		? site_url( $uri, 'https' )
-		: site_url( $uri );
+	function secure_site_url( $uri = '' )
+	{
+		return ( USE_SSL === 1 )
+			? site_url( $uri, 'https' )
+			: site_url( $uri );
+	}
 }
 
 // --------------------------------------------------------------
@@ -38,11 +41,14 @@ function secure_site_url( $uri = '' )
  *
  * @param  mixed either a string reprenting the path or an array of path elements
  */
-function if_secure_site_url( $uri = '' )
+if( ! function_exists('if_secure_site_url') )
 {
-	return ( USE_SSL === 1 && is_https() )
-		? site_url( $uri, 'https' )
-		: site_url( $uri );
+	function if_secure_site_url( $uri = '' )
+	{
+		return ( USE_SSL === 1 && is_https() )
+			? site_url( $uri, 'https' )
+			: site_url( $uri );
+	}
 }
 
 // --------------------------------------------------------------
@@ -54,11 +60,14 @@ function if_secure_site_url( $uri = '' )
  *
  * @param  mixed  either a string reprenting the path, an array of path elements or a URL to a file
  */
-function secure_base_url( $uri = '' )
+if( ! function_exists('secure_base_url') )
 {
-	return ( USE_SSL === 1 )
-		? base_url( $uri, 'https' )
-		: base_url( $uri );
+	function secure_base_url( $uri = '' )
+	{
+		return ( USE_SSL === 1 )
+			? base_url( $uri, 'https' )
+			: base_url( $uri );
+	}
 }
 
 // --------------------------------------------------------------
@@ -70,11 +79,14 @@ function secure_base_url( $uri = '' )
  *
  * @param  mixed  either a string reprenting the path, an array of path elements or a URL to a file
  */
-function if_secure_base_url( $uri = '' )
+if( ! function_exists('if_secure_base_url') )
 {
-	return ( USE_SSL === 1 && is_https() )
-		? base_url( $uri, 'https' )
-		: base_url( $uri );
+	function if_secure_base_url( $uri = '' )
+	{
+		return ( USE_SSL === 1 && is_https() )
+			? base_url( $uri, 'https' )
+			: base_url( $uri );
+	}
 }
 
 // --------------------------------------------------------------
@@ -92,24 +104,27 @@ function if_secure_base_url( $uri = '' )
  *
  * @param  string  the requested language.
  */
-function current_url()
+if( ! function_exists('current_url') )
 {
-	$CI =& get_instance();
-
-	$url = $CI->config->site_url( $CI->uri->uri_string() );
-
-	if( is_https() )
+	function current_url()
 	{
-		if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
-		{
-			$url = substr( $url, 0, 4 ) . 's' . substr( $url, 4 );
-		}
-	}
+		$CI =& get_instance();
 
-	// Return the current URL, making sure to attach any query string that may exist
-	return ( $_SERVER['QUERY_STRING'] )
-		? $url . '?' . $_SERVER['QUERY_STRING']
-		: $url;
+		$url = $CI->config->site_url( $CI->uri->uri_string() );
+
+		if( is_https() )
+		{
+			if( parse_url( $url, PHP_URL_SCHEME ) == 'http' )
+			{
+				$url = substr( $url, 0, 4 ) . 's' . substr( $url, 4 );
+			}
+		}
+
+		// Return the current URL, making sure to attach any query string that may exist
+		return ( $_SERVER['QUERY_STRING'] )
+			? $url . '?' . $_SERVER['QUERY_STRING']
+			: $url;
+	}
 }
 
 // --------------------------------------------------------------
@@ -123,25 +138,28 @@ function current_url()
  * @param  string  the link title
  * @param  mixed   any attributes
  */
-function secure_anchor( $uri = '', $title = '', $attributes = '' )
+if( ! function_exists('secure_anchor') )
 {
-	$title = (string) $title;
-
-	$site_url = is_array($uri)
-		? secure_site_url($uri)
-		: preg_match('#^(\w+:)?//#i', $uri) ? $uri : secure_site_url($uri);
-
-	if ($title === '')
+	function secure_anchor( $uri = '', $title = '', $attributes = '' )
 	{
-		$title = $site_url;
-	}
+		$title = (string) $title;
 
-	if ($attributes !== '')
-	{
-		$attributes = _stringify_attributes($attributes);
-	}
+		$site_url = is_array($uri)
+			? secure_site_url($uri)
+			: preg_match('#^(\w+:)?//#i', $uri) ? $uri : secure_site_url($uri);
 
-	return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
+		if ($title === '')
+		{
+			$title = $site_url;
+		}
+
+		if ($attributes !== '')
+		{
+			$attributes = _stringify_attributes($attributes);
+		}
+
+		return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
+	}
 }
 
 // --------------------------------------------------------------
