@@ -17,6 +17,10 @@ if [ ! -f ./hooks/auth_constants.php ]; then
 	ln -s ../third_party/community_auth/hooks/auth_constants.php ./hooks/auth_constants.php
 fi
 
+if [ ! -f ./hooks/auth_sess_check.php ]; then
+	ln -s ../third_party/community_auth/hooks/auth_sess_check.php ./hooks/auth_sess_check.php
+fi
+
 # controllers
 if [ ! -f ./controllers/Examples.php ]; then
 	ln -s ../third_party/community_auth/controllers/Examples.php ./controllers/Examples.php 

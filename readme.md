@@ -18,7 +18,7 @@ Installation
 
 **4)** Copy MY_Controller.php, MY_Input.php, and MY_Model.php from community_auth/core to CodeIgniter's application/core directory. If you already had these files, merge them with your existing files.
 
-**5)** Copy auth_constants.php from community_auth/hooks to CodeIgniter's application/hooks directory.
+**5)** Copy auth_constants.php and auth_sess_check.php from community_auth/hooks to CodeIgniter's application/hooks directory.
 
 **6)** Copy the Examples controller to CodeIgniter's application/controllers directory.
 
@@ -56,11 +56,16 @@ Installation
 
 **12)** While not critical for basic Community Auth usage, check out and configure community_auth/config/authentication.php as needed.
 
-**13)** Define Community Auth constants hook by adding it to config/hooks.
+**13)** Define Community Auth hooks by adding them to config/hooks.
 
 	$hook['pre_system'] = array(
 		'function' => 'auth_constants',
 		'filename' => 'auth_constants.php',
+		'filepath' => 'hooks'
+	);
+	$hook['post_system'] = array(
+		'function' => 'auth_sess_check',
+		'filename' => 'auth_sess_check.php',
 		'filepath' => 'hooks'
 	);
 

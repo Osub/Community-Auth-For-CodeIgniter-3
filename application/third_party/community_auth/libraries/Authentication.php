@@ -74,6 +74,13 @@ class Authentication
 	 */
 	private $auth_identifiers = array();
 
+	/**
+	 * If the session is regenerated and the request 
+	 * never checks the login status, then the 
+	 * session will drop out on the next request.
+	 */
+	public $post_system_sess_check = TRUE;
+
 	// --------------------------------------------------------------
 
 	/**
@@ -218,6 +225,9 @@ class Authentication
 	 */
 	private function login( $requirement, $user_string, $user_pass )
 	{
+		// Keep post system session check from running
+		$this->post_system_sess_check = FALSE;
+
 		/**
 		 * Validate the posted username / email address and password.
 		 */
@@ -303,6 +313,9 @@ class Authentication
 	 */
 	public function check_login( $requirement )
 	{
+		// Keep post system session check from running
+		$this->post_system_sess_check = FALSE;
+		
 		// No reason to continue if auth identifiers is empty
 		if( empty( $this->auth_identifiers ) )
 		{
