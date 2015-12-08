@@ -56,7 +56,7 @@ if( ! isset( $on_hold_message ) )
 		<br />
 
 		<label for="login_pass" class="form_label">Password</label>
-		<input type="password" name="login_pass" id="login_pass" class="form_input password" autocomplete="off" maxlength="<?php echo config_item('max_chars_for_password'); ?>" />
+		<input type="password" name="login_pass" id="login_pass" class="form_input password" maxlength="<?php echo config_item('max_chars_for_password'); ?>" autocomplete="off" readonly="readonly" onfocus="this.removeAttribute('readonly');" />
 
 
 		<?php
