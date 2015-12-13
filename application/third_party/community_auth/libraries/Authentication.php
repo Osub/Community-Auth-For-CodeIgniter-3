@@ -467,19 +467,30 @@ class Authentication
 	/**
 	 * Hash Password
 	 *
+	 * Using PHP 5.5's native password hash function, 
+	 * falling back to crypt for older versions of PHP.
+	 *
 	 * @param   string  The raw (supplied) password
 	 * @param   string  The random salt
 	 * @return  string  the hashed password
 	 */
 	public function hash_passwd( $password, $random_salt )
 	{
-		return crypt( $password . config_item('encryption_key'), '$2a$09$' . $random_salt . '$' );
+		return is_php('5.5')
+			? password_hash( $password . config_item('encryption_key'), PASSWORD_BCRYPT, array( 'cost' => 11 ) )
+			: crypt( $password . config_item('encryption_key'), '$2a$09$' . $random_salt . '$' );
 	}
 
 	// --------------------------------------------------------------
 
 	/**
 	 * Check Password
+	 *
+	 * Verifying passwords using PHP 5.5's password verification function, 
+	 * falling back to comparison via crypt for older version of PHP.
+	 *
+	 * Note: For older versions of PHP where comparison done with crypt,
+	 * no attempt has been made to prevent a timing attack.
 	 *
 	 * @param   string  The hashed password 
 	 * @param   string  The random salt
@@ -488,7 +499,11 @@ class Authentication
 	 */
 	public function check_passwd( $hash, $random_salt, $password )
 	{
-		if( $hash === $this->hash_passwd( $password, $random_salt ) )
+		if( is_php('5.5') && password_verify( $password . config_item('encryption_key'), $hash ) )
+		{
+			return TRUE;
+		}
+		else if( $hash === $this->hash_passwd( $password, $random_salt ) )
 		{
 			return TRUE;
 		}
@@ -499,7 +514,14 @@ class Authentication
 	// --------------------------------------------------------------
 
 	/**
-	 * Make Random Salt
+	 * Make Random Salt 
+	 *
+	 * For PHP versions less than 5.5, this rather basic creation 
+	 * of a salt is used for password hashing and account recovery
+	 * purposes. PHP 5.5 will create it's own hash for passwords, 
+	 * but the "salt" created is still used for account recovery.
+	 *
+	 * @return  string  a basic random string 32 chars in length
 	 */
 	public function random_salt()
 	{
