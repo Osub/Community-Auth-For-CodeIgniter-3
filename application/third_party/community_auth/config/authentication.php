@@ -317,10 +317,15 @@ $config['min_chars_for_password'] = 8;
 | -----------------------------------------------------------------
 |				MAX CHARS FOR PASSWORD						
 | -----------------------------------------------------------------
-| The maximum amount of characters for a valid password
+| The maximum amount of characters for a valid password.
+| 
+| Because Community Auth uses CRYPT_BLOWFISH to hash passwords,
+| any password over 72 characters in length is truncated. You 
+| could certainly allow more characters, but only the first 
+| 72 characters are used for the resulting hash.
 */
 
-$config['max_chars_for_password'] = 256;
+$config['max_chars_for_password'] = 72;
 
 /*
 | -----------------------------------------------------------------
