@@ -90,7 +90,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_name` varchar(12) DEFAULT NULL,
   `user_email` varchar(255) NOT NULL,
   `user_pass` varchar(60) NOT NULL,
-  `user_salt` varchar(32) NOT NULL,
   `user_last_login` datetime DEFAULT NULL,
   `user_login_time` datetime DEFAULT NULL,
   `user_session_id` varchar(40) DEFAULT NULL,

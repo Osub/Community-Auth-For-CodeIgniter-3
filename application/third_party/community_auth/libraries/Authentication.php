@@ -253,7 +253,7 @@ class Authentication
 							'debug',
 							"\n user is banned             = " . ( $auth_data->user_banned === 1 ? 'yes' : 'no' ) .
 							"\n password in database       = " . $auth_data->user_pass .
-							"\n posted/hashed password     = " . $this->hash_passwd( $user_pass, $auth_data->user_salt ) . 
+							"\n supplied password match    = " . (string) $this->check_passwd( $auth_data->user_pass, $user_pass ) . 
 							"\n required level or role     = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
 							"\n user level in database     = " . $auth_data->user_level . 
 							"\n user level equivalant role = " . $this->roles[$auth_data->user_level]
@@ -471,14 +471,23 @@ class Authentication
 	 * falling back to crypt for older versions of PHP.
 	 *
 	 * @param   string  The raw (supplied) password
-	 * @param   string  The random salt
+	 * @param   string  The random salt (only used for PHP versions < 5.5)
 	 * @return  string  the hashed password
 	 */
 	public function hash_passwd( $password, $random_salt )
 	{
-		return is_php('5.5')
-			? password_hash( $password . config_item('encryption_key'), PASSWORD_BCRYPT, array( 'cost' => 11 ) )
-			: crypt( $password . config_item('encryption_key'), '$2a$09$' . $random_salt . '$' );
+		if( is_php('5.5') )
+		{
+			return password_hash( $password, PASSWORD_BCRYPT, array( 'cost' => 11 ) );
+		}
+		else if( is_php('5.3.7') )
+		{
+			return crypt( $password, '$2y$10$' . $random_salt . '$' );
+		}
+		else
+		{
+			return crypt( $password, '$2a$09$' . $random_salt . '$' );
+		}
 	}
 
 	// --------------------------------------------------------------
@@ -497,13 +506,13 @@ class Authentication
 	 * @param   string  The raw (supplied) password
 	 * @return  bool
 	 */
-	public function check_passwd( $hash, $random_salt, $password )
+	public function check_passwd( $hash, $password )
 	{
-		if( is_php('5.5') && password_verify( $password . config_item('encryption_key'), $hash ) )
+		if( is_php('5.5') && password_verify( $password, $hash ) )
 		{
 			return TRUE;
 		}
-		else if( $hash === $this->hash_passwd( $password, $random_salt ) )
+		else if( $hash === crypt( $password, $hash ) )
 		{
 			return TRUE;
 		}
@@ -553,7 +562,7 @@ class Authentication
 		if( $user_pass )
 		{
 			// Check if the posted password matches the one in the user record
-			$wrong_password = ( ! $this->check_passwd( $auth_data->user_pass, $auth_data->user_salt, $user_pass ) );
+			$wrong_password = ( ! $this->check_passwd( $auth_data->user_pass, $user_pass ) );
 
 			// Check for disallowed multiple logins doesn't apply to login attempt
 			$disallowed_multiple_login = FALSE;

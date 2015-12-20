@@ -178,8 +178,9 @@ class Examples extends MY_Controller
 
 		if( $this->form_validation->run() )
 		{
-			$user_data['user_salt']     = $this->authentication->random_salt();
-			$user_data['user_pass']     = $this->authentication->hash_passwd($user_data['user_pass'], $user_data['user_salt']);
+			$random_salt = $this->authentication->random_salt();
+
+			$user_data['user_pass']     = $this->authentication->hash_passwd($user_data['user_pass'], $random_salt);
 			$user_data['user_id']       = $this->_get_unused_id();
 			$user_data['user_date']     = date('Y-m-d H:i:s');
 			$user_data['user_modified'] = date('Y-m-d H:i:s');
@@ -287,7 +288,10 @@ class Examples extends MY_Controller
                             array( 'exclude' => array( 'char' ) ) 
                         )->random_string(64)->show();
 
-                        $hashed_recovery_code = $this->_hash_recovery_code( $user_data->user_salt, $recovery_code );
+                        $hashed_recovery_code = $this->authentication->hash_passwd( 
+                            $recovery_code,
+                            $this->authentication->random_salt()
+                        );
 
                         // Update user record with recovery code and time
                         $this->examples_model->update_user_raw_data(
@@ -368,7 +372,7 @@ class Examples extends MY_Controller
                  * Check that the recovery code from the 
                  * email matches the hashed recovery code.
                  */
-                if( $recovery_data->passwd_recovery_code == $this->_hash_recovery_code( $recovery_data->user_salt, $recovery_code ) )
+                if( $recovery_data->passwd_recovery_code == $this->authentication->check_passwd( $recovery_data->passwd_recovery_code, $recovery_code ) )
                 {
                     $view_data['user_id']       = $user_id;
                     $view_data['user_name']     = $recovery_data->user_name;
@@ -408,16 +412,6 @@ class Examples extends MY_Controller
         echo $this->load->view( 'examples/choose_password_form', $view_data, TRUE );
 
         echo $this->load->view('examples/page_footer', '', TRUE);
-    }
-
-    // --------------------------------------------------------------
-
-    /**
-     * Hash the password recovery code (uses the authentication library's hash_passwd method)
-     */
-    private function _hash_recovery_code( $user_salt, $recovery_code )
-    {
-        return $this->authentication->hash_passwd( $recovery_code, $user_salt );
     }
 
     // --------------------------------------------------------------

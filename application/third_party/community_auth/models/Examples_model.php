@@ -48,7 +48,7 @@ class Examples_model extends MY_Model {
 	 */
 	public function get_recovery_data( $email )
 	{
-		$query = $this->db->select('u.user_id, u.user_salt, u.user_email, u.user_banned')
+		$query = $this->db->select('u.user_id, u.user_email, u.user_banned')
 			->from( config_item('user_table') . ' u')
 			->where('u.user_email', $email)
 			->limit(1)
@@ -72,7 +72,7 @@ class Examples_model extends MY_Model {
 	{
 		$recovery_code_expiration = date('Y-m-d H:i:s', time() - config_item('recovery_code_expiration') );
 
-		$query = $this->db->select('user_name,user_salt,passwd_recovery_code')
+		$query = $this->db->select('user_name,passwd_recovery_code')
 			->from( config_item('user_table') )
 			->where( 'user_id', $user_id )
 			->where( 'passwd_recovery_date >', $recovery_code_expiration )
@@ -151,13 +151,11 @@ class Examples_model extends MY_Model {
 				// Generate a new random user salt
 				$new_salt = $this->authentication->random_salt();
 
-				$data = array(
-					'user_pass' => $this->authentication->hash_passwd( $password, $new_salt ),
-					'user_salt' => $new_salt
-				);
-
 				$this->db->where( 'user_id', $user_data->user_id )
-					->update( config_item('user_table'), $data );
+					->update( 
+						config_item('user_table'), 
+						array( 'user_pass' => $this->authentication->hash_passwd( $password, $new_salt ) ) 
+					);
 			}
 		}
 	}
