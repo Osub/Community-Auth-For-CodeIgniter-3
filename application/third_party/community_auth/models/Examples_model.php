@@ -148,13 +148,10 @@ class Examples_model extends MY_Model {
 			{
 				$user_data = $query->row();
 
-				// Generate a new random user salt
-				$new_salt = $this->authentication->random_salt();
-
 				$this->db->where( 'user_id', $user_data->user_id )
 					->update( 
 						config_item('user_table'), 
-						array( 'user_pass' => $this->authentication->hash_passwd( $password, $new_salt ) ) 
+						array( 'user_pass' => $this->authentication->hash_passwd( $password ) ) 
 					);
 			}
 		}

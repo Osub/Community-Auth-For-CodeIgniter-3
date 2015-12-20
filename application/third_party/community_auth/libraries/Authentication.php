@@ -474,12 +474,21 @@ class Authentication
 	 * @param   string  The random salt (only used for PHP versions < 5.5)
 	 * @return  string  the hashed password
 	 */
-	public function hash_passwd( $password, $random_salt )
+	public function hash_passwd( $password, $random_salt = '' )
 	{
+		// If no salt provided for older PHP versions, make one
+		if( ! is_php('5.5') && empty( $random_salt ) )
+		{
+			$random_salt = $this->random_salt();
+		}
+
+		// PHP 5.5+ uses new password hashing function
 		if( is_php('5.5') )
 		{
 			return password_hash( $password, PASSWORD_BCRYPT, array( 'cost' => 11 ) );
 		}
+
+		// Older versions of PHP use crypt
 		else if( is_php('5.3.7') )
 		{
 			return crypt( $password, '$2y$10$' . $random_salt );
