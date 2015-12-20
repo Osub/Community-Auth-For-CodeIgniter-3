@@ -482,11 +482,11 @@ class Authentication
 		}
 		else if( is_php('5.3.7') )
 		{
-			return crypt( $password, '$2y$10$' . $random_salt . '$' );
+			return crypt( $password, '$2y$10$' . $random_salt );
 		}
 		else
 		{
-			return crypt( $password, '$2a$09$' . $random_salt . '$' );
+			return crypt( $password, '$2a$09$' . $random_salt );
 		}
 	}
 
@@ -525,16 +525,25 @@ class Authentication
 	/**
 	 * Make Random Salt 
 	 *
-	 * For PHP versions less than 5.5, this rather basic creation 
-	 * of a salt is used for password hashing and account recovery
-	 * purposes. PHP 5.5 will create it's own hash for passwords, 
-	 * but the "salt" created is still used for account recovery.
+	 * For PHP versions less than 5.5, this random salt creator
+	 * uses CodeIgniter's create_key function.
 	 *
-	 * @return  string  a basic random string 32 chars in length
+	 * Because Community Auth uses blowfish as the encryption algorithm,
+	 * the returned salt is always 22 characters long. In testing the 
+	 * salt seems to be fine if longer, but the PHP docs for the crypt 
+	 * function says the string should be 22 chars long.
+	 *
+	 * @return  string  a random string 22 chars in length
 	 */
 	public function random_salt()
 	{
-		return md5( mt_rand() );
+		$this->CI->load->library('encryption');
+
+		$salt = substr( bin2hex( $this->CI->encryption->create_key(64) ), 0, 22 );
+
+		return strlen( $salt ) != 22 
+			? substr( md5( mt_rand() ), 0, 22 )
+			: $salt;
 	}
 
 	// --------------------------------------------------------------
