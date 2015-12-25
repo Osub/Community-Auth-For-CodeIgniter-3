@@ -178,10 +178,9 @@ class Examples extends MY_Controller
 
 		if( $this->form_validation->run() )
 		{
-			$user_data['user_pass']     = $this->authentication->hash_passwd($user_data['user_pass']);
-			$user_data['user_id']       = $this->_get_unused_id();
-			$user_data['user_date']     = date('Y-m-d H:i:s');
-			$user_data['user_modified'] = date('Y-m-d H:i:s');
+            $user_data['user_pass']  = $this->authentication->hash_passwd($user_data['user_pass']);
+            $user_data['user_id']    = $this->_get_unused_id();
+            $user_data['created_at'] = date('Y-m-d H:i:s');
 
             // If username is not used, it must be entered into the record as NULL
             if( empty( $user_data['user_name'] ) )

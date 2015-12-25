@@ -324,16 +324,14 @@ class Authentication
 
 		// Use contents of auth identifiers
 		$user_id         = $this->auth_identifiers['user_id'];
-		$user_modified   = $this->auth_identifiers['user_modified'];
 		$user_login_time = $this->auth_identifiers['user_login_time'];
 
 		/*
 		 * Check database for matching user record:
-		 * 1) last user modification time matches
-		 * 2) user ID matches
-		 * 3) login time matches ( not applicable if multiple logins allowed )
+		 * 1) user ID matches
+		 * 2) login time matches
 		 */
-		$auth_data = $this->CI->{$this->auth_model}->check_login_status( $user_modified, $user_id, $user_login_time );
+		$auth_data = $this->CI->{$this->auth_model}->check_login_status( $user_id, $user_login_time );
 
 		// If the query produced a match
 		if( $auth_data !== FALSE )
@@ -345,7 +343,6 @@ class Authentication
 				log_message(
 					'debug',
 					"\n user is banned                  = " . ( $auth_data->user_banned === 1 ? 'yes' : 'no' ) .
-					"\n disallowed multiple logins      = " . ( config_item('disallow_multiple_logins') ? 'true' : 'false' ) .
 					"\n hashed user agent               = " . md5( $this->CI->input->user_agent() ) . 
 					"\n user agent from database        = " . $auth_data->user_agent_string . 
 					"\n required level or role          = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
@@ -367,10 +364,8 @@ class Authentication
 			// Auth Data === FALSE because no user matching in DB ...
 			log_message(
 				'debug',
-				"\n last user modification time from session = " . $user_modified . 
-				"\n user id from session                     = " . $user_id . 
-				"\n last login time from session             = " . $user_login_time . 
-				"\n disallowed multiple logins               = " . ( config_item('disallow_multiple_logins') ? 'true' : 'false' )
+				"\n user id from session         = " . $user_id . 
+				"\n last login time from session = " . $user_login_time
 			);
 		}
 
@@ -584,9 +579,6 @@ class Authentication
 		{
 			// Check if the posted password matches the one in the user record
 			$wrong_password = ( ! $this->check_passwd( $auth_data->user_pass, $user_pass ) );
-
-			// Check for disallowed multiple logins doesn't apply to login attempt
-			$disallowed_multiple_login = FALSE;
 		}
 
 		// Else we are checking login status
@@ -704,7 +696,6 @@ class Authentication
 		// Create the auth identifier
 		$auth_identifiers = serialize( array(
 			'user_id'         => $auth_data->user_id,
-			'user_modified'   => $auth_data->user_modified,
 			'user_login_time' => $user_login_time
 		));
 

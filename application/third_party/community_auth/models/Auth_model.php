@@ -41,7 +41,6 @@ class Auth_model extends MY_Model {
 			'user_level',
 			'user_pass',
 			'user_id',
-			'user_modified',
 			'user_banned'
 		);
 
@@ -102,11 +101,10 @@ class Auth_model extends MY_Model {
 	 * 
 	 * If there is a matching record, return a specified subset of the record.
 	 *
-	 * @param   int    the last modification date
 	 * @param   int    the user ID
 	 * @return  mixed  either query data as an object or FALSE
 	 */
-	public function check_login_status( $user_modified, $user_id, $user_login_time )
+	public function check_login_status( $user_id, $user_login_time )
 	{
 		// Selected user table data
 		$selected_columns = array(
@@ -118,12 +116,11 @@ class Auth_model extends MY_Model {
 			'u.user_banned'
 		);
 
-		$this->db->select( $selected_columns );
-		$this->db->from( config_item('user_table') . ' u' );
-		$this->db->join( config_item('auth_sessions_table') . ' s', 'u.user_id = s.user_id' );
-		$this->db->where( 'u.user_modified', $user_modified );
-		$this->db->where( 'u.user_id', $user_id );
-		$this->db->where( 's.login_time', $user_login_time );
+		$this->db->select( $selected_columns )
+			->from( config_item('user_table') . ' u' )
+			->join( config_item('auth_sessions_table') . ' s', 'u.user_id = s.user_id' )
+			->where( 'u.user_id', $user_id )
+			->where( 's.login_time', $user_login_time );
 
 		// If the session ID was NOT regenerated, the session IDs should match
 		if( is_null( $this->session->regenerated_session_id ) )
