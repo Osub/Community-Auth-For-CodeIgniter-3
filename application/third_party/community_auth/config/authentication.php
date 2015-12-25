@@ -124,7 +124,7 @@ $config['seconds_on_hold'] = 600;
 |
 */
 
-$config['disallow_multiple_logins'] = TRUE;
+$config['disallow_multiple_logins'] = FALSE;
 
 /*
 | -----------------------------------------------------------------
