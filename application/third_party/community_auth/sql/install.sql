@@ -15,12 +15,11 @@
 --
 
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
-  `ai` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id` varchar(40) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
   `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
   `data` blob NOT NULL,
-  PRIMARY KEY (`ai`),
+  PRIMARY KEY (`id`),
   KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -31,12 +30,11 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 CREATE TABLE IF NOT EXISTS `auth_sessions` (
-  `ai` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id` varchar(40) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `login_time` datetime DEFAULT NULL,
   `user_agent_string` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`ai`)
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

@@ -86,7 +86,6 @@ class Auth_model extends MY_Model {
 			'user_id'           => $user_id,
 			'login_time'        => $user_login_time,
 			'user_agent_string' => md5( $this->input->user_agent() )
-			
 		);
 
 		$this->db->insert( config_item('auth_sessions_table') , $data );
