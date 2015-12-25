@@ -507,7 +507,6 @@ class Authentication
 	 * no attempt has been made to prevent a timing attack.
 	 *
 	 * @param   string  The hashed password 
-	 * @param   string  The random salt
 	 * @param   string  The raw (supplied) password
 	 * @return  bool
 	 */
