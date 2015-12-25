@@ -58,6 +58,14 @@ class Authentication
 	public $login_error = FALSE;
 
 	/**
+	 * The total failed login attempt
+	 *
+	 * @var int
+	 * @access public
+	 */
+	public $login_errors_count = 0;
+
+	/**
 	 * The hold status for the IP, posted username, or posted email address
 	 *
 	 * @var bool

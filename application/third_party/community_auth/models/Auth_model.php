@@ -321,10 +321,10 @@ class Auth_model extends MY_Model {
 		$ip_address = $this->input->ip_address();
 
 		// Check if this IP now has too many login attempts
-		$count = $this->db->where( 'IP_address', $ip_address )
+		$count1 = $this->db->where( 'IP_address', $ip_address )
 			->count_all_results( config_item('errors_table') );
 
-		if( $count == config_item('max_allowed_attempts') )
+		if( $count1 == config_item('max_allowed_attempts') )
 		{
 			// Place the IP on hold
 			$data = array(
@@ -342,8 +342,8 @@ class Auth_model extends MY_Model {
 		 * the option of banning the user by IP address.
 		 */
 		else if( 
-			$count > config_item('max_allowed_attempts') && 
-			$count >= config_item('deny_access_at') 
+			$count1 > config_item('max_allowed_attempts') && 
+			$count1 >= config_item('deny_access_at') 
 		)
 		{
 			/**
@@ -367,13 +367,19 @@ class Auth_model extends MY_Model {
 			}
 		}
 
+		/**
+		 * Initialize variable to show total of failed 
+		 * login attempts where username or email logged
+		 */
+		$count2 = 0;
+
 		// Check to see if this username/email-address has too many login attempts
 		if( $string != '' )
 		{
-			$count = $this->db->where( 'username_or_email', $string )
+			$count2 = $this->db->where( 'username_or_email', $string )
 				->count_all_results( config_item('errors_table') );
 
-			if( $count == config_item('max_allowed_attempts') )
+			if( $count2 == config_item('max_allowed_attempts') )
 			{
 				// Place the username/email-address on hold
 				$data = array(
@@ -385,6 +391,8 @@ class Auth_model extends MY_Model {
 					->insert( config_item('username_or_email_hold_table') );
 			}
 		}
+
+		$this->authentication->login_errors_count = max( $count1, $count2 );
 	}
 
 	// --------------------------------------------------------------

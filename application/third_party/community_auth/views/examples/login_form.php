@@ -25,7 +25,7 @@ if( ! isset( $on_hold_message ) )
 		echo '
 			<div style="border:1px solid red;">
 				<p>
-					Login Error: Invalid Username, Email Address, or Password.
+					Login Error #' . $this->authentication->login_errors_count . '/' . config_item('max_allowed_attempts') . ': Invalid Username, Email Address, or Password.
 				</p>
 				<p>
 					Username, email address and password are all case sensitive.
