@@ -11,7 +11,7 @@
 --
 
 --
--- Table structure for table `ci_session`
+-- Table structure for table `ci_sessions`
 --
 
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
@@ -21,8 +21,22 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
   `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
   `data` blob NOT NULL,
   PRIMARY KEY (`ai`),
-  UNIQUE KEY `ci_sessions_id_ip` (`id`,`ip_address`),
   KEY `ci_sessions_timestamp` (`timestamp`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_sessions`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_sessions` (
+  `ai` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` varchar(40) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `login_time` datetime DEFAULT NULL,
+  `user_agent_string` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ai`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -91,11 +105,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_email` varchar(255) NOT NULL,
   `user_pass` varchar(60) NOT NULL,
   `user_last_login` datetime DEFAULT NULL,
-  `user_login_time` datetime DEFAULT NULL,
-  `user_session_id` varchar(40) DEFAULT NULL,
   `user_date` datetime NOT NULL,
   `user_modified` datetime NOT NULL,
-  `user_agent_string` varchar(32) DEFAULT NULL,
   `user_level` tinyint(2) unsigned NOT NULL,
   `user_banned` enum('0','1') NOT NULL DEFAULT '0',
   `passwd_recovery_code` varchar(60) DEFAULT NULL,

@@ -436,7 +436,10 @@ class Authentication
 		if( isset( $this->auth_identifiers['user_id'] ) )
 		{
 			// Delete last login time from user record
-			$this->CI->{$this->auth_model}->logout( $this->auth_identifiers['user_id'] );
+			$this->CI->{$this->auth_model}->logout( 
+				$this->auth_identifiers['user_id'], 
+				$this->CI->session->session_id 
+			);
 		}
 
 		if( config_item('delete_session_cookie_on_logout') )
@@ -591,9 +594,6 @@ class Authentication
 		{
 			// Password check doesn't apply to a login status check
 			$wrong_password = FALSE;
-
-			// If multiple logins are not allowed, check if user agent string matches
-			$disallowed_multiple_login = ( config_item('disallow_multiple_logins') && md5( $this->CI->input->user_agent() ) != $auth_data->user_agent_string );
 		}
 
 		// Check if the user has the appropriate user level
@@ -603,7 +603,7 @@ class Authentication
 		$wrong_role = ( is_array( $requirement ) && ! in_array( $this->roles[$auth_data->user_level], $requirement ) );
 
 		// If anything wrong
-		if( $is_banned OR $wrong_level OR $wrong_role OR $wrong_password OR $disallowed_multiple_login )
+		if( $is_banned OR $wrong_level OR $wrong_role OR $wrong_password )
 		{
 			return FALSE;
 		}

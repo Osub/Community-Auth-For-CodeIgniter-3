@@ -22,8 +22,9 @@ $config['IP_hold_table']                = 'ips_on_hold';
 $config['username_or_email_hold_table'] = 'username_or_email_on_hold';
 $config['denied_access_table']          = 'denied_access';
 
-// SESSIONS TABLE
+// SESSION TABLES
 $config['sessions_table']               = 'ci_sessions';
+$config['auth_sessions_table']          = 'auth_sessions';
 
 /* End of file db_tables.php */
 /* Location: /application/config/db_tables.php */

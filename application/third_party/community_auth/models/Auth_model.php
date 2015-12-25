@@ -70,15 +70,26 @@ class Auth_model extends MY_Model {
 	 */
 	public function login_update( $user_id, $user_login_time, $session_id )
 	{
-		$data = array(
-			'user_last_login'   => $user_login_time,
-			'user_login_time'   => $user_login_time,
-			'user_agent_string' => md5( $this->input->user_agent() ),
-			'user_session_id'   => $session_id
-		);
+		if( config_item('disallow_multiple_logins') === TRUE )
+		{
+			$this->db->where( 'user_id', $user_id )
+				->delete( config_item('auth_sessions_table') );
+		}
+
+		$data = array( 'user_last_login' => $user_login_time );
 
 		$this->db->where( 'user_id' , $user_id )
 			->update( config_item('user_table') , $data );
+
+		$data = array(
+			'id'                => $session_id,
+			'user_id'           => $user_id,
+			'login_time'        => $user_login_time,
+			'user_agent_string' => md5( $this->input->user_agent() )
+			
+		);
+
+		$this->db->insert( config_item('auth_sessions_table') , $data );
 	}
 
 	// --------------------------------------------------------------
@@ -100,38 +111,31 @@ class Auth_model extends MY_Model {
 	{
 		// Selected user table data
 		$selected_columns = array(
-			'user_name',
-			'user_email',
-			'user_level',
-			'user_agent_string',
-			'user_id',
-			'user_banned'
+			'u.user_name',
+			'u.user_email',
+			'u.user_level',
+			's.user_agent_string',
+			'u.user_id',
+			'u.user_banned'
 		);
 
 		$this->db->select( $selected_columns );
-		$this->db->from( config_item('user_table') );
-		$this->db->where( 'user_modified', $user_modified );
-		$this->db->where( 'user_id', $user_id );
+		$this->db->from( config_item('user_table') . ' u' );
+		$this->db->join( config_item('auth_sessions_table') . ' s', 'u.user_id = s.user_id' );
+		$this->db->where( 'u.user_modified', $user_modified );
+		$this->db->where( 'u.user_id', $user_id );
+		$this->db->where( 's.login_time', $user_login_time );
 
-		/**
-		 * If multiple devices are allowed to login at the same time, 
-		 * the user_login_time cannot be checked. The session ID is also useless.
-		 */
-		if( config_item('disallow_multiple_logins') === TRUE )
+		// If the session ID was NOT regenerated, the session IDs should match
+		if( is_null( $this->session->regenerated_session_id ) )
 		{
-			$this->db->where( 'user_login_time', $user_login_time );
+			$this->db->where( 's.id', $this->session->session_id );
+		}
 
-			// If the session ID was NOT regenerated, the session IDs should match
-			if( is_null( $this->session->regenerated_session_id ) )
-			{
-				$this->db->where( 'user_session_id', $this->session->session_id );
-			}
-
-			// If it was regenerated, we can only compare the old session ID for this request
-			else
-			{
-				$this->db->where( 'user_session_id', $this->session->pre_regenerated_session_id );
-			}
+		// If it was regenerated, we can only compare the old session ID for this request
+		else
+		{
+			$this->db->where( 's.id', $this->session->pre_regenerated_session_id );
 		}
 
 		$this->db->limit(1);
@@ -155,9 +159,10 @@ class Auth_model extends MY_Model {
 		if( ! is_null( $this->session->regenerated_session_id ) )
 		{
 			$this->db->where( 'user_id', $user_id )
+				->where( 'id', $this->session->pre_regenerated_session_id )
 				->update( 
-					config_item('user_table'),
-					array( 'user_session_id' => $this->session->regenerated_session_id )
+					config_item('auth_sessions_table'),
+					array( 'id' => $this->session->regenerated_session_id )
 			);
 		}
 	}
@@ -483,19 +488,15 @@ class Auth_model extends MY_Model {
 	// --------------------------------------------------------------
 
 	/**
-	 * Remove the user's user_login_time time when they logout
+	 * Remove the auth session record when somebody logs out
 	 * 
 	 * @param  int  the user's ID 
 	 */
-	public function logout( $user_id )
+	public function logout( $user_id, $session_id )
 	{
-		$data = array( 
-			'user_login_time' => NULL,
-			'user_session_id' => NULL
-		);
-
 		$this->db->where( 'user_id' , $user_id )
-			->update( config_item('user_table') , $data );
+			->where( 'id', $session_id )
+			->delete( config_item('auth_sessions_table') );
 	}
 
 	// --------------------------------------------------------------
