@@ -343,8 +343,6 @@ class Authentication
 				log_message(
 					'debug',
 					"\n user is banned                  = " . ( $auth_data->user_banned === 1 ? 'yes' : 'no' ) .
-					"\n hashed user agent               = " . md5( $this->CI->input->user_agent() ) . 
-					"\n user agent from database        = " . $auth_data->user_agent_string . 
 					"\n required level or role          = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
 					"\n user level in database          = " . $auth_data->user_level . 
 					"\n user level in database (string) = " . $this->roles[$auth_data->user_level]

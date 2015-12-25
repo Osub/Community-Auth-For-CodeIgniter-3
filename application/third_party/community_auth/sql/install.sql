@@ -28,12 +28,19 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 -- Table structure for table `auth_sessions`
 --
+-- The IP address and user agent are only 
+-- included so that sessions can be identified.
+-- This can be helpful if you want to show the 
+-- user their sessions, and allow them to terminate
+-- selected sessions.
+--
 
 CREATE TABLE IF NOT EXISTS `auth_sessions` (
   `id` varchar(40) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `login_time` datetime DEFAULT NULL,
-  `user_agent_string` varchar(32) DEFAULT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `user_agent` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

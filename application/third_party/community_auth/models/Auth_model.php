@@ -81,16 +81,50 @@ class Auth_model extends MY_Model {
 			->update( config_item('user_table') , $data );
 
 		$data = array(
-			'id'                => $session_id,
-			'user_id'           => $user_id,
-			'login_time'        => $user_login_time,
-			'user_agent_string' => md5( $this->input->user_agent() )
+			'id'         => $session_id,
+			'user_id'    => $user_id,
+			'login_time' => $user_login_time,
+			'ip_address' => $this->input->ip_address(),
+			'user_agent' => $this->_user_agent()
 		);
 
 		$this->db->insert( config_item('auth_sessions_table') , $data );
 	}
 
 	// --------------------------------------------------------------
+
+	/**
+	 * Return the user agent info for login update
+	 */
+	protected function _user_agent()
+	{
+		$this->load->library('user_agent');
+
+		if( $this->agent->is_browser() )
+		{
+			$agent = $this->agent->browser() . ' ' . $this->agent->version();
+		}
+		else if( $this->agent->is_robot() )
+		{
+			$agent = $this->agent->robot();
+		}
+		else if( $this->agent->is_mobile() )
+		{
+			$agent = $this->agent->mobile();
+		}
+		else
+		{
+			$agent = 'Unidentified User Agent';
+		}
+
+		$platform = $this->agent->platform();
+
+		return $platform 
+			? $agent . ' on ' . $platform 
+			: $agent; 
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Check user table and confirm there is a record where:
@@ -111,7 +145,6 @@ class Auth_model extends MY_Model {
 			'u.user_name',
 			'u.user_email',
 			'u.user_level',
-			's.user_agent_string',
 			'u.user_id',
 			'u.user_banned'
 		);
@@ -119,7 +152,7 @@ class Auth_model extends MY_Model {
 		$this->db->select( $selected_columns )
 			->from( config_item('user_table') . ' u' )
 			->join( config_item('auth_sessions_table') . ' s', 'u.user_id = s.user_id' )
-			->where( 'u.user_id', $user_id )
+			->where( 's.user_id', $user_id )
 			->where( 's.login_time', $user_login_time );
 
 		// If the session ID was NOT regenerated, the session IDs should match
