@@ -27,7 +27,7 @@ Installation
 
 **5)** Copy auth_constants.php and auth_sess_check.php from community_auth/hooks to CodeIgniter's application/hooks directory.
 
-**6)** Copy the Examples controller to CodeIgniter's application/controllers directory.
+**6)** Copy the Examples and Key_creator controllers to CodeIgniter's application/controllers directory.
 
 **7)** The .htaccess file in community_auth/public_root can be moved to CodeIgniter's public root directory. Notice the lines at the top that allow for access denial. If you already have an .htaccess file, make sure to include those lines at the top of it.
 
@@ -59,7 +59,7 @@ Installation
 
 	$route[LOGIN_PAGE] = 'examples/login';
 
-**11)** Enable hooks and make sure there is an encryption key set in config/config.php.
+**11)** Enable hooks and make sure there is an encryption key set in config/config.php. To quickly create an encryption key, load the index method of the Key_creator controller.
 
 **12)** While not critical for basic Community Auth usage, check out and configure community_auth/config/authentication.php as needed.
 

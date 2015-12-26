@@ -26,6 +26,10 @@ if [ ! -f ./controllers/Examples.php ]; then
 	cp ./third_party/community_auth/controllers/Examples.php ./controllers/Examples.php 
 fi
 
+if [ ! -f ./controllers/Key_creator.php ]; then
+	cp ./third_party/community_auth/controllers/Key_creator.php ./controllers/Key_creator.php 
+fi
+
 # public_root
 if [ ! -f ./../.htaccess ]; 
 then
