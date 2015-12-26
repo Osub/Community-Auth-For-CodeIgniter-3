@@ -1,22 +1,47 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Community Auth - Key Creator Controller
+ *
+ * Community Auth is an open source authentication application for CodeIgniter 3
+ *
+ * @package     Community Auth
+ * @author      Robert B Gottier
+ * @copyright   Copyright (c) 2011 - 2015, Robert B Gottier. (http://brianswebdesign.com/)
+ * @license     BSD - http://www.opensource.org/licenses/BSD-3-Clause
+ * @link        http://community-auth.com
+ */
+
 class Key_creator extends CI_Controller{
 	
+	/**
+	 * The key creator is only available if there is no current encryption key.
+	 * If for some reason you'd like to use this controller and you already
+	 * have an encryption key set in config/config, comment out lines 27 and 28.
+	 */
 	public function __construct()
 	{
 		parent::__construct();
+
+		if( ! empty( config_item('encryption_key') ) )
+			show_404();
 	}
 
 	// -----------------------------------------------------------------------
 
 	/**
-	 * Alias for create method
+	 * Choose an encryption cipher
 	 */
 	public function index()
 	{
-		echo '<ul>
-			<li><a href="/key_creator/create/16?cipher=' . urlencode('AES-128 / Rijndael-128') . '">AES-128 / Rijndael-128</a></li>
+		echo '<h1>Encryption Key Creator</h1>
+		<p>Community Auth uses Blowfish for password hashing, but only for passwords created where PHP < v5.5.</p>
+		<p>Community Auth also uses Blowfish for session encryption.</p>
+		<p>More Information: <a href="https://www.codeigniter.com/user_guide/libraries/encryption.html" target="_blank">CodeIgniter Documentation for Encryption Library</a></p>
+		<h2>Choose an Encryption Cipher:</h2>
+		<ul>
+			<li><a href="/key_creator/create/16?cipher=' . urlencode('AES-128 / Rijndael-128') . '">AES-128 / Rijndael-128 (CodeIgniter Default)</a></li>
 			<li><a href="/key_creator/create/24?cipher=' . urlencode('AES-192') . '">AES-192</a></li>
 			<li><a href="/key_creator/create/32?cipher=' . urlencode('AES-256') . '">AES-256</a></li>
 			<li><a href="/key_creator/create/7?cipher=' . urlencode('DES') . '">DES</a></li>
