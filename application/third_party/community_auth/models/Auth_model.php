@@ -392,7 +392,7 @@ class Auth_model extends MY_Model {
 			}
 		}
 
-		$this->authentication->login_errors_count = max( $count1, $count2 );
+		return max( $count1, $count2 );
 	}
 
 	// --------------------------------------------------------------
