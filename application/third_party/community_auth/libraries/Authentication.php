@@ -436,10 +436,19 @@ class Authentication
 		// Get the user ID from the session
 		if( isset( $this->auth_identifiers['user_id'] ) )
 		{
-			// Delete last login time from user record
+			/**
+			 * If the session ID has been regenerated then 
+			 * the session ID in the auth sessions table 
+			 * will be the pre-regenerated session ID.
+			 */
+			$session_to_delete = is_null( $this->CI->session->regenerated_session_id ) 
+				? $this->CI->session->session_id 
+				: $this->CI->session->pre_regenerated_session_id;
+
+			// Delete the auth session record
 			$this->CI->{$this->auth_model}->logout( 
 				$this->auth_identifiers['user_id'], 
-				$this->CI->session->session_id 
+				$session_to_delete
 			);
 		}
 

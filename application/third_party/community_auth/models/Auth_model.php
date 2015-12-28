@@ -528,6 +528,7 @@ class Auth_model extends MY_Model {
 	 * Remove the auth session record when somebody logs out
 	 * 
 	 * @param  int  the user's ID 
+	 * @param  string  the session ID
 	 */
 	public function logout( $user_id, $session_id )
 	{
