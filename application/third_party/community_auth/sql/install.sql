@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `auth_sessions` (
   `id` varchar(40) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `login_time` datetime DEFAULT NULL,
+  `modified_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ip_address` varchar(45) NOT NULL,
   `user_agent` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`)

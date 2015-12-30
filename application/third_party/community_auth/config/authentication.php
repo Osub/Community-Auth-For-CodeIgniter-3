@@ -352,6 +352,27 @@ $config['login_form_validation_file'] = 'form_validation/examples/login';
 
 $config['declared_auth_model'] = 'auth_model';
 
+#
+# -----------------------------------------------------------------
+#				HANDLE AUTH SESSIONS GC ON LOGOUT						
+# -----------------------------------------------------------------
+# Unless you create a cron job that calls the auth_sessions_gc 
+# method in the auth model, you'll want to leave this setting 
+# set to TRUE so that orphaned and expired records in the 
+# auth_sessions table are deleted.
+#
+# If you do have a cron to handle garbage collection, set 
+# this setting to FALSE.
+#
+# Example cron to run once every 10 minutes:
+#     */10 * * * * php /path/to/project/index.php crons auth_sessions_gc > /dev/null 2>&1
+#
+# Example cront to run once every 10 minutes (using wget):
+#     */10 * * * * /usr/bin/wget http://<YOUR DOMAIN>/crons/auth_sessions_gc -O /dev/null
+#
+
+$config['auth_sessions_gc_on_logout'] = TRUE;
+
 
 /* End of file authentication.php */
 /* Location: /application/config/authentication.php */

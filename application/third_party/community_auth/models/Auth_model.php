@@ -539,6 +539,40 @@ class Auth_model extends MY_Model {
 
 	// --------------------------------------------------------------
 
+	/**
+	 * Garbage collection routine for old or orphaned auth sessions.
+	 * The auth sessions records are normally deleted if the user
+	 * logs out, but if they simply close the browser, the record
+	 * needs to be removed though garbage collection. This is subject 
+	 * to settings you have for sessions in config/config.
+	 */
+	public function auth_sessions_gc()
+	{
+		// GC for database based sessions
+		if( config_item('sess_driver') == 'database' )
+		{
+			// Immediately delete orphaned auth sessions
+			$this->db->query('
+				DELETE a
+				FROM `' . config_item('auth_sessions_table') . '` a
+				LEFT JOIN `' . config_item('sessions_table') . '` b
+				ON  b.id = a.id
+				WHERE b.id IS NULL
+			');
+		}
+
+		// GC for sessions not expiring on browser close
+		if( config_item('sess_expiration') != 0 )
+		{
+			$this->db->query('
+				DELETE FROM `' . config_item('auth_sessions_table') . '` 
+				WHERE modified_at < CURDATE() - INTERVAL ' . config_item('sess_expiration') . ' SECOND
+			');
+		}
+	}
+	
+	// -----------------------------------------------------------------------
+
 }
 
 /* End of file auth_model.php */

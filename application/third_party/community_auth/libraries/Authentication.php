@@ -473,6 +473,12 @@ class Authentication
 
 		// Delete the https tokens cookie
 		delete_cookie( config_item('https_tokens_name') );
+
+		// Garbage collection for the auth_sessions table
+		if( config_item('auth_sessions_gc_on_logout') )
+		{
+			$this->CI->{$this->auth_model}->auth_sessions_gc();
+		}
 	}
 
 	// --------------------------------------------------------------
