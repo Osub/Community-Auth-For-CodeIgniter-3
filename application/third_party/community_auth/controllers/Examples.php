@@ -151,6 +151,8 @@ class Examples extends MY_Controller
             'user_level'    => '1', // 9 if you want to login @ examples/index.
         );
 
+        // Load resources
+        $this->load->model('examples_model');
         $this->load->library('form_validation');
 
         $this->form_validation->set_data( $user_data );
@@ -183,7 +185,7 @@ class Examples extends MY_Controller
 		if( $this->form_validation->run() )
 		{
             $user_data['user_pass']  = $this->authentication->hash_passwd($user_data['user_pass']);
-            $user_data['user_id']    = $this->_get_unused_id();
+            $user_data['user_id']    = $this->examples_model->get_unused_id();
             $user_data['created_at'] = date('Y-m-d H:i:s');
 
             // If username is not used, it must be entered into the record as NULL
@@ -408,32 +410,6 @@ class Examples extends MY_Controller
         echo $this->load->view( 'examples/choose_password_form', $view_data, TRUE );
 
         echo $this->load->view('examples/page_footer', '', TRUE);
-    }
-
-    // --------------------------------------------------------------
-    
-    /**
-     * Get an unused ID for user creation
-     *
-     * @return  int between 1200 and 4294967295
-     */
-    private function _get_unused_id()
-    {
-        // Create a random user id between 1200 and 4294967295
-        $random_unique_int = 2147483648 + mt_rand( -2147482448, 2147483647 );
-
-        // Make sure the random user_id isn't already in use
-        $query = $this->db->where('user_id', $random_unique_int)
-            ->get_where(config_item('user_table'));
-
-        if ($query->num_rows() > 0) {
-            $query->free_result();
-
-            // If the random user_id is already in use, get a new number
-            return $this->_get_unused_id();
-        }
-
-        return $random_unique_int;
     }
 
     // --------------------------------------------------------------
