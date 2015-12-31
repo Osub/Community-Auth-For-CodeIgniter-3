@@ -48,9 +48,9 @@ class Examples_model extends MY_Model {
 	 */
 	public function get_recovery_data( $email )
 	{
-		$query = $this->db->select('u.user_id, u.user_email, u.user_banned')
-			->from( config_item('user_table') . ' u')
-			->where('u.user_email', $email)
+		$query = $this->db->select( 'u.user_id, u.user_email, u.user_banned' )
+			->from( config_item('user_table') . ' u' )
+			->where( 'LOWER( u.user_email ) =', strtolower( $email ) )
 			->limit(1)
 			->get();
 
@@ -67,12 +67,14 @@ class Examples_model extends MY_Model {
 	/**
 	 * Get the user name, user salt, and hashed recovery code,
 	 * but only if the recovery code hasn't expired.
+	 *
+	 * @param  int  the user ID
 	 */
 	public function get_recovery_verification_data( $user_id )
 	{
 		$recovery_code_expiration = date('Y-m-d H:i:s', time() - config_item('recovery_code_expiration') );
 
-		$query = $this->db->select('user_name,passwd_recovery_code')
+		$query = $this->db->select( 'user_name, passwd_recovery_code' )
 			->from( config_item('user_table') )
 			->where( 'user_id', $user_id )
 			->where( 'passwd_recovery_date >', $recovery_code_expiration )
@@ -94,7 +96,7 @@ class Examples_model extends MY_Model {
 	 */
 	public function recovery_password_change()
 	{
-		// The form validation class doesn't allow for multiple config files, so we do it the old fashion way
+		// Load form validation rules
 		$this->config->load( 'form_validation/examples/recovery_verification' );
 		$this->validation_rules = config_item('recovery_verification');
 
@@ -103,8 +105,8 @@ class Examples_model extends MY_Model {
 			$this->_change_password(
 				set_value('user_pass'),
 				set_value('user_pass_confirm'),
-				$this->input->post('user_identification'),
-				$this->input->post('recovery_code')
+				set_value('user_identification'),
+				set_value('recovery_code')
 			);
 		}
 	}
@@ -114,34 +116,21 @@ class Examples_model extends MY_Model {
 	/**
 	 * Change a user's password
 	 * 
-	 * @param  string  the form token
-	 * @param  string  the flash token to match the form token
 	 * @param  string  the new password
 	 * @param  string  the new password confirmed
 	 * @param  string  the user ID
-	 * @param  string  the special string
+	 * @param  string  the password recovery code
 	 */
-	protected function _change_password( $password, $password2, $user_id, $special_string )
+	protected function _change_password( $password, $password2, $user_id, $recovery_code )
 	{
 		// User ID check
 		if( isset( $user_id ) && $user_id !== FALSE )
 		{
-			$this->db->select('user_id');
-
-			// If special string is the CI encryption key, this is a self update or user update.
-			if( $special_string == config_item('encryption_key') )
-			{
-				$this->db->where( 'user_id', $user_id );
-			}
-
-			// If the special string was not present, this is a password recovery
-			else
-			{
-				$this->db->where( 'user_id', $user_id );
-				$this->db->where( 'passwd_recovery_code', $special_string );
-			}
-
-			$query = $this->db->get_where( config_item('user_table') );
+			$query = $this->db->select( 'user_id' )
+				->from( config_item('user_table') )
+				->where( 'user_id', $user_id )
+				->where( 'passwd_recovery_code', $recovery_code )
+				->get();
 
 			// If above query indicates a match, change the password
 			if( $query->num_rows() == 1 )
@@ -155,44 +144,6 @@ class Examples_model extends MY_Model {
 					);
 			}
 		}
-	}
-
-	// --------------------------------------------------------------
-
-	/**
-	 * Get an unused ID for user creation
-	 * 
-	 * @param   bool  whether to generate a user Id or registration ID
-	 * @return  int
-	 */
-	public function get_unused_id( $temp = FALSE )
-	{
-		// Create a random user id
-		$random_unique_int = mt_rand(1200,999999999);
-
-		// Make sure the random user_id isn't already in use
-		if($temp === FALSE)
-		{
-			// Generate unused user ID
-			$query = $this->db->where('user_id', $random_unique_int)
-								->get_where( config_item('user_table'));
-		}
-		else
-		{
-			// Generate unused registration ID
-			$query = $this->db->where('reg_id', $random_unique_int)
-								->get_where( config_item('temp_reg_data_table'));
-		}
-
-		if ($query->num_rows() > 0)
-		{
-			$query->free_result();
-
-			// If the random user_id is already in use, get a new number
-			$this->get_unused_id($temp);
-		}
-
-		return $random_unique_int;
 	}
 
 	// --------------------------------------------------------------

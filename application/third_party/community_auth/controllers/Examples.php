@@ -56,18 +56,22 @@ class Examples extends MY_Controller
      */
     public function optional_login_test()
     {
-        if ($this->verify_min_level(1)) {
+        if( $this->verify_min_level(1) )
+        {
             $page_content = '<p>Although not required, you are logged in!</p>';
-        } elseif ($this->tokens->match && $this->optional_login()) {
+        }
+        elseif( $this->tokens->match && $this->optional_login() )
+        {
             // Let Community Auth handle the login attempt ...
-        } else {
+        }
+        else
+        {
             // Notice parameter set to TRUE, which designates this as an optional login
             $this->setup_login_form(TRUE);
 
             $page_content = '<p>You are not logged in, but can still see this page.</p>';
 
             $page_content .= $this->load->view('examples/login_form', '', TRUE);
-
         }
 
         echo $this->load->view('examples/page_header', '', TRUE);
@@ -415,8 +419,8 @@ class Examples extends MY_Controller
      */
     private function _get_unused_id()
     {
-        // Create a random user id
-        $random_unique_int = 2147483648 + mt_rand( -2147482447, 2147483647 );
+        // Create a random user id between 1200 and 4294967295
+        $random_unique_int = 2147483648 + mt_rand( -2147482448, 2147483647 );
 
         // Make sure the random user_id isn't already in use
         $query = $this->db->where('user_id', $random_unique_int)
