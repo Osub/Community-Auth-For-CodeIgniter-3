@@ -5,7 +5,7 @@
 --
 -- @package     Community Auth
 -- @author      Robert B Gottier
--- @copyright   Copyright (c) 2011 - 2015, Robert B Gottier. (http://brianswebdesign.com/)
+-- @copyright   Copyright (c) 2011 - 2016, Robert B Gottier. (http://brianswebdesign.com/)
 -- @license     BSD - http://www.opensource.org/licenses/BSD-3-Clause
 -- @link        http://community-auth.com
 --

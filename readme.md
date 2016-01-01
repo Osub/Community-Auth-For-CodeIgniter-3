@@ -93,7 +93,7 @@ License
 
 Community Auth is distributed with a Revised "3-clause" BSD license, http://www.opensource.org/licenses/BSD-3-Clause:
 
-Copyright (c) 2011 - 2015, Robert B Gottier.
+Copyright (c) 2011 - 2016, Robert B Gottier.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
