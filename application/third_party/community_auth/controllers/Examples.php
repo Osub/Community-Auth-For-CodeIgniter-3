@@ -148,7 +148,7 @@ class Examples extends MY_Controller
             'username'   => 'skunkbot',
             'passwd'     => 'PepeLePew7',
             'email'      => 'skunkbot@example.com',
-            'user_level' => '1', // 9 if you want to login @ examples/index.
+            'auth_level' => '1', // 9 if you want to login @ examples/index.
         );
 
         // Load resources
@@ -174,8 +174,8 @@ class Examples extends MY_Controller
 				'rules' => 'required|valid_email|is_unique[' . config_item('user_table') . '.email]'
 			),
 			array(
-				'field' => 'user_level',
-				'label' => 'user_level',
+				'field' => 'auth_level',
+				'label' => 'auth_level',
 				'rules' => 'required|integer|in_list[1,6,9]'
 			)
 		);

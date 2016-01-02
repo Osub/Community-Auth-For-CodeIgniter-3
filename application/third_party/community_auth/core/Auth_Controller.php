@@ -304,8 +304,8 @@ class Auth_Controller extends CI_Controller {
 		// Set user specific variables to be available in controllers
 		$this->auth_user_id  = $this->auth_data->user_id;
 		$this->auth_username = $this->auth_data->username;
-		$this->auth_level    = $this->auth_data->user_level;
-		$this->auth_role     = $this->authentication->roles[$this->auth_data->user_level];
+		$this->auth_level    = $this->auth_data->auth_level;
+		$this->auth_role     = $this->authentication->roles[$this->auth_data->auth_level];
 		$this->auth_email    = $this->auth_data->email;
 
 		// Set user specific variables to be available in all views

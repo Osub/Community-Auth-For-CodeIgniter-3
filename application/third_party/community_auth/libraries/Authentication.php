@@ -101,10 +101,10 @@ class Authentication
 		// Set the auth model
 		$this->auth_model = config_item('declared_auth_model');
 
-		// Make roles available by user_level (int) => role name (string)
+		// Make roles available by auth_level (int) => role name (string)
 		$this->roles = config_item('levels_and_roles');
 
-		// Make levels available by role name (string) => user_level (int)
+		// Make levels available by role name (string) => auth_level (int)
 		$this->levels = array_flip( $this->roles );
 
 		// Set the auth identifiers if exists
@@ -263,8 +263,8 @@ class Authentication
 							"\n password in database       = " . $auth_data->passwd .
 							"\n supplied password match    = " . (string) $this->check_passwd( $auth_data->passwd, $passwd ) . 
 							"\n required level or role     = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
-							"\n user level in database     = " . $auth_data->user_level . 
-							"\n user level equivalant role = " . $this->roles[$auth_data->user_level]
+							"\n auth level in database     = " . $auth_data->auth_level . 
+							"\n auth level equivalant role = " . $this->roles[$auth_data->auth_level]
 						);
 					}
 					else
@@ -352,8 +352,8 @@ class Authentication
 					'debug',
 					"\n user is banned                  = " . ( $auth_data->user_banned === 1 ? 'yes' : 'no' ) .
 					"\n required level or role          = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
-					"\n user level in database          = " . $auth_data->user_level . 
-					"\n user level in database (string) = " . $this->roles[$auth_data->user_level]
+					"\n auth level in database          = " . $auth_data->auth_level . 
+					"\n auth level in database (string) = " . $this->roles[$auth_data->auth_level]
 				);
 			}
 			else
@@ -609,10 +609,10 @@ class Authentication
 		}
 
 		// Check if the user has the appropriate user level
-		$wrong_level = ( is_int( $requirement ) && $auth_data->user_level < $requirement );
+		$wrong_level = ( is_int( $requirement ) && $auth_data->auth_level < $requirement );
 
 		// Check if the user has the appropriate role
-		$wrong_role = ( is_array( $requirement ) && ! in_array( $this->roles[$auth_data->user_level], $requirement ) );
+		$wrong_role = ( is_array( $requirement ) && ! in_array( $this->roles[$auth_data->auth_level], $requirement ) );
 
 		// If anything wrong
 		if( $is_banned OR $wrong_level OR $wrong_role OR $wrong_password )

@@ -38,7 +38,7 @@ class Auth_model extends MY_Model {
 		$selected_columns = array(
 			'username',
 			'email',
-			'user_level',
+			'auth_level',
 			'passwd',
 			'user_id',
 			'user_banned'
@@ -75,7 +75,7 @@ class Auth_model extends MY_Model {
 				->delete( config_item('auth_sessions_table') );
 		}
 
-		$data = array( 'user_last_login' => $user_login_time );
+		$data = array( 'last_login' => $user_login_time );
 
 		$this->db->where( 'user_id' , $user_id )
 			->update( config_item('user_table') , $data );
@@ -144,7 +144,7 @@ class Auth_model extends MY_Model {
 		$selected_columns = array(
 			'u.username',
 			'u.email',
-			'u.user_level',
+			'u.auth_level',
 			'u.user_id',
 			'u.user_banned'
 		);

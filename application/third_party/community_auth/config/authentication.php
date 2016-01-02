@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 | Admin should remain being called "admin", but the key may be changed. 
 | Keep in mind that if you change the number to higher than 9, then the 
-| user_level field of the users table will need to be adjusted.
+| auth_level field of the users table will need to be adjusted.
 |
 | No user level should ever be set with a key of 0.
 |
