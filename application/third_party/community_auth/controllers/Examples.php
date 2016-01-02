@@ -147,7 +147,7 @@ class Examples extends MY_Controller
         $user_data = array(
             'username'   => 'skunkbot',
             'user_pass'  => 'PepeLePew7',
-            'user_email' => 'skunkbot@example.com',
+            'email'      => 'skunkbot@example.com',
             'user_level' => '1', // 9 if you want to login @ examples/index.
         );
 
@@ -169,9 +169,9 @@ class Examples extends MY_Controller
 				'rules' => 'trim|required|external_callbacks[model,formval_callbacks,_check_password_strength,TRUE]',
 			),
 			array(
-				'field' => 'user_email',
-				'label' => 'user_email',
-				'rules' => 'required|valid_email|is_unique[' . config_item('user_table') . '.user_email]'
+				'field' => 'email',
+				'label' => 'email',
+				'rules' => 'required|valid_email|is_unique[' . config_item('user_table') . '.email]'
 			),
 			array(
 				'field' => 'user_level',
@@ -267,15 +267,15 @@ class Examples extends MY_Controller
         else
         {
             // If the form post looks good
-            if( $this->tokens->match && $this->input->post('user_email') )
+            if( $this->tokens->match && $this->input->post('email') )
             {
-                if( $user_data = $this->examples_model->get_recovery_data( $this->input->post('user_email') ) )
+                if( $user_data = $this->examples_model->get_recovery_data( $this->input->post('email') ) )
                 {
                     // Check if user is banned
                     if( $user_data->user_banned == '1' )
                     {
                         // Log an error if banned
-                        $this->authentication->log_error( $this->input->post('user_email', TRUE ) );
+                        $this->authentication->log_error( $this->input->post('email', TRUE ) );
 
                         // Show special message for banned user
                         $view_data['user_banned'] = 1;
@@ -314,7 +314,7 @@ class Examples extends MY_Controller
                 else
                 {
                     // Log the error
-                    $this->authentication->log_error( $this->input->post('user_email', TRUE ) );
+                    $this->authentication->log_error( $this->input->post('email', TRUE ) );
 
                     $view_data['no_match'] = 1;
                 }

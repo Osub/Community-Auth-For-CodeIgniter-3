@@ -101,11 +101,11 @@ if( isset( $show_form ) )
 
 						<?php
 							// EMAIL ADDRESS *************************************************
-							echo form_label('Email Address','user_email',array('class'=>'form_label'));
+							echo form_label('Email Address','email',array('class'=>'form_label'));
 
 							$input_data = array(
-								'name'		=> 'user_email',
-								'id'		=> 'user_email',
+								'name'		=> 'email',
+								'id'		=> 'email',
 								'class'		=> 'form_input',
 								'maxlength' => 255
 							);

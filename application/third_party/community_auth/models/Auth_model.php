@@ -37,7 +37,7 @@ class Auth_model extends MY_Model {
 		// Selected user table data
 		$selected_columns = array(
 			'username',
-			'user_email',
+			'email',
 			'user_level',
 			'user_pass',
 			'user_id',
@@ -48,7 +48,7 @@ class Auth_model extends MY_Model {
 		$query = $this->db->select( $selected_columns )
 			->from( config_item('user_table') )
 			->where( 'LOWER( username ) =', strtolower( $user_string ) )
-			->or_where( 'LOWER( user_email ) =', strtolower( $user_string ) )
+			->or_where( 'LOWER( email ) =', strtolower( $user_string ) )
 			->limit(1)
 			->get();
 
@@ -143,7 +143,7 @@ class Auth_model extends MY_Model {
 		// Selected user table data
 		$selected_columns = array(
 			'u.username',
-			'u.user_email',
+			'u.email',
 			'u.user_level',
 			'u.user_id',
 			'u.user_banned'
@@ -278,7 +278,7 @@ class Auth_model extends MY_Model {
 	{
 		$posted_string = ( ! $recovery ) 
 			? $this->input->post( 'login_string' ) 
-			: $this->input->post( 'user_email', TRUE );
+			: $this->input->post( 'email', TRUE );
 
 		// Check posted string for basic validity.
 		if( ! empty( $posted_string ) && strlen( $posted_string ) < 256 )
