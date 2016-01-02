@@ -29,7 +29,7 @@ class Auth_Controller extends CI_Controller {
 	 * @var string
 	 * @access public
 	 */
-	public $auth_user_name;
+	public $auth_username;
 
 	/**
 	 * The logged-in user's authentication account type by number
@@ -302,27 +302,27 @@ class Auth_Controller extends CI_Controller {
 	protected function _set_user_variables()
 	{
 		// Set user specific variables to be available in controllers
-		$this->auth_user_id    = $this->auth_data->user_id;
-		$this->auth_user_name  = $this->auth_data->user_name;
-		$this->auth_level      = $this->auth_data->user_level;
-		$this->auth_role       = $this->authentication->roles[$this->auth_data->user_level];
-		$this->auth_email      = $this->auth_data->user_email;
+		$this->auth_user_id  = $this->auth_data->user_id;
+		$this->auth_username = $this->auth_data->username;
+		$this->auth_level    = $this->auth_data->user_level;
+		$this->auth_role     = $this->authentication->roles[$this->auth_data->user_level];
+		$this->auth_email    = $this->auth_data->user_email;
 
 		// Set user specific variables to be available in all views
 		$data = array(
-			'auth_user_id'    => $this->auth_user_id,
-			'auth_user_name'  => $this->auth_user_name,
-			'auth_level'      => $this->auth_level,
-			'auth_role'       => $this->auth_role,
-			'auth_email'      => $this->auth_email
+			'auth_user_id'  => $this->auth_user_id,
+			'auth_username' => $this->auth_username,
+			'auth_level'    => $this->auth_level,
+			'auth_role'     => $this->auth_role,
+			'auth_email'    => $this->auth_email
 		);
 
 		// Set user specific variables to be available as config items
-		$this->config->set_item( 'auth_user_id',    $this->auth_user_id );
-		$this->config->set_item( 'auth_user_name',  $this->auth_user_name );
-		$this->config->set_item( 'auth_level',      $this->auth_level );
-		$this->config->set_item( 'auth_role',       $this->auth_role );
-		$this->config->set_item( 'auth_email',      $this->auth_email );
+		$this->config->set_item( 'auth_user_id',  $this->auth_user_id );
+		$this->config->set_item( 'auth_username', $this->auth_username );
+		$this->config->set_item( 'auth_level',    $this->auth_level );
+		$this->config->set_item( 'auth_role',     $this->auth_role );
+		$this->config->set_item( 'auth_email',    $this->auth_email );
 
 		// Load vars
 		$this->load->vars($data);

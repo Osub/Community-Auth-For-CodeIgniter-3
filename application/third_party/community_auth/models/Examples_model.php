@@ -74,7 +74,7 @@ class Examples_model extends MY_Model {
 	{
 		$recovery_code_expiration = date('Y-m-d H:i:s', time() - config_item('recovery_code_expiration') );
 
-		$query = $this->db->select( 'user_name, passwd_recovery_code' )
+		$query = $this->db->select( 'username, passwd_recovery_code' )
 			->from( config_item('user_table') )
 			->where( 'user_id', $user_id )
 			->where( 'passwd_recovery_date >', $recovery_code_expiration )

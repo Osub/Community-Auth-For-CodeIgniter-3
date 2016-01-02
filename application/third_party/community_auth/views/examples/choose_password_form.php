@@ -99,10 +99,10 @@ if( $showform == 1 )
 	{
 		if( isset( $display_instructions ) )
 		{
-			if( isset( $user_name ) )
+			if( isset( $username ) )
 			{
 				echo '<p>
-					Your login user name is <i>' . $user_name . '</i><br />
+					Your login user name is <i>' . $username . '</i><br />
 					Please write this down, and change your password now:
 				</p>';
 			}

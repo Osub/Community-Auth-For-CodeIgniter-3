@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `username_or_email_on_hold` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(10) unsigned NOT NULL,
-  `user_name` varchar(12) DEFAULT NULL,
+  `username` varchar(12) DEFAULT NULL,
   `user_email` varchar(255) NOT NULL,
   `user_pass` varchar(60) NOT NULL,
   `user_last_login` datetime DEFAULT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_name` (`user_name`),
+  UNIQUE KEY `username` (`username`),
   UNIQUE KEY `user_email` (`user_email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

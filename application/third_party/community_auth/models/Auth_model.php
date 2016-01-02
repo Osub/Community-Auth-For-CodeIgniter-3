@@ -36,7 +36,7 @@ class Auth_model extends MY_Model {
 	{
 		// Selected user table data
 		$selected_columns = array(
-			'user_name',
+			'username',
 			'user_email',
 			'user_level',
 			'user_pass',
@@ -47,7 +47,7 @@ class Auth_model extends MY_Model {
 		// User table query
 		$query = $this->db->select( $selected_columns )
 			->from( config_item('user_table') )
-			->where( 'LOWER( user_name ) =', strtolower( $user_string ) )
+			->where( 'LOWER( username ) =', strtolower( $user_string ) )
 			->or_where( 'LOWER( user_email ) =', strtolower( $user_string ) )
 			->limit(1)
 			->get();
@@ -142,7 +142,7 @@ class Auth_model extends MY_Model {
 	{
 		// Selected user table data
 		$selected_columns = array(
-			'u.user_name',
+			'u.username',
 			'u.user_email',
 			'u.user_level',
 			'u.user_id',

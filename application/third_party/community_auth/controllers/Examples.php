@@ -102,7 +102,7 @@ class Examples extends MY_Controller
             echo $this->auth_role . ' logged in!<br />
                 User ID is ' . $this->auth_user_id . '<br />
                 Auth level is ' . $this->auth_level . '<br />
-                Username is ' . $this->auth_user_name;
+                Username is ' . $this->auth_username;
 
             if( $http_user_cookie_contents = $this->input->cookie( config_item('http_user_cookie_name') ) )
             {
@@ -145,10 +145,10 @@ class Examples extends MY_Controller
     {
         // Customize this array for your user
         $user_data = array(
-            'user_name'     => 'skunkbot',
-            'user_pass'     => 'PepeLePew7',
-            'user_email'    => 'skunkbot@example.com',
-            'user_level'    => '1', // 9 if you want to login @ examples/index.
+            'username'   => 'skunkbot',
+            'user_pass'  => 'PepeLePew7',
+            'user_email' => 'skunkbot@example.com',
+            'user_level' => '1', // 9 if you want to login @ examples/index.
         );
 
         // Load resources
@@ -159,9 +159,9 @@ class Examples extends MY_Controller
 
         $validation_rules = array(
 			array(
-				'field' => 'user_name',
-				'label' => 'user_name',
-				'rules' => 'max_length[12]|is_unique[' . config_item('user_table') . '.user_name]'
+				'field' => 'username',
+				'label' => 'username',
+				'rules' => 'max_length[12]|is_unique[' . config_item('user_table') . '.username]'
 			),
 			array(
 				'field' => 'user_pass',
@@ -189,16 +189,16 @@ class Examples extends MY_Controller
             $user_data['created_at'] = date('Y-m-d H:i:s');
 
             // If username is not used, it must be entered into the record as NULL
-            if( empty( $user_data['user_name'] ) )
+            if( empty( $user_data['username'] ) )
             {
-                $user_data['user_name'] = NULL;
+                $user_data['username'] = NULL;
             }
 
 			$this->db->set($user_data)
 				->insert(config_item('user_table'));
 
 			if ($this->db->affected_rows() == 1) {
-				echo '<h1>Congratulations</h1>' . '<p>User ' . $user_data['user_name'] . ' was created.</p>';
+				echo '<h1>Congratulations</h1>' . '<p>User ' . $user_data['username'] . ' was created.</p>';
 			}
 		}
 		else
@@ -373,7 +373,7 @@ class Examples extends MY_Controller
                 if( $recovery_data->passwd_recovery_code == $this->authentication->check_passwd( $recovery_data->passwd_recovery_code, $recovery_code ) )
                 {
                     $view_data['user_id']       = $user_id;
-                    $view_data['user_name']     = $recovery_data->user_name;
+                    $view_data['username']     = $recovery_data->username;
                     $view_data['recovery_code'] = $recovery_data->passwd_recovery_code;
                 }
 
