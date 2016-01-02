@@ -161,7 +161,7 @@ class Examples extends MY_Controller
 			array(
 				'field' => 'user_name',
 				'label' => 'user_name',
-				'rules' => 'max_length[12]'
+				'rules' => 'max_length[12]|is_unique[' . config_item('user_table') . '.user_name]'
 			),
 			array(
 				'field' => 'user_pass',
@@ -171,7 +171,7 @@ class Examples extends MY_Controller
 			array(
 				'field' => 'user_email',
 				'label' => 'user_email',
-				'rules' => 'required|valid_email'
+				'rules' => 'required|valid_email|is_unique[' . config_item('user_table') . '.user_email]'
 			),
 			array(
 				'field' => 'user_level',
