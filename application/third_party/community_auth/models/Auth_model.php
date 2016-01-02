@@ -41,7 +41,7 @@ class Auth_model extends MY_Model {
 			'auth_level',
 			'passwd',
 			'user_id',
-			'user_banned'
+			'banned'
 		);
 
 		// User table query
@@ -146,7 +146,7 @@ class Auth_model extends MY_Model {
 			'u.email',
 			'u.auth_level',
 			'u.user_id',
-			'u.user_banned'
+			'u.banned'
 		);
 
 		$this->db->select( $selected_columns )

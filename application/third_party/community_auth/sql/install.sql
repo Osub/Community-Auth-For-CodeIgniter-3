@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `passwd` varchar(60) NOT NULL,
   `last_login` datetime DEFAULT NULL,
   `auth_level` tinyint(2) unsigned NOT NULL,
-  `user_banned` enum('0','1') NOT NULL DEFAULT '0',
+  `banned` enum('0','1') NOT NULL DEFAULT '0',
   `passwd_recovery_code` varchar(60) DEFAULT NULL,
   `passwd_recovery_date` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,

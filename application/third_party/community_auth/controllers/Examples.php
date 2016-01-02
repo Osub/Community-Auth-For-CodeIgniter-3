@@ -272,13 +272,13 @@ class Examples extends MY_Controller
                 if( $user_data = $this->examples_model->get_recovery_data( $this->input->post('email') ) )
                 {
                     // Check if user is banned
-                    if( $user_data->user_banned == '1' )
+                    if( $user_data->banned == '1' )
                     {
                         // Log an error if banned
                         $this->authentication->log_error( $this->input->post('email', TRUE ) );
 
                         // Show special message for banned user
-                        $view_data['user_banned'] = 1;
+                        $view_data['banned'] = 1;
                     }
                     else
                     {

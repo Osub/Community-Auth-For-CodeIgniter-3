@@ -34,7 +34,7 @@ if( isset( $disabled ) )
 		</div>
 	';
 }
-else if( isset( $user_banned ) )
+else if( isset( $banned ) )
 {
 	echo '
 		<div style="border:1px solid red;">

@@ -259,7 +259,7 @@ class Authentication
 						// Login failed ...
 						log_message(
 							'debug',
-							"\n user is banned             = " . ( $auth_data->user_banned === 1 ? 'yes' : 'no' ) .
+							"\n user is banned             = " . ( $auth_data->banned === 1 ? 'yes' : 'no' ) .
 							"\n password in database       = " . $auth_data->passwd .
 							"\n supplied password match    = " . (string) $this->check_passwd( $auth_data->passwd, $passwd ) . 
 							"\n required level or role     = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
@@ -350,7 +350,7 @@ class Authentication
 				// Logged in check failed ...
 				log_message(
 					'debug',
-					"\n user is banned                  = " . ( $auth_data->user_banned === 1 ? 'yes' : 'no' ) .
+					"\n user is banned                  = " . ( $auth_data->banned === 1 ? 'yes' : 'no' ) .
 					"\n required level or role          = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
 					"\n auth level in database          = " . $auth_data->auth_level . 
 					"\n auth level in database (string) = " . $this->roles[$auth_data->auth_level]
@@ -592,7 +592,7 @@ class Authentication
 	private function _user_confirmed( $auth_data, $requirement, $passwd = FALSE )
 	{
 		// Check if user is banned
-		$is_banned = ( $auth_data->user_banned === '1' );
+		$is_banned = ( $auth_data->banned === '1' );
 
 		// Is this a login attempt
 		if( $passwd )

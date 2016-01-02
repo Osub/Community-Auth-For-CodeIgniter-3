@@ -48,7 +48,7 @@ class Examples_model extends MY_Model {
 	 */
 	public function get_recovery_data( $email )
 	{
-		$query = $this->db->select( 'u.user_id, u.email, u.user_banned' )
+		$query = $this->db->select( 'u.user_id, u.email, u.banned' )
 			->from( config_item('user_table') . ' u' )
 			->where( 'LOWER( u.email ) =', strtolower( $email ) )
 			->limit(1)
