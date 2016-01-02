@@ -326,20 +326,21 @@ class Authentication
 		
 		// No reason to continue if auth identifiers is empty
 		if( empty( $this->auth_identifiers ) )
-		{
 			return FALSE;
-		}
 
 		// Use contents of auth identifiers
-		$user_id         = $this->auth_identifiers['user_id'];
-		$user_login_time = $this->auth_identifiers['user_login_time'];
+		$user_id    = $this->auth_identifiers['user_id'];
+		$login_time = $this->auth_identifiers['login_time'];
 
 		/*
 		 * Check database for matching user record:
 		 * 1) user ID matches
 		 * 2) login time matches
 		 */
-		$auth_data = $this->CI->{$this->auth_model}->check_login_status( $user_id, $user_login_time );
+		$auth_data = $this->CI->{$this->auth_model}->check_login_status( 
+			$user_id, 
+			$login_time 
+		);
 
 		// If the query produced a match
 		if( $auth_data !== FALSE )
@@ -350,10 +351,14 @@ class Authentication
 				// Logged in check failed ...
 				log_message(
 					'debug',
-					"\n user is banned                  = " . ( $auth_data->banned === 1 ? 'yes' : 'no' ) .
-					"\n required level or role          = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
-					"\n auth level in database          = " . $auth_data->auth_level . 
-					"\n auth level in database (string) = " . $this->roles[$auth_data->auth_level]
+					"\n user is banned                  = " . 
+						( $auth_data->banned === 1 ? 'yes' : 'no' ) .
+					"\n required level or role          = " . 
+						( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
+					"\n auth level in database          = " . 
+						$auth_data->auth_level . 
+					"\n auth level in database (string) = " . 
+						$this->roles[$auth_data->auth_level]
 				);
 			}
 			else
@@ -370,8 +375,8 @@ class Authentication
 			// Auth Data === FALSE because no user matching in DB ...
 			log_message(
 				'debug',
-				"\n user id from session         = " . $user_id . 
-				"\n last login time from session = " . $user_login_time
+				"\n user id from session    = " . $user_id . 
+				"\n login time from session = " . $login_time
 			);
 		}
 
@@ -417,7 +422,7 @@ class Authentication
 		// Insert the error
 		$data = array(
 			'username_or_email' => $string,
-			'IP_address'        => $this->CI->input->ip_address(),
+			'ip_address'        => $this->CI->input->ip_address(),
 			'time'              => date('Y-m-d H:i:s')
 		);
 
@@ -476,9 +481,7 @@ class Authentication
 
 		// Garbage collection for the auth_sessions table
 		if( config_item('auth_sessions_gc_on_logout') )
-		{
 			$this->CI->{$this->auth_model}->auth_sessions_gc();
-		}
 	}
 
 	// --------------------------------------------------------------
@@ -497,23 +500,17 @@ class Authentication
 	{
 		// If no salt provided for older PHP versions, make one
 		if( ! is_php('5.5') && empty( $random_salt ) )
-		{
 			$random_salt = $this->random_salt();
-		}
 
 		// PHP 5.5+ uses new password hashing function
-		if( is_php('5.5') )
-		{
+		if( is_php('5.5') ){
 			return password_hash( $password, PASSWORD_BCRYPT, array( 'cost' => 11 ) );
 		}
 
 		// Older versions of PHP use crypt
-		else if( is_php('5.3.7') )
-		{
+		else if( is_php('5.3.7') ){
 			return crypt( $password, '$2y$10$' . $random_salt );
-		}
-		else
-		{
+		}else{
 			return crypt( $password, '$2a$09$' . $random_salt );
 		}
 	}
@@ -535,12 +532,9 @@ class Authentication
 	 */
 	public function check_passwd( $hash, $password )
 	{
-		if( is_php('5.5') && password_verify( $password, $hash ) )
-		{
+		if( is_php('5.5') && password_verify( $password, $hash ) ){
 			return TRUE;
-		}
-		else if( $hash === crypt( $password, $hash ) )
-		{
+		}else if( $hash === crypt( $password, $hash ) ){
 			return TRUE;
 		}
 
@@ -616,9 +610,7 @@ class Authentication
 
 		// If anything wrong
 		if( $is_banned OR $wrong_level OR $wrong_role OR $wrong_password )
-		{
 			return FALSE;
-		}
 
 		return TRUE;
 	}
@@ -644,7 +636,7 @@ class Authentication
 		header( "Location: " . $url, TRUE, 302 );
 
 		// Store login time in database and cookie
-		$user_login_time = date('Y-m-d H:i:s');
+		$login_time = date('Y-m-d H:i:s');
 
 		/**
 		 * Since the session cookie needs to be able to use
@@ -663,21 +655,16 @@ class Authentication
 		$http_user_cookie_elements = config_item('http_user_cookie_elements');
 		if( is_array( $http_user_cookie_elements ) && ! empty( $http_user_cookie_elements ) )
 		{
-	
 			foreach( $http_user_cookie_elements as $element )
 			{
 				if( isset( $auth_data->$element ) )
-				{
 					$http_user_cookie_data[ $element ] = $auth_data->$element;
-				}
 			}
 		}
 
 		// Serialize the HTTP user cookie data
 		if( isset( $http_user_cookie_data ) )
-		{
 			$http_user_cookie['value'] = serialize_data( $http_user_cookie_data );
-		}
 
 		// Check if remember me requested, and set cookie if yes
 		if( config_item('allow_remember_me') && $this->CI->input->post('remember_me') )
@@ -709,21 +696,17 @@ class Authentication
 
 		// Only set the HTTP user cookie is there is data to set.
 		if( isset( $http_user_cookie_data ) )
-		{
 			$this->CI->input->set_cookie( $http_user_cookie );
-		}
 
 		// Create the auth identifier
 		$auth_identifiers = serialize( array(
-			'user_id'         => $auth_data->user_id,
-			'user_login_time' => $user_login_time
+			'user_id'    => $auth_data->user_id,
+			'login_time' => $login_time
 		));
 
 		// Encrypt the auth identifier if necessary
 		if( config_item('encrypt_auth_identifiers') )
-		{
 			$auth_identifiers = $this->CI->encryption->encrypt( $auth_identifiers );
-		}
 
 		// Set CI session cookie
 		$this->CI->session->set_userdata( 'auth_identifiers', $auth_identifiers );
@@ -732,7 +715,11 @@ class Authentication
 		$session_id = $this->CI->session->sess_regenerate( TRUE );
 
 		// Update user record in database
-		$this->CI->{$this->auth_model}->login_update( $auth_data->user_id, $user_login_time, $session_id );
+		$this->CI->{$this->auth_model}->login_update( 
+			$auth_data->user_id, 
+			$login_time, 
+			$session_id
+		);
 	}
 	
 	// -----------------------------------------------------------------------
@@ -754,9 +741,7 @@ class Authentication
 
 		// If there is a match for the URI string, all is well
 		if( in_array( $uri_string, $allowed_pages ) )
-		{
 			return TRUE;
-		}
 
 		// No match for URI string, so log it
 		log_message(

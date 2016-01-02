@@ -52,10 +52,8 @@ class Auth_model extends MY_Model {
 			->limit(1)
 			->get();
 
-		if ( $query->num_rows() == 1 )
-		{
+		if( $query->num_rows() == 1 )
 			return $query->row();
-		}
 
 		return FALSE;
 	}
@@ -65,9 +63,11 @@ class Auth_model extends MY_Model {
 	/**
 	 * Update the user's user table record when they login
 	 * 
-	 * @param  array  the user's user table data 
+	 * @param  array  the user's user table data
+	 * @param  string  the login time in MySQL format
+	 * @param  array  the session ID 
 	 */
-	public function login_update( $user_id, $user_login_time, $session_id )
+	public function login_update( $user_id, $login_time, $session_id )
 	{
 		if( config_item('disallow_multiple_logins') === TRUE )
 		{
@@ -75,7 +75,7 @@ class Auth_model extends MY_Model {
 				->delete( config_item('auth_sessions_table') );
 		}
 
-		$data = array( 'last_login' => $user_login_time );
+		$data = array( 'last_login' => $login_time );
 
 		$this->db->where( 'user_id' , $user_id )
 			->update( config_item('user_table') , $data );
@@ -83,7 +83,7 @@ class Auth_model extends MY_Model {
 		$data = array(
 			'id'         => $session_id,
 			'user_id'    => $user_id,
-			'login_time' => $user_login_time,
+			'login_time' => $login_time,
 			'ip_address' => $this->input->ip_address(),
 			'user_agent' => $this->_user_agent()
 		);
@@ -100,20 +100,13 @@ class Auth_model extends MY_Model {
 	{
 		$this->load->library('user_agent');
 
-		if( $this->agent->is_browser() )
-		{
+		if( $this->agent->is_browser() ){
 			$agent = $this->agent->browser() . ' ' . $this->agent->version();
-		}
-		else if( $this->agent->is_robot() )
-		{
+		}else if( $this->agent->is_robot() ){
 			$agent = $this->agent->robot();
-		}
-		else if( $this->agent->is_mobile() )
-		{
+		}else if( $this->agent->is_mobile() ){
 			$agent = $this->agent->mobile();
-		}
-		else
-		{
+		}else{
 			$agent = 'Unidentified User Agent';
 		}
 
@@ -129,16 +122,15 @@ class Auth_model extends MY_Model {
 	/**
 	 * Check user table and confirm there is a record where:
 	 *
-	 * 1) The last user modification date matches
-	 * 2) The user ID matches
-	 * 3) The user login time matches ( if multiple logins are not allowed )
+	 * 1) The user ID matches
+	 * 2) The login time matches
 	 * 
 	 * If there is a matching record, return a specified subset of the record.
 	 *
-	 * @param   int    the user ID
-	 * @return  mixed  either query data as an object or FALSE
+	 * @param   int     the user ID
+	 * @return  string  the login time in MySQL format
 	 */
-	public function check_login_status( $user_id, $user_login_time )
+	public function check_login_status( $user_id, $login_time )
 	{
 		// Selected user table data
 		$selected_columns = array(
@@ -153,7 +145,7 @@ class Auth_model extends MY_Model {
 			->from( config_item('user_table') . ' u' )
 			->join( config_item('auth_sessions_table') . ' s', 'u.user_id = s.user_id' )
 			->where( 's.user_id', $user_id )
-			->where( 's.login_time', $user_login_time );
+			->where( 's.login_time', $login_time );
 
 		// If the session ID was NOT regenerated, the session IDs should match
 		if( is_null( $this->session->regenerated_session_id ) )
@@ -170,10 +162,8 @@ class Auth_model extends MY_Model {
 		$this->db->limit(1);
 		$query = $this->db->get();
 
-		if ( $query->num_rows() == 1 )
-		{
+		if( $query->num_rows() == 1 )
 			return $query->row();
-		}
 
 		return FALSE;
 	}
@@ -237,9 +227,7 @@ class Auth_model extends MY_Model {
 		$string_hold = $this->check_username_or_email_hold( $recovery );
 
 		if( $ip_hold === TRUE OR $string_hold === TRUE )
-		{
 			return TRUE;
-		}
 
 		return FALSE;
 	}
@@ -255,13 +243,11 @@ class Auth_model extends MY_Model {
 	{
 		$ip_hold = $this->db->get_where( 
 			config_item('IP_hold_table'), 
-			array( 'IP_address' => $this->input->ip_address() ) 
+			array( 'ip_address' => $this->input->ip_address() ) 
 		);
 
 		if( $ip_hold->num_rows() > 0 )
-		{
 			return TRUE;
-		}
 
 		return FALSE;
 	}
@@ -289,9 +275,7 @@ class Auth_model extends MY_Model {
 			);
 
 			if( $string_hold->num_rows() > 0 )
-			{
 				return TRUE;
-			}
 		}
 
 		return FALSE;
@@ -323,14 +307,14 @@ class Auth_model extends MY_Model {
 		$ip_address = $this->input->ip_address();
 
 		// Check if this IP now has too many login attempts
-		$count1 = $this->db->where( 'IP_address', $ip_address )
+		$count1 = $this->db->where( 'ip_address', $ip_address )
 			->count_all_results( config_item('errors_table') );
 
 		if( $count1 == config_item('max_allowed_attempts') )
 		{
 			// Place the IP on hold
 			$data = array(
-				'IP_address' => $ip_address,
+				'ip_address' => $ip_address,
 				'time'       => date('Y-m-d H:i:s')
 			);
 
@@ -356,7 +340,7 @@ class Auth_model extends MY_Model {
 			{
 				// Log the IP address in the denied_access database
 				$data = array(
-					'IP_address'  => $ip_address,
+					'ip_address'  => $ip_address,
 					'time'        => date('Y-m-d H:i:s'),
 					'reason_code' => '1'
 				);
@@ -406,16 +390,12 @@ class Auth_model extends MY_Model {
 	public function get_deny_list( $field = FALSE )
 	{
 		if( $field !== FALSE )
-		{
 			$this->db->select( $field );
-		}
 
 		$query = $this->db->from( config_item('denied_access_table') )->get();
 
 		if( $query->num_rows() > 0 )
-		{
 			return $query->result();
-		}
 
 		return FALSE;
 	}
@@ -427,13 +407,11 @@ class Auth_model extends MY_Model {
 	 */
 	protected function _insert_denial( $data )
 	{
-		if( $data['IP_address'] == '0.0.0.0' )
-		{
+		if( $data['ip_address'] == '0.0.0.0' )
 			return FALSE;
-		}
 
 		$this->db->set( $data )
-				->insert( config_item('denied_access_table') );
+			->insert( config_item('denied_access_table') );
 
 		$this->_rebuild_deny_list();
 	}
@@ -451,13 +429,10 @@ class Auth_model extends MY_Model {
 
 		foreach( $ips as $ip)
 		{
-			if( $i == 0 )
-			{
-				$this->db->where('IP_address', $ip );
-			}
-			else
-			{
-				$this->db->or_where('IP_address', $ip );
+			if( $i == 0 ){
+				$this->db->where('ip_address', $ip );
+			}else{
+				$this->db->or_where('ip_address', $ip );
 			}
 
 			$i++;
@@ -476,7 +451,7 @@ class Auth_model extends MY_Model {
 	private function _rebuild_deny_list()
 	{
 		// Get all of the IP addresses in the denied access database
-		$query_result = $this->get_deny_list('IP_address');
+		$query_result = $this->get_deny_list('ip_address');
 
 		if( $query_result !== FALSE )
 		{
@@ -485,7 +460,7 @@ class Auth_model extends MY_Model {
 
 			foreach( $query_result as $row )
 			{
-				$deny_list .= "\n" . 'deny from ' . $row->IP_address;
+				$deny_list .= "\n" . 'deny from ' . $row->ip_address;
 			}
 
 			$deny_list .= "\n" . '</Limit>' . "\n";

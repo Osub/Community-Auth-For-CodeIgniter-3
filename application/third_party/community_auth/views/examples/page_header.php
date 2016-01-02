@@ -29,6 +29,9 @@
 		<li>
 			<?php echo secure_anchor('examples/simple_verification','Simple Verification'); ?>
 		</li>
+		<li>
+			<?php echo secure_anchor('examples/create_user','Create User'); ?>
+		</li>
 	</ul>
 </div>
 

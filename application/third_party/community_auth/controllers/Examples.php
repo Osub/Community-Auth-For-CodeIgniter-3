@@ -34,8 +34,8 @@ class Examples extends MY_Controller
      */
     public function index()
     {
-        if ($this->require_role('admin')) {
-
+        if( $this->require_role('admin') )
+        {
             echo $this->load->view('examples/page_header', '', TRUE);
 
             echo '<p>You are logged in!</p>';
@@ -120,6 +120,7 @@ class Examples extends MY_Controller
         {
             echo 'Nobody logged in.';
         }
+
         echo '</p>';
 
         echo $this->load->view('examples/page_footer', '', TRUE);
@@ -150,6 +151,10 @@ class Examples extends MY_Controller
             'email'      => 'skunkbot@example.com',
             'auth_level' => '1', // 9 if you want to login @ examples/index.
         );
+
+        $this->is_logged_in();
+
+        echo $this->load->view('examples/page_header', '', TRUE);
 
         // Load resources
         $this->load->model('examples_model');
@@ -197,14 +202,15 @@ class Examples extends MY_Controller
 			$this->db->set($user_data)
 				->insert(config_item('user_table'));
 
-			if ($this->db->affected_rows() == 1) {
+			if( $this->db->affected_rows() == 1 )
 				echo '<h1>Congratulations</h1>' . '<p>User ' . $user_data['username'] . ' was created.</p>';
-			}
 		}
 		else
 		{
 			echo '<h1>User Creation Error(s)</h1>' . validation_errors();
 		}
+
+        echo $this->load->view('examples/page_footer', '', TRUE);
     }
     
     // -----------------------------------------------------------------------
@@ -219,14 +225,10 @@ class Examples extends MY_Controller
     {
         // Method should not be directly accessible
         if( $this->uri->uri_string() == 'examples/login')
-        {
             show_404();
-        }
 
         if( strtolower( $_SERVER['REQUEST_METHOD'] ) == 'post' )
-        {
             $this->require_min_level(1);
-        }
 
         $this->setup_login_form();
 

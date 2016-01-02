@@ -86,9 +86,7 @@ class Auth_Controller extends CI_Controller {
 		 * Set the request protocol
 		 */
 		if( is_https() )
-		{
 			$this->protocol = 'https';
-		}
 
 		/**
 		 * If the http user cookie is set, make user data available in views

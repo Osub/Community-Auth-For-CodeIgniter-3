@@ -55,9 +55,7 @@ class Examples_model extends MY_Model {
 			->get();
 
 		if( $query->num_rows() == 1 )
-		{
 			return $query->row();
-		}
 
 		return FALSE;
 	}
@@ -82,9 +80,7 @@ class Examples_model extends MY_Model {
 			->get();
 
 		if ( $query->num_rows() == 1 )
-		{
 			return $query->row();
-		}
 		
 		return FALSE;
 	}

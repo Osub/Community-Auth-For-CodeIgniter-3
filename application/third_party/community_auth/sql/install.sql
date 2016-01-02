@@ -1,5 +1,5 @@
 --
--- Community Auth - MySQL table install
+-- Community Auth - MySQL database setup
 --
 -- Community Auth is an open source authentication application for CodeIgniter 3
 --
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `auth_sessions` (
 
 CREATE TABLE IF NOT EXISTS `ips_on_hold` (
   `ai` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `IP_address` varchar(45) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`ai`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `ips_on_hold` (
 CREATE TABLE IF NOT EXISTS `login_errors` (
   `ai` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username_or_email` varchar(255) NOT NULL,
-  `IP_address` varchar(45) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`ai`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `login_errors` (
 
 CREATE TABLE IF NOT EXISTS `denied_access` (
   `ai` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `IP_address` varchar(45) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
   `time` datetime NOT NULL,
   `reason_code` tinyint(2) DEFAULT 0,
   PRIMARY KEY (`ai`)
