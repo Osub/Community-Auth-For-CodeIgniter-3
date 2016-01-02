@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(10) unsigned NOT NULL,
   `username` varchar(12) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
-  `user_pass` varchar(60) NOT NULL,
+  `passwd` varchar(60) NOT NULL,
   `user_last_login` datetime DEFAULT NULL,
   `user_level` tinyint(2) unsigned NOT NULL,
   `user_banned` enum('0','1') NOT NULL DEFAULT '0',

@@ -146,7 +146,7 @@ class Examples extends MY_Controller
         // Customize this array for your user
         $user_data = array(
             'username'   => 'skunkbot',
-            'user_pass'  => 'PepeLePew7',
+            'passwd'     => 'PepeLePew7',
             'email'      => 'skunkbot@example.com',
             'user_level' => '1', // 9 if you want to login @ examples/index.
         );
@@ -164,8 +164,8 @@ class Examples extends MY_Controller
 				'rules' => 'max_length[12]|is_unique[' . config_item('user_table') . '.username]'
 			),
 			array(
-				'field' => 'user_pass',
-				'label' => 'user_pass',
+				'field' => 'passwd',
+				'label' => 'passwd',
 				'rules' => 'trim|required|external_callbacks[model,formval_callbacks,_check_password_strength,TRUE]',
 			),
 			array(
@@ -184,7 +184,7 @@ class Examples extends MY_Controller
 
 		if( $this->form_validation->run() )
 		{
-            $user_data['user_pass']  = $this->authentication->hash_passwd($user_data['user_pass']);
+            $user_data['passwd']     = $this->authentication->hash_passwd($user_data['passwd']);
             $user_data['user_id']    = $this->examples_model->get_unused_id();
             $user_data['created_at'] = date('Y-m-d H:i:s');
 

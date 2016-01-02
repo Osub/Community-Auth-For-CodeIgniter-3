@@ -103,8 +103,8 @@ class Examples_model extends MY_Model {
 		if( $this->validate() )
 		{
 			$this->_change_password(
-				set_value('user_pass'),
-				set_value('user_pass_confirm'),
+				set_value('passwd'),
+				set_value('passwd_confirm'),
 				set_value('user_identification'),
 				set_value('recovery_code')
 			);
@@ -140,7 +140,7 @@ class Examples_model extends MY_Model {
 				$this->db->where( 'user_id', $user_data->user_id )
 					->update( 
 						config_item('user_table'), 
-						array( 'user_pass' => $this->authentication->hash_passwd( $password ) ) 
+						array( 'passwd' => $this->authentication->hash_passwd( $password ) ) 
 					);
 			}
 		}

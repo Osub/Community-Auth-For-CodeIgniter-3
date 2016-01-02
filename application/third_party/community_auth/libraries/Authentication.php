@@ -231,7 +231,7 @@ class Authentication
 	 * @param   string  the posted password
 	 * @return  mixed  either an object containing the user's data or FALSE
 	 */
-	private function login( $requirement, $user_string, $user_pass )
+	private function login( $requirement, $user_string, $passwd )
 	{
 		// Keep post system session check from running
 		$this->post_system_sess_check = FALSE;
@@ -254,14 +254,14 @@ class Authentication
 				if( $auth_data = $this->CI->{$this->auth_model}->get_auth_data( $user_string ) )
 				{
 					// Confirm user
-					if( ! $this->_user_confirmed( $auth_data, $requirement, $user_pass ) )
+					if( ! $this->_user_confirmed( $auth_data, $requirement, $passwd ) )
 					{
 						// Login failed ...
 						log_message(
 							'debug',
 							"\n user is banned             = " . ( $auth_data->user_banned === 1 ? 'yes' : 'no' ) .
-							"\n password in database       = " . $auth_data->user_pass .
-							"\n supplied password match    = " . (string) $this->check_passwd( $auth_data->user_pass, $user_pass ) . 
+							"\n password in database       = " . $auth_data->passwd .
+							"\n supplied password match    = " . (string) $this->check_passwd( $auth_data->passwd, $passwd ) . 
 							"\n required level or role     = " . ( is_array( $requirement ) ? implode( $requirement ) : $requirement ) . 
 							"\n user level in database     = " . $auth_data->user_level . 
 							"\n user level equivalant role = " . $this->roles[$auth_data->user_level]
@@ -589,16 +589,16 @@ class Authentication
 	 * @param   mixed  the posted password during a login attempt
 	 * @return  bool
 	 */
-	private function _user_confirmed( $auth_data, $requirement, $user_pass = FALSE )
+	private function _user_confirmed( $auth_data, $requirement, $passwd = FALSE )
 	{
 		// Check if user is banned
 		$is_banned = ( $auth_data->user_banned === '1' );
 
 		// Is this a login attempt
-		if( $user_pass )
+		if( $passwd )
 		{
 			// Check if the posted password matches the one in the user record
-			$wrong_password = ( ! $this->check_passwd( $auth_data->user_pass, $user_pass ) );
+			$wrong_password = ( ! $this->check_passwd( $auth_data->passwd, $passwd ) );
 		}
 
 		// Else we are checking login status

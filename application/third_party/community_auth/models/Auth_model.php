@@ -39,7 +39,7 @@ class Auth_model extends MY_Model {
 			'username',
 			'email',
 			'user_level',
-			'user_pass',
+			'passwd',
 			'user_id',
 			'user_banned'
 		);

@@ -121,11 +121,11 @@ if( $showform == 1 )
 
 							<?php
 								// PASSWORD LABEL AND INPUT ********************************
-								echo form_label('Password','user_pass',array('class'=>'form_label'));
+								echo form_label('Password','passwd',array('class'=>'form_label'));
 
 								$input_data = array(
-									'name'       => 'user_pass',
-									'id'         => 'user_pass',
+									'name'       => 'passwd',
+									'id'         => 'passwd',
 									'class'      => 'form_input password',
 									'max_length' => config_item('max_chars_for_password')
 								);
@@ -137,11 +137,11 @@ if( $showform == 1 )
 
 							<?php
 								// CONFIRM PASSWORD LABEL AND INPUT ******************************
-								echo form_label('Confirm Password','user_pass_confirm',array('class'=>'form_label'));
+								echo form_label('Confirm Password','passwd_confirm',array('class'=>'form_label'));
 
 								$input_data = array(
-									'name'       => 'user_pass_confirm',
-									'id'         => 'user_pass_confirm',
+									'name'       => 'passwd_confirm',
+									'id'         => 'passwd_confirm',
 									'class'      => 'form_input password',
 									'max_length' => config_item('max_chars_for_password')
 								);
