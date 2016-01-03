@@ -4,4 +4,5 @@
 
 DBNAME=community_auth_ci_3
 mysqladmin -u root create $DBNAME
-cat ../sql/install.sql | mysql -u root $DBNAME
+cat ./third_party/community_auth/sql/install.sql | mysql -u root $DBNAME
+echo "DB CREATED AND TABLES ADDED."
