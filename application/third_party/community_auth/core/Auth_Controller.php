@@ -107,16 +107,24 @@ class Auth_Controller extends CI_Controller {
 	 * Require a login by user of account type specified numerically.
 	 * User assumes your priveledges are linear in relationship to account types.
 	 * 
-	 * @param  int    the minimum level of user required
-	 * @param  mixed  either returns TRUE or doesn't return
+	 * @param   int    the minimum level of user required
+	 * @return  mixed  either returns TRUE or doesn't return
 	 */
 	protected function require_min_level( $level )
 	{
 		// Check if logged in or if login attempt
-		if( $this->auth_data = $this->authentication->user_status( $level ) )
-		{
+		$this->auth_data = $this->authentication->user_status( $level );
+
+		// Set user variables if successful login or user is logged in
+		if( $this->auth_data )
 			$this->_set_user_variables();
 
+		// Call the post auth hook
+		$this->post_auth_hook();
+
+		// Successful login or user is logged in
+		if( $this->auth_data )
+		{
 			return TRUE;
 		}
 
@@ -174,8 +182,8 @@ class Auth_Controller extends CI_Controller {
 	/**
 	 * Require a login by user of a specific account type, specified by name(s).
 	 * 
-	 * @param  string  a comma seperated string of account types that are allowed.
-	 * @param  mixed  either returns TRUE or doesn't return
+	 * @param   string  a comma seperated string of account types that are allowed.
+	 * @return  mixed  either returns TRUE or doesn't return
 	 */
 	protected function require_role( $roles )
 	{
@@ -186,10 +194,17 @@ class Auth_Controller extends CI_Controller {
 		$role_array = array_map( 'trim', $role_array );
 
 		// Check if logged in or if login attempt
-		if( $this->auth_data = $this->authentication->user_status( $role_array ) )
-		{
+		$this->auth_data = $this->authentication->user_status( $role_array );
+
+		// Set user variables if successful login or user is logged in
+		if( $this->auth_data )
 			$this->_set_user_variables();
 
+		$this->post_auth_hook();
+
+		// Successful login or user is logged in
+		if( $this->auth_data )
+		{
 			return TRUE;
 		}
 		
@@ -230,16 +245,23 @@ class Auth_Controller extends CI_Controller {
 	 * a optional login during checkout in an eCommerce application. Login isn't 
 	 * mandatory, but useful because a user's account can be accessed.
 	 *
-	 * @return  mixed  either returns TRUE or doesn't return
+	 * @return  bool  TRUE if logged in
 	 */
 	protected function optional_login()
 	{
-		if( $this->auth_data = $this->authentication->user_status( 0 ) )
-		{
+		$this->auth_data = $this->authentication->user_status( 0 );
+
+		// Set user variables if successful login or user is logged in
+		if( $this->auth_data )
 			$this->_set_user_variables();
 
+		// Call the post auth hook
+		$this->post_auth_hook();
+
+		if( $this->auth_data )
 			return TRUE;
-		}
+
+		return FALSE;
 	}
 
 	// --------------------------------------------------------------
@@ -259,16 +281,23 @@ class Auth_Controller extends CI_Controller {
 	 * This is for use when login is not required, but beneficial.
 	 * 
 	 * @param   int    the minimum level of user to be verified.
-	 * @return  mixed  either returns TRUE or doesn't return
+	 * @return  bool  TRUE if logged in
 	 */
 	protected function verify_min_level( $level )
 	{
-		if( $this->auth_data = $this->authentication->check_login( $level ) )
-		{
+		$this->auth_data = $this->authentication->check_login( $level );
+
+		// Set user variables if user is logged in
+		if( $this->auth_data )
 			$this->_set_user_variables();
 
+		// Call the post auth hook
+		$this->post_auth_hook();
+
+		if( $this->auth_data )
 			return TRUE;
-		}
+
+		return FALSE;
 	}
 
 	// --------------------------------------------------------------
@@ -278,18 +307,25 @@ class Auth_Controller extends CI_Controller {
 	 * This is for use when login is not required, but beneficial.
 	 * 
 	 * @param   string  comma seperated string of account types that to be verified.
-	 * @return  mixed   either returns TRUE or doesn't return
+	 * @return  bool  TRUE if logged in
 	 */
 	protected function verify_role( $roles )
 	{
 		$role_array = explode( ',', $roles );
 
-		if( $this->auth_data = $this->authentication->check_login( $role_array ) )
-		{
+		$this->auth_data = $this->authentication->check_login( $role_array );
+
+		// Set user variables if user is logged in
+		if( $this->auth_data )
 			$this->_set_user_variables();
 
+		// Call the post auth hook
+		$this->post_auth_hook();
+
+		if( $this->auth_data )
 			return TRUE;
-		}
+
+		return FALSE;
 	}
 
 	// --------------------------------------------------------------
@@ -438,5 +474,24 @@ class Auth_Controller extends CI_Controller {
 	}
 
 	// --------------------------------------------------------------
+
+	/**
+	 * The post auth hook allows you to do something on every request 
+	 * that may involve knowing if the user is logged in or not. 
+	 * Notice that this method is called after user variables are set, 
+	 * giving you an opportunity to do something with them.
+	 *
+	 * If the request is for a page that doesn't call any authentication
+	 * methods, you'll need to call this method manually.
+	 *
+	 * By default, this method doesn't do anything, but you may 
+	 * override this method in your MY_Controller.
+	 */
+	protected function post_auth_hook()
+	{
+		return;
+	}
+	
+	// -----------------------------------------------------------------------
 
 }
