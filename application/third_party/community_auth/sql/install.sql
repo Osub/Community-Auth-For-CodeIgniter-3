@@ -109,17 +109,36 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(10) unsigned NOT NULL,
   `username` varchar(12) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
-  `passwd` varchar(60) NOT NULL,
-  `last_login` datetime DEFAULT NULL,
   `auth_level` tinyint(2) unsigned NOT NULL,
   `banned` enum('0','1') NOT NULL DEFAULT '0',
+  `passwd` varchar(60) NOT NULL,
   `passwd_recovery_code` varchar(60) DEFAULT NULL,
   `passwd_recovery_date` datetime DEFAULT NULL,
+  `passwd_modified_at` datetime DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `modified_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Trigger updates passwd_modified_at field if passwd modified
+--
+
+delimiter $$
+DROP TRIGGER IF EXISTS ca_passwd_trigger ;
+$$
+CREATE TRIGGER ca_passwd_trigger BEFORE UPDATE ON users
+FOR EACH ROW
+BEGIN
+    IF ((NEW.passwd <=> OLD.passwd) = 0) THEN
+        SET NEW.passwd_modified_at = NOW();
+    END IF;
+END;$$
+delimiter ;
 
 -- --------------------------------------------------------
