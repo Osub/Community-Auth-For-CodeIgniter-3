@@ -71,6 +71,13 @@ s/\['encryption_key'\] = ''/\['encryption_key'\] = hex2bin('5d3a06b1a1efeb861ad7
 		mysqladmin -u root create $DBNAME
 		cat ./third_party/community_auth/sql/install.sql | mysql -u root $DBNAME
 
+		# Configure DB
+		sed -i "s/'username' => ''/'username' => 'root'/g; \
+s/'database' => ''/'database' => 'community_auth_ci_3'/g;" ./config/database.php
+
+		# Pretty URLs
+		printf "\n\nRewriteEngine On\nRewriteBase /\n\nRewriteRule ^(system|application|cgi-bin) - [F,L]\nRewriteCond %%{REQUEST_FILENAME} !-f\nRewriteCond %%{REQUEST_FILENAME} !-d\nRewriteRule .* index.php/\$0 [PT,L]" >> ./../.htaccess
+
 		# Success
 		echo "REMOVE INSTALLER SCRIPT (THIS FILE)."
 	else
