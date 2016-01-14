@@ -11,10 +11,16 @@ application/models/
 application/views/
 application/.htaccess
 application/index.html
+application/third_party/index.html
 system/
+tests/
 user_guide/
+user_guide_src/
 /index.php
 /.htaccess
+/DCO.txt
+/composer.json
+/contributing.md
 /license.txt
 /readme.rst
 community_auth_ci_3.sublime-project
