@@ -3,11 +3,26 @@
 # Place and execute this script where IT WILL CREATE the web root directory.
 # It will also create the database, as long as you set a valid user and password.
 
+# The directory that git will clone into
 SITEDIR="community_auth_ci_3"
+
+# The base_url for CodeIgniter
+# Note: make sure to escape slashes!
 BASEURL="http:\/\/localhost.community_auth_ci_3\/"
+
+# The name of the database to create
 DBNAME="community_auth_ci_3"
+
+# The DB user
 DBUSER="root"
+
+# The DB password
 DBPASS=""
+
+# If symlinks (soft links) should be used instead of copying files
+SYMLINKS=false
+
+# -------------------------------------------------------------------------
 
 # Make sure not already installed
 if [ ! -d ./$SITEDIR ]; 
@@ -39,18 +54,37 @@ then
 		# Move into application directory
 		cd ./application
 
-		# Copy core files from Community Auth to CodeIgniter application
-		cp ./third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
-		cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php 
-		cp ./third_party/community_auth/core/MY_Model.php ./core/MY_Model.php
+		# Copy or symlink core files
+		if [ "$SYMLINKS" = true ];
+		then
+			ln -s ../third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
+			ln -s ../third_party/community_auth/core/MY_Input.php ./core/MY_Input.php
+			ln -s ../third_party/community_auth/core/MY_Model.php ./core/MY_Model.php
+		else
+			cp ./third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
+			cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php 
+			cp ./third_party/community_auth/core/MY_Model.php ./core/MY_Model.php
+		fi
 
-		# Copy hook files from Community Auth to CodeIgniter application
-		cp ./third_party/community_auth/hooks/auth_constants.php ./hooks/auth_constants.php
-		cp ./third_party/community_auth/hooks/auth_sess_check.php ./hooks/auth_sess_check.php
+		# Copy or symlink hook files
+		if [ "$SYMLINKS" = true ];
+		then
+			ln -s ../third_party/community_auth/hooks/auth_constants.php ./hooks/auth_constants.php
+			ln -s ../third_party/community_auth/hooks/auth_sess_check.php ./hooks/auth_sess_check.php
+		else
+			cp ./third_party/community_auth/hooks/auth_constants.php ./hooks/auth_constants.php
+			cp ./third_party/community_auth/hooks/auth_sess_check.php ./hooks/auth_sess_check.php
+		fi
 
-		# Copy controller files from Community Auth to CodeIgniter application
-		cp ./third_party/community_auth/controllers/Examples.php ./controllers/Examples.php 
-		cp ./third_party/community_auth/controllers/Key_creator.php ./controllers/Key_creator.php 
+		# Copy or symlink controller files
+		if [ "$SYMLINKS" = true ];
+		then
+			ln -s ../third_party/community_auth/controllers/Examples.php ./controllers/Examples.php
+			ln -s ../third_party/community_auth/controllers/Key_creator.php ./controllers/Key_creator.php
+		else
+			cp ./third_party/community_auth/controllers/Examples.php ./controllers/Examples.php 
+			cp ./third_party/community_auth/controllers/Key_creator.php ./controllers/Key_creator.php
+		fi 
 
 		# Copy or modify main .htaccess
 		cp ./third_party/community_auth/public_root/.htaccess ./../.htaccess
