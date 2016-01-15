@@ -57,11 +57,15 @@ s/\['model'\] = array()/\['model'\] = array(\n\t'auth_model'\n)/g;" ./config/aut
 		# Add route to login page
 		echo "\$route[LOGIN_PAGE] = 'examples/login';" >> ./config/routes.php
 
-		# Set base_url, index_page, turn hooks on, and add an encryption key
+		# Set base_url, index_page, turn hooks on, add an encryption key, and configure sessions
 		sed -i "s/\['base_url'\] = ''/\['base_url'\] = 'http:\/\/localhost.community_auth_ci_3\/'/g; \
 s/\['index_page'\] = 'index.php'/\['index_page'\] = ''/g; \
 s/\['enable_hooks'\] = FALSE/\['enable_hooks'\] = TRUE/g; \
-s/\['encryption_key'\] = ''/\['encryption_key'\] = hex2bin('5d3a06b1a1efeb861ad761fb8839794f')/g;" ./config/config.php
+s/\['encryption_key'\] = ''/\['encryption_key'\] = hex2bin('5d3a06b1a1efeb861ad761fb8839794f')/g; \
+s/\['sess_driver'\] = 'files'/\['sess_driver'\] = 'database'/g; \
+s/\['sess_cookie_name'\] = 'ci_session'/\['sess_cookie_name'\] = 'ciSess'/g; \
+s/\['sess_save_path'\] = NULL/\['sess_save_path'\] = 'ci_sessions'/g; \
+s/\['sess_regenerate_destroy'\] = FALSE/\['sess_regenerate_destroy'\] = TRUE/g;" ./config/config.php
 
 		# Add hooks
 		printf "\$hook['pre_system'] = array(\n\t'function' => 'auth_constants',\n\t'filename' => 'auth_constants.php',\n\t'filepath' => 'hooks'\n);\n\$hook['post_system'] = array(\n\t'function' => 'auth_sess_check',\n\t'filename' => 'auth_sess_check.php',\n\t'filepath' => 'hooks'\n);" >> ./config/hooks.php
