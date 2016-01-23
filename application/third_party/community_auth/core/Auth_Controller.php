@@ -112,6 +112,12 @@ class Auth_Controller extends CI_Controller {
 	 */
 	protected function require_min_level( $level )
 	{
+		// Has user already been authenticated?
+		if( ! is_null( $this->auth_level ) && $this->auth_level >= $level )
+		{
+			return TRUE;
+		}
+
 		// Check if logged in or if login attempt
 		$this->auth_data = $this->authentication->user_status( $level );
 
@@ -193,6 +199,12 @@ class Auth_Controller extends CI_Controller {
 		// Trim off any space chars
 		$role_array = array_map( 'trim', $role_array );
 
+		// Has user already been authenticated?
+		if( ! is_null( $this->auth_role ) && in_array( $this->auth_role, $role_array ) )
+		{
+			return TRUE;
+		}
+
 		// Check if logged in or if login attempt
 		$this->auth_data = $this->authentication->user_status( $role_array );
 
@@ -249,6 +261,10 @@ class Auth_Controller extends CI_Controller {
 	 */
 	protected function optional_login()
 	{
+		// Has user already been authenticated?
+		if( $this->auth_data )
+			return TRUE;
+
 		$this->auth_data = $this->authentication->user_status( 0 );
 
 		// Set user variables if successful login or user is logged in
@@ -285,6 +301,12 @@ class Auth_Controller extends CI_Controller {
 	 */
 	protected function verify_min_level( $level )
 	{
+		// Has user already been authenticated?
+		if( ! is_null( $this->auth_level ) && $this->auth_level >= $level )
+		{
+			return TRUE;
+		}
+
 		$this->auth_data = $this->authentication->check_login( $level );
 
 		// Set user variables if user is logged in
@@ -312,6 +334,15 @@ class Auth_Controller extends CI_Controller {
 	protected function verify_role( $roles )
 	{
 		$role_array = explode( ',', $roles );
+
+		// Trim off any space chars
+		$role_array = array_map( 'trim', $role_array );
+
+		// Has user already been authenticated?
+		if( ! is_null( $this->auth_role ) && in_array( $this->auth_role, $role_array ) )
+		{
+			return TRUE;
+		}
 
 		$this->auth_data = $this->authentication->check_login( $role_array );
 
