@@ -35,9 +35,12 @@
 			if( isset( $auth_user_id ) ){
 				echo secure_anchor('examples/logout','Logout');
 			}else{
-				echo secure_anchor( LOGIN_PAGE . '?redirect=examples','Login');
+				echo secure_anchor( LOGIN_PAGE . '?redirect=examples','Login','id="login-link"');
 			}
 		?></li>
+		<li>
+			<?php echo secure_anchor('examples/ajax_login','Ajax Login','id="ajax-login-link"'); ?>
+		</li>
 		<li>
 			<?php echo secure_anchor('examples/optional_login_test','Optional Login'); ?>
 		</li>
