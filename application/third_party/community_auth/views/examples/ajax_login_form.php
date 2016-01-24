@@ -16,47 +16,76 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <h1>Ajax login</h1>
-<p>Open up your javascript console to see what is happening when you try to login</p>
 
 <?php
-
-echo form_open( 'examples/ajax_attempt_login', array( 'class' => 'std-form' ) );
-
+if( ! isset( $on_hold_message ) )
+{
 ?>
 
-	<div>
+	<p>Open up your javascript console to see what is happening when you try to login</p>
 
-		<label for="login_string" class="form_label">Username or Email</label>
-		<input type="text" name="login_string" id="login_string" class="form_input" autocomplete="off" maxlength="255" />
+	<?php
 
-		<br />
+	echo form_open( 'examples/ajax_attempt_login', array( 'class' => 'std-form' ) );
 
-		<label for="login_pass" class="form_label">Password</label>
-		<input type="password" name="login_pass" id="login_pass" class="form_input password" maxlength="<?php echo config_item('max_chars_for_password'); ?>" autocomplete="off" readonly="readonly" onfocus="this.removeAttribute('readonly');" />
+	?>
 
+		<div>
 
-		<?php
-			if( config_item('allow_remember_me') )
-			{
-		?>
+			<label for="login_string" class="form_label">Username or Email</label>
+			<input type="text" name="login_string" id="login_string" class="form_input" autocomplete="off" maxlength="255" />
 
 			<br />
 
-			<label for="remember_me" class="form_label">Remember Me</label>
-			<input type="checkbox" id="remember_me" name="remember_me" value="yes" />
+			<label for="login_pass" class="form_label">Password</label>
+			<input type="password" name="login_pass" id="login_pass" class="form_input password" maxlength="<?php echo config_item('max_chars_for_password'); ?>" autocomplete="off" readonly="readonly" onfocus="this.removeAttribute('readonly');" />
 
-		<?php
-			}
-		?>
 
-		<input type="hidden" id="max_allowed_attempts" value="<?php echo config_item('max_allowed_attempts'); ?>" />
-		<input type="hidden" id="mins_on_hold" value="<?php echo ( config_item('seconds_on_hold') / 60 ); ?>" />
-		<input type="submit" name="submit" value="Login" id="submit_button"  />
+			<?php
+				if( config_item('allow_remember_me') )
+				{
+			?>
 
-	</div>
-</form>
+				<br />
+
+				<label for="remember_me" class="form_label">Remember Me</label>
+				<input type="checkbox" id="remember_me" name="remember_me" value="yes" />
+
+			<?php
+				}
+			?>
+
+			<input type="hidden" id="max_allowed_attempts" value="<?php echo config_item('max_allowed_attempts'); ?>" />
+			<input type="hidden" id="mins_on_hold" value="<?php echo ( config_item('seconds_on_hold') / 60 ); ?>" />
+			<input type="submit" name="submit" value="Login" id="submit_button"  />
+
+		</div>
+	</form>
 
 <?php
+}
+else
+{
+	// EXCESSIVE LOGIN ATTEMPTS ERROR MESSAGE
+	echo '
+		<div style="border:1px solid red;">
+			<p>
+				Excessive Login Attempts
+			</p>
+			<p>
+				You have exceeded the maximum number of failed login<br />
+				attempts that this website will allow.
+			<p>
+			<p>
+				Your access to login and account recovery has been blocked for ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes.
+			</p>
+			<p>
+				Please use the ' . secure_anchor('examples/recover','Account Recovery') . ' after ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes has passed,<br />
+				or contact us if you require assistance gaining access to your account.
+			</p>
+		</div>
+	';
+}
 
 /* End of file login_form.php */
 /* Location: /views/examples/login_form.php */ 

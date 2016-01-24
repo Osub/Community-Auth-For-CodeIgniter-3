@@ -429,6 +429,17 @@ class Examples extends MY_Controller
             'https://code.jquery.com/jquery-1.12.0.min.js'
         );
 
+        if( $this->authentication->on_hold === TRUE )
+        {
+            $data['on_hold_message'] = 1;
+        }
+
+        // This check for on hold is for normal login attempts
+        else if( $on_hold = $this->authentication->current_hold_status() )
+        {
+            $data['on_hold_message'] = 1;
+        }
+
         $data['final_head'] = "<script>
             $(document).ready(function(){
                 $(document).on( 'submit', 'form', function(e){
@@ -461,7 +472,7 @@ class Examples extends MY_Controller
         </script>";
 
         $html = $this->load->view('examples/page_header', $data, TRUE);
-        $html .= $this->load->view('examples/ajax_login_form', '', TRUE);
+        $html .= $this->load->view('examples/ajax_login_form', $data, TRUE);
         $html .= $this->load->view('examples/page_footer', '', TRUE);
 
         echo $html;
