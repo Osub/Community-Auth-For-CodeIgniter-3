@@ -1,4 +1,4 @@
 To Do List
 ==========
 
-* AJAX logins
+* Docs for AJAX logins
