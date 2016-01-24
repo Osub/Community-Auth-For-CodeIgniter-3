@@ -64,28 +64,30 @@ if( ! isset( $on_hold_message ) )
 
 <?php
 }
-else
-{
-	// EXCESSIVE LOGIN ATTEMPTS ERROR MESSAGE
-	echo '
-		<div style="border:1px solid red;">
-			<p>
-				Excessive Login Attempts
-			</p>
-			<p>
-				You have exceeded the maximum number of failed login<br />
-				attempts that this website will allow.
-			<p>
-			<p>
-				Your access to login and account recovery has been blocked for ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes.
-			</p>
-			<p>
-				Please use the ' . secure_anchor('examples/recover','Account Recovery') . ' after ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes has passed,<br />
-				or contact us if you require assistance gaining access to your account.
-			</p>
-		</div>
-	';
-}
+
+// EXCESSIVE LOGIN ATTEMPTS ERROR MESSAGE
+$error_display = ! isset( $on_hold_message )
+	? 'display:none;'
+	: '';
+
+echo '
+	<div id="on-hold-message" style="border:1px solid red;' . $error_display . '">
+		<p>
+			Excessive Login Attempts
+		</p>
+		<p>
+			You have exceeded the maximum number of failed login<br />
+			attempts that this website will allow.
+		<p>
+		<p>
+			Your access to login and account recovery has been blocked for ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes.
+		</p>
+		<p>
+			Please use the ' . secure_anchor('examples/recover','Account Recovery') . ' after ' . ( (int) config_item('seconds_on_hold') / 60 ) . ' minutes has passed,<br />
+			or contact us if you require assistance gaining access to your account.
+		</p>
+	</div>
+';
 
 /* End of file login_form.php */
 /* Location: /views/examples/login_form.php */ 
