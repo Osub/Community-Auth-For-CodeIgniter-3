@@ -89,6 +89,14 @@ class Authentication
 	 */
 	public $post_system_sess_check = TRUE;
 
+	/**
+	 * Use standard redirection after login.
+	 * Set FALSE to do something else.
+	 * 
+	 * @var boolean
+	 */
+	public $redirect_after_login = TRUE;
+
 	// --------------------------------------------------------------
 
 	/**
@@ -269,6 +277,9 @@ class Authentication
 					}
 					else
 					{
+						// Setup redirection if redirect required
+						$this->_redirect_after_login();
+
 						// Set session cookie and HTTP user data delete_cookie
 						$this->_maintain_state( $auth_data );
 
@@ -616,6 +627,26 @@ class Authentication
 	}
 	
 	// ---------------------------------------------------------------
+
+	/**
+	 * Redirect after login, or not if redirect turned off
+	 */
+	private function _redirect_after_login()
+	{
+		if( $this->redirect_after_login )
+		{
+			// Redirect to specified page, or home page if none provided
+			$redirect = $this->CI->input->get('redirect')
+				? urldecode( $this->CI->input->get('redirect') ) 
+				: '';
+
+			$url = secure_site_url( $redirect );
+
+			header( "Location: " . $url, TRUE, 302 );
+		}
+	}
+	
+	// -----------------------------------------------------------------------
 	
 	/**
 	 * Setup session, HTTP user cookie, and remember me cookie 
@@ -626,15 +657,6 @@ class Authentication
 	 */
 	private function _maintain_state( $auth_data )
 	{
-		// Redirect to specified page, or home page if none provided
-		$redirect = $this->CI->input->get('redirect')
-			? urldecode( $this->CI->input->get('redirect') ) 
-			: '';
-
-		$url = secure_site_url( $redirect );
-
-		header( "Location: " . $url, TRUE, 302 );
-
 		// Store login time in database and cookie
 		$login_time = date('Y-m-d H:i:s');
 

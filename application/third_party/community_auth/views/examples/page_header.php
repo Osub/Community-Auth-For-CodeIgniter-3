@@ -12,6 +12,31 @@
 			#menu{float:right;width:25%;}
 		}
 	</style>
+	<?php
+		// Add any javascripts
+		if( isset( $javascripts ) )
+		{
+			foreach( $javascripts as $js )
+			{
+				if( strpos( 'http', $js ) === 0 )
+				{
+					echo '<script src="' . $js . '"></script>' . "\n";
+				}
+				else
+				{
+					$js_lastmod = is_file( FCPATH . $js )
+						? filemtime( FCPATH . $js )
+						: time();
+					echo '<script src="' . $js . '?v=' . $js_lastmod . '"></script>' . "\n";
+				}
+			}
+		}
+
+		if( isset( $final_head ) )
+		{
+			echo $final_head;
+		}
+	?>
 </head>
 <body>
 <div id="menu">
