@@ -447,6 +447,11 @@ class Examples extends MY_Controller
                             console.log(response);
                             if(response.status == 1){
                                 $('form').replaceWith('<p>You are now logged in.</p>');
+                            }else if(response.status == 0 && response.on_hold){
+                                $('form').replaceWith('<p>Please wait ' + $('#mins_on_hold').val() + ' minutes to attempt to login.</p>');
+                                alert('You have exceeded the maximum number of login attempts.');
+                            }else if(response.status == 0 && response.count){
+                                alert('Failed login attempt ' + response.count + ' of ' + $('#max_allowed_attempts').val());
                             }
                         }
                     });

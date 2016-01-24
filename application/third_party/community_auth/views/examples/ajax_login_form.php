@@ -49,6 +49,8 @@ echo form_open( 'examples/ajax_attempt_login', array( 'class' => 'std-form' ) );
 			}
 		?>
 
+		<input type="hidden" id="max_allowed_attempts" value="<?php echo config_item('max_allowed_attempts'); ?>" />
+		<input type="hidden" id="mins_on_hold" value="<?php echo ( config_item('seconds_on_hold') / 60 ); ?>" />
 		<input type="submit" name="submit" value="Login" id="submit_button"  />
 
 	</div>
