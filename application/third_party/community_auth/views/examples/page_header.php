@@ -18,17 +18,7 @@
 		{
 			foreach( $javascripts as $js )
 			{
-				if( strpos( 'http', $js ) === 0 )
-				{
-					echo '<script src="' . $js . '"></script>' . "\n";
-				}
-				else
-				{
-					$js_lastmod = is_file( FCPATH . $js )
-						? filemtime( FCPATH . $js )
-						: time();
-					echo '<script src="' . $js . '?v=' . $js_lastmod . '"></script>' . "\n";
-				}
+				echo '<script src="' . $js . '"></script>' . "\n";
 			}
 		}
 
