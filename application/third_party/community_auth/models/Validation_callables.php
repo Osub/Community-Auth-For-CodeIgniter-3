@@ -74,4 +74,4 @@ class Validation_callables extends CI_Model {
 }
 
 /* End of file Validaton_callables.php */
-/* Location: /application/models/Validation_callables.php */
+/* Location: /community_auth/models/Validation_callables.php */

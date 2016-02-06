@@ -174,5 +174,5 @@ class Examples_model extends MY_Model {
 
 }
 
-/* End of file examples_model.php */
-/* Location: /models/examples_model.php */
+/* End of file Examples_model.php */
+/* Location: /community_auth/models/Examples_model.php */

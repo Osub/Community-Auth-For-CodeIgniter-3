@@ -162,4 +162,4 @@ class MY_Model extends CI_Model {
 }
 
 /* End of file MY_Model.php */
-/* Location: /application/libraries/MY_Model.php */
+/* Location: /community_auth/core/MY_Model.php */

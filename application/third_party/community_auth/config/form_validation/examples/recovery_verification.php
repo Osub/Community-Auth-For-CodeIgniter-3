@@ -45,4 +45,4 @@ $config['recovery_verification'] = array(
 );
 
 /* End of file recovery_verification.php */
-/* Location: /config/form_validation/examples/recovery_verification.php */
+/* Location: /community_auth/config/form_validation/examples/recovery_verification.php */

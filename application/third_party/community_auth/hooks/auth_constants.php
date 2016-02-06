@@ -41,5 +41,5 @@ function auth_constants(){
 
 }
 
-/* End of file constants.php */
-/* Location: ./application/config/constants.php */
+/* End of file auth_constants.php */
+/* Location: /community_auth/hooks/constants.php */

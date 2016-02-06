@@ -27,4 +27,4 @@ $config['sessions_table']               = 'ci_sessions';
 $config['auth_sessions_table']          = 'auth_sessions';
 
 /* End of file db_tables.php */
-/* Location: /application/config/db_tables.php */
+/* Location: /community_auth/config/db_tables.php */

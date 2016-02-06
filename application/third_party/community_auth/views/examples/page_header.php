@@ -58,4 +58,4 @@
 <?php
 
 /* End of file page_header.php */
-/* Location: /views/examples/page_header.php */
+/* Location: /community_auth/views/examples/page_header.php */

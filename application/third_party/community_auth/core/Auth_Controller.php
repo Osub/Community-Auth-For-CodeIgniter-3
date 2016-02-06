@@ -526,3 +526,6 @@ class Auth_Controller extends CI_Controller {
 	// -----------------------------------------------------------------------
 
 }
+
+/* End of file Auth_Controller.php */
+/* Location: /community_auth/core/Auth_Controller.php */

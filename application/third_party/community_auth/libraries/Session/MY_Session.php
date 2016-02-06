@@ -126,3 +126,6 @@ class MY_Session extends CI_Session {
 
 	// ------------------------------------------------------------------------
 }
+
+/* End of file MY_Session.php */
+/* Location: /community_auth/libraries/Session/MY_Session.php */

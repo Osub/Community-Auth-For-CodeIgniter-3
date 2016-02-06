@@ -375,4 +375,4 @@ $config['auth_sessions_gc_on_logout'] = TRUE;
 
 
 /* End of file authentication.php */
-/* Location: /application/config/authentication.php */
+/* Location: /community_auth/config/authentication.php */

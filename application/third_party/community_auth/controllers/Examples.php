@@ -568,4 +568,4 @@ class Examples extends MY_Controller
 }
 
 /* End of file Examples.php */
-/* Location: /application/controllers/Examples.php */
+/* Location: /community_auth/controllers/Examples.php */

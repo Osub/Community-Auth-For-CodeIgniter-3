@@ -177,4 +177,4 @@ if( $showform == 1 )
 	}
 }
 /* End of file choose_password_form.php */
-/* Location: /views/examples/choose_password_form.php */
+/* Location: /community_auth/views/examples/choose_password_form.php */

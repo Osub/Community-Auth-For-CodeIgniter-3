@@ -341,5 +341,5 @@ class Generate_string {
 	// --------------------------------------------------------------
 }
 
-/* End of file generate_string.php */
-/* Location: /libraries/generate_string.php */
+/* End of file Generate_string.php */
+/* Location: /community_auth/libraries/Generate_string.php */

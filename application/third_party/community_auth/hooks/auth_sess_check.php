@@ -31,4 +31,4 @@ function auth_sess_check(){
 }
 
 /* End of file auth_sess_check.php */
-/* Location: ./application/hooks/auth_sess_check.php */
+/* Location: /community_auth/hooks/auth_sess_check.php */

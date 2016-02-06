@@ -133,4 +133,4 @@ if( ! function_exists('unserialize_data') )
 // ------------------------------------------------------------------------
 
 /* End of file serialization_helper.php */
-/* Location: ./application/helpers/serialization_helper.php */
+/* Location: /community_auth/helpers/serialization_helper.php */

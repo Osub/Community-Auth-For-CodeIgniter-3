@@ -81,5 +81,5 @@ class Key_creator extends CI_Controller{
 	// -----------------------------------------------------------------------
 }
 
-/* End of file  */
+/* End of file Key_creator */
 /* Location: /community_auth/controllers/Key_creator.php */

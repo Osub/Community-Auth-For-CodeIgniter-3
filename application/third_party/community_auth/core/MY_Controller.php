@@ -27,4 +27,4 @@ class MY_Controller extends Auth_Controller
 }
 
 /* End of file MY_Controller.php */
-/* Location: /application/libraries/MY_Controller.php */
+/* Location: /community_auth/core/MY_Controller.php */

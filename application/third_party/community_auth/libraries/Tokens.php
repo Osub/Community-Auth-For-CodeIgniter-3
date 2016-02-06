@@ -343,5 +343,5 @@ class tokens
 	// -----------------------------------------------------------------------
 }
 
-/* End of file tokens.php */
-/* Location: /application/libraries/tokens.php */ 
+/* End of file Tokens.php */
+/* Location: /community_auth/libraries/Tokens.php */ 
