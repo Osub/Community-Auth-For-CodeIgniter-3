@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Community Auth - Formval_callbacks Model
+ * Community Auth - Validation_callables Model
  *
  * Community Auth is an open source authentication application for CodeIgniter 3
  *
@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class Formval_callbacks extends CI_Model {
+class Validation_callables extends CI_Model {
 
 	/**
 	 * Check the supplied password strength
@@ -73,5 +73,5 @@ class Formval_callbacks extends CI_Model {
 
 }
 
-/* End of file formval_callbacks.php */
-/* Location: /application/models/formval_callbacks.php */
+/* End of file Validaton_callables.php */
+/* Location: /application/models/Validation_callables.php */

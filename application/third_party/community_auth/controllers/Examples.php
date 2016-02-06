@@ -159,7 +159,7 @@ class Examples extends MY_Controller
 
         // Load resources
         $this->load->model('examples_model');
-        $this->load->model('formval_callbacks');
+        $this->load->model('validation_callables');
         $this->load->library('form_validation');
 
         $this->form_validation->set_data( $user_data );
@@ -181,7 +181,7 @@ class Examples extends MY_Controller
                     'required',
                     array( 
                         '_check_password_strength', 
-                        array( $this->formval_callbacks, '_check_password_strength' ) 
+                        array( $this->validation_callables, '_check_password_strength' ) 
                     )
                 ),
                 'errors' => array(

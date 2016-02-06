@@ -93,7 +93,7 @@ class Examples_model extends MY_Model {
 	public function recovery_password_change()
 	{
 		// Load form validation rules
-		$this->load->model('formval_callbacks');
+		$this->load->model('validation_callables');
 		$this->config->load( 'form_validation/examples/recovery_verification' );
 		$this->validation_rules = config_item('recovery_verification');
 

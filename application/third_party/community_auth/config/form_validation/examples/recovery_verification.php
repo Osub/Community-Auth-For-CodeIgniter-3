@@ -27,7 +27,7 @@ $config['recovery_verification'] = array(
             'matches[passwd_confirm]',
             array( 
                 '_check_password_strength', 
-                array( $CI->formval_callbacks, '_check_password_strength' ) 
+                array( $CI->validation_callables, '_check_password_strength' ) 
             )
         )
 	),
