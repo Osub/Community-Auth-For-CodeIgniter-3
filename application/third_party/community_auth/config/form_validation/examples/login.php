@@ -13,7 +13,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-// LOGIN ---------------------------
+// CI not normally available in config files
+$CI =& get_instance();
+
+// Login ---------------------------
 $config['login_rules'] = array(
 	array(
 		'field' => 'login_string',
@@ -23,7 +26,14 @@ $config['login_rules'] = array(
 	array(
 		'field' => 'login_pass',
 		'label' => 'PASSWORD',
-		'rules' => 'trim|required|external_callbacks[model,formval_callbacks,_check_password_strength,TRUE]'
+		'rules' => array(
+            'trim',
+            'required',
+            array( 
+                '_check_password_strength', 
+                array( $CI->formval_callbacks, '_check_password_strength' ) 
+            )
+        )
 	)
 );
 

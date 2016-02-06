@@ -158,6 +158,7 @@ class Examples extends MY_Controller
 
         // Load resources
         $this->load->model('examples_model');
+        $this->load->model('formval_callbacks');
         $this->load->library('form_validation');
 
         $this->form_validation->set_data( $user_data );
@@ -166,17 +167,33 @@ class Examples extends MY_Controller
 			array(
 				'field' => 'username',
 				'label' => 'username',
-				'rules' => 'max_length[12]|is_unique[' . config_item('user_table') . '.username]'
+				'rules' => 'max_length[12]|is_unique[' . config_item('user_table') . '.username]',
+                'errors' => array(
+                    'is_unique' => 'Username already in use.'
+                )
 			),
 			array(
 				'field' => 'passwd',
 				'label' => 'passwd',
-				'rules' => 'trim|required|external_callbacks[model,formval_callbacks,_check_password_strength,TRUE]',
+				'rules' => array(
+                    'trim',
+                    'required',
+                    array( 
+                        '_check_password_strength', 
+                        array( $this->formval_callbacks, '_check_password_strength' ) 
+                    )
+                ),
+                'errors' => array(
+                    'required' => 'The password field is required.'
+                )
 			),
 			array(
-				'field' => 'email',
-				'label' => 'email',
-				'rules' => 'required|valid_email|is_unique[' . config_item('user_table') . '.email]'
+                'field'  => 'email',
+                'label'  => 'email',
+                'rules'  => 'trim|required|valid_email|is_unique[' . config_item('user_table') . '.email]',
+                'errors' => array(
+                    'is_unique' => 'Email address already in use.'
+                )
 			),
 			array(
 				'field' => 'auth_level',

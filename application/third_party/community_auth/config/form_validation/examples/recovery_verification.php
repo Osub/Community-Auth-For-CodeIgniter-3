@@ -13,11 +13,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
+// CI not normally available in config files
+$CI =& get_instance();
+
+// Recovery verification
 $config['recovery_verification'] = array(
 	array(
 		'field' => 'passwd',
 		'label' => 'NEW PASSWORD',
-		'rules' => 'trim|required|matches[passwd_confirm]|external_callbacks[model,formval_callbacks,_check_password_strength,TRUE]'
+		'rules' => array(
+            'trim',
+            'required',
+            'matches[passwd_confirm]',
+            array( 
+                '_check_password_strength', 
+                array( $CI->formval_callbacks, '_check_password_strength' ) 
+            )
+        )
 	),
 	array(
 		'field' => 'passwd_confirm',

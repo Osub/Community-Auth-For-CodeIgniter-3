@@ -248,6 +248,7 @@ class Authentication
 		 * Validate the posted username / email address and password.
 		 */
 		$this->CI->load->library('form_validation');
+		$this->CI->load->model('formval_callbacks');
 		$this->CI->config->load( config_item('login_form_validation_file') );
 		$this->CI->form_validation->set_rules( config_item('login_rules') );
 

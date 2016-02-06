@@ -19,10 +19,9 @@ class Formval_callbacks extends CI_Model {
 	 * Check the supplied password strength
 	 * 
 	 * @param   string  the supplied password 
-	 * @param   bool    whether or not this is a required field
-	 * @return  mixed   bool or the password
+	 * @return  mixed   bool
 	 */
-	public function _check_password_strength( $password, $argument )
+	public function _check_password_strength( $password )
 	{
 		// (?=.{' . config_item('min_chars_for_password') . ',}) means string should be at least length specified in site definitions hook
 
@@ -38,33 +37,26 @@ class Formval_callbacks extends CI_Model {
 
 		// (?=.*[@#$%^&+=]) means there has to be at least one of these characters in the password @ # $ % ^ & + =
 
-		if( $argument[0] === 'FALSE' && empty( $password ) )
+		if( preg_match( '/^(?=.{' . config_item('min_chars_for_password') . ',' . config_item('max_chars_for_password') . '})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?!.*[\\\\\'"]).*$/', $password, $matches ) )
 		{
-			// If the password is not required, and if it is empty, no reason to proceed
 			return TRUE;
 		}
-		else if( preg_match( '/^(?=.{' . config_item('min_chars_for_password') . ',' . config_item('max_chars_for_password') . '})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?!.*[\\\\\'"]).*$/', $password, $matches ) )
-		{
-			return $password;
-		}
-		else
-		{
-			$this->form_validation->set_message(
-				'external_callbacks', 
-				'<span class="redfield">%s</span> must contain:
-					<ol>
-						<li>At least ' . config_item('min_chars_for_password') . ' characters</li>
-						<li>Not more than ' . config_item('max_chars_for_password') . ' characters</li>
-						<li>One number</li><li>One lower case letter</li>
-						<li>One upper case letter</li>
-						<li>No space characters</li>
-						<li>No backslash, apostrophe or quote characters</li>
-					</ol>
-				</span>'
-			);
+		
+		$this->form_validation->set_message(
+			'_check_password_strength', 
+			'<span class="redfield">Password</span> must contain:
+				<ol>
+					<li>At least ' . config_item('min_chars_for_password') . ' characters</li>
+					<li>Not more than ' . config_item('max_chars_for_password') . ' characters</li>
+					<li>One number</li><li>One lower case letter</li>
+					<li>One upper case letter</li>
+					<li>No space characters</li>
+					<li>No backslash, apostrophe or quote characters</li>
+				</ol>
+			</span>'
+		);
 
-			return FALSE;
-		}
+		return FALSE;
 	}
 
 	// --------------------------------------------------------------
