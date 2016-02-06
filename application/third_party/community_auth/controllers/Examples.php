@@ -136,6 +136,7 @@ class Examples extends MY_Controller
      * The password used in the $user_data array needs to meet the
      * following default strength requirements:
      *   - Must be at least 8 characters long
+     *   - Must be at less than 72 characters long
      *   - Must have at least one digit
      *   - Must have at least one lower case letter
      *   - Must have at least one upper case letter

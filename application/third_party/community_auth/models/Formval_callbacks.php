@@ -23,21 +23,36 @@ class Formval_callbacks extends CI_Model {
 	 */
 	public function _check_password_strength( $password )
 	{
-		// (?=.{' . config_item('min_chars_for_password') . ',}) means string should be at least length specified in site definitions hook
+		// Password length
+		$regex = '(?=.{' . config_item('min_chars_for_password') . ',' . config_item('max_chars_for_password') . '})';
+		$error = '<li>At least ' . config_item('min_chars_for_password') . ' characters</li>
+					<li>Not more than ' . config_item('max_chars_for_password') . ' characters</li>';
 
-		// (?=.*\d) means string should have at least one digit
+		// At least one digit required
+		$regex .= '(?=.*\d)';
+		$error .= '<li>One number</li>';
 
-		// (?=.*[a-z]) means string should have at least one lower case letter
+		// At least one lower case letter required
+		$regex .= '(?=.*[a-z])';
+		$error .= '<li>One lower case letter</li>';
 
-		// (?=.*[A-Z]) means string should have at least one upper case letter
+		// At least one upper case letter required
+		$regex .= '(?=.*[A-Z])';
+		$error .= '<li>One upper case letter</li>';
 
-		// (?!.*\s) means no space, tab, or other whitespace chars allowed
+		// No space, tab, or other whitespace chars allowed
+		$regex .= '(?!.*\s)';
+		$error .= '<li>No spaces, tabs, or other unseen characters</li>';
 
-		// (?!.*[\\\\\'"]) means no backslash, apostrophe or quote chars are allowed
+		// No backslash, apostrophe or quote chars are allowed
+		$regex .= '(?!.*[\\\\\'"])';
+		$error .= '<li>No backslash, apostrophe or quote characters</li>';
 
-		// (?=.*[@#$%^&+=]) means there has to be at least one of these characters in the password @ # $ % ^ & + =
+		// One of the following characters must be in the password,  @ # $ % ^ & + =
+		// $regex .= '(?=.*[@#$%^&+=])';
+		// $error .= '<li>One of the following characters must be in the password,  @ # $ % ^ & + =</li>';
 
-		if( preg_match( '/^(?=.{' . config_item('min_chars_for_password') . ',' . config_item('max_chars_for_password') . '})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?!.*[\\\\\'"]).*$/', $password, $matches ) )
+		if( preg_match( '/^' . $regex . '.*$/', $password, $matches ) )
 		{
 			return TRUE;
 		}
@@ -46,12 +61,7 @@ class Formval_callbacks extends CI_Model {
 			'_check_password_strength', 
 			'<span class="redfield">Password</span> must contain:
 				<ol>
-					<li>At least ' . config_item('min_chars_for_password') . ' characters</li>
-					<li>Not more than ' . config_item('max_chars_for_password') . ' characters</li>
-					<li>One number</li><li>One lower case letter</li>
-					<li>One upper case letter</li>
-					<li>No space characters</li>
-					<li>No backslash, apostrophe or quote characters</li>
+					' . $error . '
 				</ol>
 			</span>'
 		);
