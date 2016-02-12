@@ -303,13 +303,15 @@ class Examples extends MY_Controller
                     else
                     {
                         /**
-                         * Use the string generator to create a random string
+                         * Use the authentication libraries salt generator for a random string
                          * that will be hashed and stored as the password recovery key.
+                         * Method is called 4 times for a 88 character string, and then
+                         * trimmed to 72 characters
                          */
-                        $this->load->library('generate_string');
-                        $recovery_code = $this->generate_string->set_options( 
-                            array( 'exclude' => array( 'char' ) ) 
-                        )->random_string(64)->show();
+                        $recovery_code = substr( $this->authentication->random_salt() 
+                            . $this->authentication->random_salt() 
+                            . $this->authentication->random_salt() 
+                            . $this->authentication->random_salt(), 0, 72 );
 
                         // Update user record with recovery code and time
                         $this->examples_model->update_user_raw_data(
@@ -376,9 +378,9 @@ class Examples extends MY_Controller
                 is_numeric( $user_id ) && strlen( $user_id ) <= 10 &&
 
                 /**
-                 * Make sure that $recovery code is exactly 64 characters long
+                 * Make sure that $recovery code is exactly 72 characters long
                  */
-                strlen( $recovery_code ) == 64 &&
+                strlen( $recovery_code ) == 72 &&
 
                 /**
                  * Try to get a hashed password recovery 
