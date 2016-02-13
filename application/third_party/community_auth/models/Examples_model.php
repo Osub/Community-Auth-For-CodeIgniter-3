@@ -16,16 +16,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Examples_model extends CI_model {
 
 	/**
-	 * Class Constructor
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	// --------------------------------------------------------------
-
-	/**
 	 * Update a user record with data not from POST
 	 *
 	 * @param  int     the user ID to update
