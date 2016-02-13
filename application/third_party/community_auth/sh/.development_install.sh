@@ -90,7 +90,7 @@ then
 		# Add autoload configuration
 		sed -i "s/\['packages'\] = array()/\['packages'\] = array(\n\tAPPPATH . 'third_party\/community_auth\/'\n)/g; \
 s/\['libraries'\] = array()/\['libraries'\] = array(\n\t'database','session','tokens','Authentication'\n)/g; \
-s/\['helper'\] = array()/\['helper'\] = array(\n\t'serialization','url','form','cookie'\n)/g; \
+s/\['helper'\] = array()/\['helper'\] = array(\n\t'serialization','cookie'\n)/g; \
 s/\['config'\] = array()/\['config'\] = array(\n\t'db_tables','authentication'\n)/g; \
 s/\['model'\] = array()/\['model'\] = array(\n\t'auth_model'\n)/g;" ./config/autoload.php
 
