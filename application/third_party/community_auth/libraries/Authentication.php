@@ -641,7 +641,13 @@ class Authentication
 				? urldecode( $this->CI->input->get('redirect') ) 
 				: '';
 
-			$url = secure_site_url( $redirect );
+			// Set the redirect protocol
+			$redirect_protocol = USE_SSL ? 'https' : NULL;
+
+			// Load URL helper for the site_url function
+			$this->CI->load->helper('url');
+
+			$url = site_url( $redirect, $redirect_protocol );
 
 			header( "Location: " . $url, TRUE, 302 );
 		}

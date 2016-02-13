@@ -44,7 +44,7 @@ Installation
 	);
 
 	$autoload['helper'] = array(
-		'serialization','url','form','cookie'
+		'serialization','cookie'
 	);
 
 	$autoload['config'] = array(

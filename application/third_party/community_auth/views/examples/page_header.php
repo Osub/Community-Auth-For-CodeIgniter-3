@@ -32,25 +32,27 @@
 <div id="menu">
 	<ul>
 		<li><?php
+			$link_protocol = USE_SSL ? 'https' : NULL;
+
 			if( isset( $auth_user_id ) ){
-				echo secure_anchor('examples/logout','Logout');
+				echo anchor( site_url('examples/logout', $link_protocol ),'Logout');
 			}else{
-				echo secure_anchor( LOGIN_PAGE . '?redirect=examples','Login','id="login-link"');
+				echo anchor( site_url(LOGIN_PAGE . '?redirect=examples', $link_protocol ),'Login','id="login-link"');
 			}
 		?></li>
 		<?php 
 			if( ! isset( $auth_user_id ) ){
-				echo '<li>' . secure_anchor('examples/ajax_login','Ajax Login','id="ajax-login-link"') . '</li>';
+				echo '<li>' . anchor( site_url('examples/ajax_login', $link_protocol ),'Ajax Login','id="ajax-login-link"') . '</li>';
 			}
 		?>
 		<li>
-			<?php echo secure_anchor('examples/optional_login_test','Optional Login'); ?>
+			<?php echo anchor( site_url('examples/optional_login_test', $link_protocol ),'Optional Login'); ?>
 		</li>
 		<li>
-			<?php echo secure_anchor('examples/simple_verification','Simple Verification'); ?>
+			<?php echo anchor( site_url('examples/simple_verification', $link_protocol ),'Simple Verification'); ?>
 		</li>
 		<li>
-			<?php echo secure_anchor('examples/create_user','Create User'); ?>
+			<?php echo anchor( site_url('examples/create_user', $link_protocol ),'Create User'); ?>
 		</li>
 	</ul>
 </div>

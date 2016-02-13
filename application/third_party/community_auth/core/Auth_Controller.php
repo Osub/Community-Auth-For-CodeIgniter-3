@@ -242,9 +242,15 @@ class Auth_Controller extends CI_Controller {
 			? urlencode( $this->input->get('redirect') ) 
 			: urlencode( $this->uri->uri_string() );
 
+		// Set the redirect protocol
+		$redirect_protocol = USE_SSL ? 'https' : NULL;
+
+		// Load URL helper for the site_url function
+		$this->load->helper('url');
+
 		// Redirect to the login form
 		header(
-			'Location: ' . secure_site_url( LOGIN_PAGE . '?redirect=' . $redirect ),
+			'Location: ' . site_url( LOGIN_PAGE . '?redirect=' . $redirect, $redirect_protocol ),
 			TRUE,
 			302
 		);
@@ -444,8 +450,14 @@ class Auth_Controller extends CI_Controller {
 			$view_data['optional_login'] = TRUE;
 		}
 
+		// Set the link protocol
+		$link_protocol = USE_SSL ? 'https' : NULL;
+
+		// Load URL helper for site_url function
+		$this->load->helper('url');
+
 		// Set the login URL
-		$view_data['login_url'] = secure_site_url( LOGIN_PAGE . $redirect );
+		$view_data['login_url'] = site_url( LOGIN_PAGE . $redirect, $link_protocol );
 
 		$this->load->vars( $view_data );
 	}
@@ -490,8 +502,13 @@ class Auth_Controller extends CI_Controller {
 				// Load string helper for trim_slashes function
 				$this->load->helper('string');
 
+				// Load URL helper for the site_url function
+
+				// Set link protocol
+				$link_protocol = USE_SSL ? 'https' : NULL;
+
 				// 301 Redirect to the secure page
-				header("Location: " . secure_site_url( trim_slashes( $this->uri->uri_string() ) ), TRUE, 301);
+				header("Location: " . site_url( trim_slashes( $this->uri->uri_string() ), $link_protocol ), TRUE, 301);
 			}
 
 			// Show a 404 error

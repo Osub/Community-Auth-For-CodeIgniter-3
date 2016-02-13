@@ -93,7 +93,7 @@ if( isset( $show_form ) )
 {
 	?>
 
-		 <?php echo form_open( '' ); ?>
+		 <?php echo form_open(); ?>
 			<div>
 				<fieldset>
 					<legend>Enter your account's email address:</legend>

@@ -21,6 +21,10 @@ class Examples extends MY_Controller
 
         // Force SSL
         //$this->force_ssl();
+
+        // Form and URL helpers always loaded (just for convenience)
+        $this->load->helper('url');
+        $this->load->helper('form');
     }
 
     // -----------------------------------------------------------------------
@@ -70,6 +74,9 @@ class Examples extends MY_Controller
             $this->setup_login_form(TRUE);
 
             $page_content = '<p>You are not logged in, but can still see this page.</p>';
+
+            // Form helper needed
+            $this->load->helper('form');
 
             $page_content .= $this->load->view('examples/login_form', '', TRUE);
         }
@@ -266,7 +273,10 @@ class Examples extends MY_Controller
     {
         $this->authentication->logout();
 
-        redirect( secure_site_url( LOGIN_PAGE . '?logout=1') );
+        // Set redirect protocol
+        $redirect_protocol = USE_SSL ? 'https' : NULL;
+
+        redirect( site_url( LOGIN_PAGE . '?logout=1', $redirect_protocol ) );
     }
 
     // --------------------------------------------------------------
@@ -322,9 +332,15 @@ class Examples extends MY_Controller
                             )
                         );
 
-                        $view_data['special_link'] = secure_anchor( 
-                            'examples/recovery_verification/' . $user_data->user_id . '/' . $recovery_code, 
-                            secure_site_url( 'examples/recovery_verification/' . $user_data->user_id . '/' . $recovery_code ), 
+                        // Set the link protocol
+                        $link_protocol = USE_SSL ? 'https' : NULL;
+
+                        // Set URI of link
+                        $link_uri = 'examples/recovery_verification/' . $user_data->user_id . '/' . $recovery_code;
+
+                        $view_data['special_link'] = anchor( 
+                            site_url( $link_uri, $link_protocol ), 
+                            site_url( $link_uri, $link_protocol ), 
                             'target ="_blank"' 
                         );
 

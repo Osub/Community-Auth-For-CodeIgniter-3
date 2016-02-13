@@ -49,7 +49,7 @@ if( isset( $validation_passed ) )
 				You have successfully changed your password.
 			</p>
 			<p>
-				You can now ' . secure_anchor(LOGIN_PAGE, 'login') . '.
+				You can now <a href="/' . LOGIN_PAGE . '">login</a>
 			</p>
 		</div>
 	';
@@ -67,7 +67,7 @@ if( isset( $recovery_error ) )
 				Account recovery links expire after 
 				' . ( (int) config_item('recovery_code_expiration') / ( 60 * 60 ) ) . ' 
 				hours.<br />You will need to use the 
-				' . secure_anchor('examples/recover','Account Recovery') . ' form 
+				<a href="/examples/recover">Account Recovery</a> form 
 				to send yourself a new link.
 			</p>
 		</div>
@@ -114,7 +114,7 @@ if( $showform == 1 )
 
 		?>
 			<div id="form">
-				<?php echo form_open( '' ); ?>
+				<?php echo form_open(); ?>
 					<fieldset>
 						<legend>Step 2 - Choose your new password</legend>
 						<div>
