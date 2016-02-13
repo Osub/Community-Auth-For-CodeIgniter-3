@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class Examples_model extends MY_Model {
+class Examples_model extends CI_model {
 
 	/**
 	 * Class Constructor
@@ -92,19 +92,27 @@ class Examples_model extends MY_Model {
 	 */
 	public function recovery_password_change()
 	{
+		$this->load->library('form_validation');
+
 		// Load form validation rules
 		$this->load->model('validation_callables');
 		$this->config->load( 'form_validation/examples/recovery_verification' );
-		$this->validation_rules = config_item('recovery_verification');
+		$this->form_validation->set_rules( config_item('recovery_verification') );
 
-		if( $this->validate() )
+		if( $this->form_validation->run() !== FALSE )
 		{
+			$this->load->vars( array( 'validation_passed' => 1 ) );
+
 			$this->_change_password(
 				set_value('passwd'),
 				set_value('passwd_confirm'),
 				set_value('user_identification'),
 				set_value('recovery_code')
 			);
+		}
+		else
+		{
+			$this->load->vars( array( 'validation_errors' => validation_errors() ) );
 		}
 	}
 

@@ -59,11 +59,9 @@ then
 		then
 			ln -s ../third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
 			ln -s ../third_party/community_auth/core/MY_Input.php ./core/MY_Input.php
-			ln -s ../third_party/community_auth/core/MY_Model.php ./core/MY_Model.php
 		else
 			cp ./third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
 			cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php 
-			cp ./third_party/community_auth/core/MY_Model.php ./core/MY_Model.php
 		fi
 
 		# Copy or symlink hook files

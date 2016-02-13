@@ -13,15 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class Auth_model extends MY_Model {
-
-	/**
-	 * Class constructor
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
+class Auth_model extends CI_Model {
 
 	/**
 	 * Check the user table to see if a user exists by username or email address.
