@@ -503,6 +503,7 @@ class Auth_Controller extends CI_Controller {
 				$this->load->helper('string');
 
 				// Load URL helper for the site_url function
+				$this->load->helper('url');
 
 				// Set link protocol
 				$link_protocol = USE_SSL ? 'https' : NULL;
