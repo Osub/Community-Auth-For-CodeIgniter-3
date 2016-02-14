@@ -179,9 +179,7 @@ class Authentication
 		{
 			// Check login, and return user's data or FALSE if not logged in
 			if( $auth_data = $this->check_login( $requirement ) )
-			{
 				return $auth_data;
-			}
 		}
 
 		// If this is a login attempt, all values must not be empty
@@ -204,9 +202,7 @@ class Authentication
 
 				// Attempt login with posted values and return either the user's data, or FALSE
 				if( $auth_data = $this->login( $requirement, $string, $password ) )
-				{
 					return $auth_data;
-				}
 			}
 		}
 

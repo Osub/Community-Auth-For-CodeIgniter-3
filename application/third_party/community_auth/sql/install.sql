@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `denied_access` (
   `ai` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ip_address` varchar(45) NOT NULL,
   `time` datetime NOT NULL,
-  `reason_code` tinyint(2) DEFAULT 0,
+  `reason_code` tinyint(1) unsigned DEFAULT 0,
   PRIMARY KEY (`ai`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(10) unsigned NOT NULL,
   `username` varchar(12) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
-  `auth_level` tinyint(2) unsigned NOT NULL,
+  `auth_level` tinyint(3) unsigned NOT NULL,
   `banned` enum('0','1') NOT NULL DEFAULT '0',
   `passwd` varchar(60) NOT NULL,
   `passwd_recovery_code` varchar(60) DEFAULT NULL,

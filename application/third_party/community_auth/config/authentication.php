@@ -18,10 +18,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |						LEVELS AND ROLES							
 | -----------------------------------------------------------------
 | This definition sets the levels and roles that will be used for authentication.
-|
-| Admin should remain being called "admin", but the key may be changed. 
-| Keep in mind that if you change the number to higher than 9, then the 
-| auth_level field of the users table will need to be adjusted.
+| 
+| Keep in mind that if you use key numbering higher than 255,  
+| the auth_level field of the users table will need to be changed
+| to smallint, or another integer datatype that handles larger numbers.
 |
 | No user level should ever be set with a key of 0.
 |
@@ -37,7 +37,7 @@ $config['levels_and_roles'] = array(
 | -----------------------------------------------------------------
 |							GROUPS							
 | -----------------------------------------------------------------
-| This definition sets the groups of roles that will be used for authentication.
+| This definition sets grouped roles that will be used for authentication.
 |
 */
 
