@@ -336,7 +336,7 @@ $config['max_chars_for_password'] = 72;
 | Make sure to remove any file extension, as this string is passed to config->load().
 */
 
-$config['login_form_validation_file'] = 'form_validation/examples/login';
+$config['login_form_validation_file'] = 'form_validation/login';
 
 /*
 | -----------------------------------------------------------------

@@ -86,8 +86,32 @@ class Examples_model extends CI_model {
 
 		// Load form validation rules
 		$this->load->model('validation_callables');
-		$this->config->load( 'form_validation/examples/recovery_verification' );
-		$this->form_validation->set_rules( config_item('recovery_verification') );
+		$this->form_validation->set_rules(array(
+			array(
+				'field' => 'passwd',
+				'label' => 'NEW PASSWORD',
+				'rules' => array(
+					'trim',
+					'required',
+					'matches[passwd_confirm]',
+					array( 
+						'_check_password_strength', 
+						array( $this->validation_callables, '_check_password_strength' ) 
+					)
+				)
+			),
+			array(
+				'field' => 'passwd_confirm',
+				'label' => 'CONFIRM NEW PASSWORD',
+				'rules' => 'trim|required'
+			),
+			array(
+				'field' => 'recovery_code'
+			),
+			array(
+				'field' => 'user_identification'
+			)
+		));
 
 		if( $this->form_validation->run() !== FALSE )
 		{
