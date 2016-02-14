@@ -21,7 +21,7 @@ $config['login_rules'] = array(
 	array(
 		'field' => 'login_string',
 		'label' => 'USERNAME OR EMAIL ADDRESS',
-		'rules' => 'trim|required|max_length[255]'
+		'rules' => 'trim|required|max_length[255]' /* Replace max_length w/ valid_email is site not using usernames */
 	),
 	array(
 		'field' => 'login_pass',
