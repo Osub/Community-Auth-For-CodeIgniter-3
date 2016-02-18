@@ -82,7 +82,10 @@ Installation
 
 **14)** Enable hooks and make sure there is an encryption key set in config/config.php. To quickly create an encryption key, load the index method of the Key_creator controller.
 
-**15)** Create a user for testing purposes by editing the user_data array that is inside the create_user method, which is in the Examples controller. When specifying a user level, be aware of the "levels_and_roles" array located in config/authentication. In order to login in the next step the user level must be set to 9, which by default is an admin. Also note that this method of user creation does not account for password strength, yet the login validation does. A password that is strong enough will have an uppercase letter, a number, and be at least 8 characters long. Run /examples/create_user in your browser to create the user.
+**15)** Create a user for testing purposes by editing the user_data array that is inside the create_user method, which is in the Examples controller. When specifying a user level, be aware of the "levels_and_roles" array located in config/authentication. In order to login in the next step the user level must be set to 9, which by default is an admin. Also note that this method of user creation does not account for password strength, yet the login validation does. A password that is strong enough will have an uppercase letter, a number, and be at least 8 characters long. To create the user, request the examples/create_user URI in your browser:
+
+* /index.php/examples/create_user if you are not using mod_rewrite to remove index.php.
+* /examples/create_user if you are using mod_rewrite to remove index.php.
 
 **16)** If you did everything right, you should be able to go to /examples and log in.
 
