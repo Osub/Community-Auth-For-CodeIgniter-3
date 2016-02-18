@@ -486,11 +486,11 @@ class Examples extends MY_Controller
                         data: {
                             'login_string': $('#login_string').val(),
                             'login_pass': $('#login_pass').val(),
-                            'login_token': $('[name=\"login_token\"').val()
+                            'login_token': $('[name=\"login_token\"]').val()
                         },
                         dataType: 'json',
                         success: function(response){
-                            $('[name=\"login_token\"').val( response.token );
+                            $('[name=\"login_token\"]').val( response.token );
                             console.log(response);
                             if(response.status == 1){
                                 $('form').replaceWith('<p>You are now logged in.</p>');
