@@ -582,9 +582,8 @@ class Authentication
 	 *
 	 * 1) Is the user banned?
 	 * 2) If a login attempt, does the password match the one in the user record?
-	 * 3) If a status check, does the user agent match when multiple logins disallowed?
-	 * 4) Is the user the appropriate level for the request?
-	 * 5) Is the user the appropriate role for the request?
+	 * 3) Is the user the appropriate level for the request?
+	 * 4) Is the user the appropriate role for the request?
 	 *
 	 * @param   obj    the user record
 	 * @param   mixed  the required user level or array of roles
