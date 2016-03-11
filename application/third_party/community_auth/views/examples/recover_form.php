@@ -56,9 +56,22 @@ else if( isset( $confirmation ) )
 	echo '
 		<div style="border:1px solid green;">
 			<p>
-				We have sent you an email with instructions on how 
-				to recover your account. Because this email did not 
-				really get sent, your link is shown below:
+				Congratulations, you have created an account recovery link.
+			</p>
+			<p>
+				<b>Please note</b>: The account recovery link would normally be placed in an email, 
+				and you would not see it here on the screen. This is to limit the code in the 
+				Examples controller, and keep your focus on learning Community Auth, but give you 
+				an idea of how to implement account recovery. <b>When you do end up writing code to send 
+				the recovery link to an email address, you will want to delete it from this view, 
+				delete these instructions, and instead have a simple message similar to the following:
+			</p>
+			<p>
+				"We have sent you an email with instructions on how 
+				to recover your account."
+			</p>
+			<p>
+				This is the account recovery link:
 			</p>
 			<p>' . $special_link . '</p>
 		</div>
