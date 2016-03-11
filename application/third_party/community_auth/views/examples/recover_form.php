@@ -64,7 +64,7 @@ else if( isset( $confirmation ) )
 				Examples controller, and keep your focus on learning Community Auth, but give you 
 				an idea of how to implement account recovery. <b>When you do end up writing code to send 
 				the recovery link to an email address, you will want to delete it from this view, 
-				delete these instructions, and instead have a simple message similar to the following:
+				delete these instructions, and instead have a simple message similar to the following</b>:
 			</p>
 			<p>
 				"We have sent you an email with instructions on how 
