@@ -12,7 +12,7 @@ To Do List
 	Each permission has a category name, and an action name.
 	An interface would be created for user management, giving the admin the 
 	ability to designate a user to have or not have permissions to take certain
-	actions. When a user logs in, as long as "use_acl" is TRUE in the 
+	actions. When a user logs in, as long as "add_acl_to_auth_vars" is TRUE in the 
 	authentication config, the user's specific ACL values are added 
 	to the authentication variables, giving the dev a chance to check if 
 	the user should have permission to take a specific action.
@@ -30,11 +30,12 @@ To Do List
 	Because no ACL interface has been implemented, this really gives the developer 
 	a chance to customize the way it is used. For instance, if by default a user 
 	should have permission to do everything in a ACL category, all they may 
-	need is an ACL record "general.all". This kind of implementation could keep
+	need is an ACL record "general.*". This kind of implementation could keep
 	the database super lean, and checking for permission as simple as:
 
-		if( $this->permit('general.all') OR $this->permit('general.view_reports') )
+		if( $this->permit('general.view_reports') )
 			// ... Do something ...
 
 	BTW, there is currently no permit function in the Auth Controller. Don't worry, 
-	it's coming soon.
+	it's coming soon. In that permit function, if the user's ACL has "general.*", 
+	then the permit function would return TRUE.

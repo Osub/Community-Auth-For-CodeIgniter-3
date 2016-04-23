@@ -48,7 +48,7 @@ class Auth_model extends CI_Model {
 		{
 			$row = $query->row_array();
 
-			return (object) array_merge( $row, $this->_get_acl( $row['user_id'] ) );
+			return (object) array_merge( $row, $this->get_acl( $row['user_id'] ) );
 		}
 
 		return FALSE;
@@ -162,7 +162,7 @@ class Auth_model extends CI_Model {
 		{
 			$row = $query->row_array();
 
-			return (object) array_merge( $row, $this->_get_acl( $row['user_id'] ) );
+			return (object) array_merge( $row, $this->get_acl( $row['user_id'] ) );
 		}
 
 		return FALSE;
@@ -176,9 +176,10 @@ class Auth_model extends CI_Model {
 	 *
 	 * @param  int  the logged in user's user ID
 	 */
-	protected function _get_acl( $user_id )
+	public function get_acl( $user_id )
 	{
-		if( config_item('use_acl') )
+		// Add ACL query only if turned on in authentication config
+		if( config_item('add_acl_to_auth_vars') )
 		{
 			// ACL table query
 			$query = $this->db->select('b.action_id, b.action_name, c.category_name')
@@ -200,9 +201,14 @@ class Auth_model extends CI_Model {
 				if( isset( $acl ) )
 					return array( 'acl' => $acl );
 			}
+			else
+			{
+				return array( 'acl' => array() );
+			}
 		}
 
-		return [];
+		// By setting ACL to NULL, we can know that the query was not run
+		return array( 'acl' => NULL );
 	}
 	
 	// -----------------------------------------------------------------------

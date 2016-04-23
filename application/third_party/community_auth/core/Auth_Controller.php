@@ -59,12 +59,15 @@ class Auth_Controller extends CI_Controller {
 	protected $auth_data;
 
 	/**
-	 * The logged-in user's ACL
+	 * The logged-in user's ACL permissions after login, 
+	 * or after login status check.
 	 *
-	 * @var array
+	 * If query for ACL performed, this variable becomes an array.
+	 *
+	 * @var mixed
 	 * @access public
 	 */
-	public $acl = [];
+	public $acl = NULL;
 
 	/**
 	 * Either 'https' or 'http' depending on the current environment
@@ -403,12 +406,12 @@ class Auth_Controller extends CI_Controller {
 		$this->config->set_item( 'auth_role',     $this->auth_role );
 		$this->config->set_item( 'auth_email',    $this->auth_email );
 
-		// Add ACL permissions if ACL turned on
-		if( config_item('use_acl') )
+		// Add ACL permissions if ACL query turned on
+		if( config_item('add_acl_to_auth_vars') )
 		{
 			$this->acl   = $this->auth_data->acl;
 			$data['acl'] = $this->acl;
-			$this->config->set_item( 'acl',  $this->acl );
+			$this->config->set_item( 'acl', $this->acl );
 		}
 
 		// Load vars

@@ -47,17 +47,17 @@ $config['groups'] = array(
 
 /*
 | -----------------------------------------------------------------
-|							USE ACL							
+|					ADD ACL TO AUTH VARS							
 | -----------------------------------------------------------------
 | This definition turns on an additional query to retreive a logged
 | in user's ACL records when they login or when login status is checked. 
 | If you're not going to implement your own ACL categories, actions, 
 | and take the time to create an interface to manage the ACL, then 
-| you should leave this set to FALSE.
+| you would leave this set to FALSE.
 |
 */
 
-$config['use_acl'] = FALSE;
+$config['add_acl_to_auth_vars'] = FALSE;
 
 /*
 | -----------------------------------------------------------------
