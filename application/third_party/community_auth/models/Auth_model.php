@@ -45,7 +45,11 @@ class Auth_model extends CI_Model {
 			->get();
 
 		if( $query->num_rows() == 1 )
-			return $query->row();
+		{
+			$row = $query->row_array();
+
+			return (object) array_merge( $row, $this->_get_acl( $row['user_id'] ) );
+		}
 
 		return FALSE;
 	}
@@ -155,12 +159,53 @@ class Auth_model extends CI_Model {
 		$query = $this->db->get();
 
 		if( $query->num_rows() == 1 )
-			return $query->row();
+		{
+			$row = $query->row_array();
+
+			return (object) array_merge( $row, $this->_get_acl( $row['user_id'] ) );
+		}
 
 		return FALSE;
 	}
 
 	// --------------------------------------------------------------
+
+	/**
+	 * Get all of the logged in user's ACL records, 
+	 * and put the actions they have permission to take in an array.
+	 *
+	 * @param  int  the logged in user's user ID
+	 */
+	protected function _get_acl( $user_id )
+	{
+		if( config_item('use_acl') )
+		{
+			// ACL table query
+			$query = $this->db->select('b.action_id, b.action_name, c.category_name')
+				->from( config_item('acl_table') . ' a' )
+				->join( config_item('acl_actions_table') . ' b', 'a.action_id = b.action_id' )
+				->join( config_item('acl_categories_table') . ' c', 'b.category_id = c.category_id' )
+				->where( 'a.user_id', $user_id )
+				->get();
+
+			if( $query->num_rows() > 0 )
+			{
+				// Add each permission to an array
+				foreach( $query->result() as $row )
+				{
+					// Permission identified by category + "." + action name
+					$acl[$row->action_id] = $row->category_name . '.' . $row->action_name;
+				}
+
+				if( isset( $acl ) )
+					return array( 'acl' => $acl );
+			}
+		}
+
+		return [];
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Update a user's user record session ID if it was regenerated

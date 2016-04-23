@@ -122,6 +122,16 @@ class Examples extends MY_Controller
 
                 echo '</pre>';
             }
+
+            if( config_item('use_acl') && $this->acl )
+            {
+                echo '<br />
+                    <pre>';
+
+                print_r( $this->acl );
+
+                echo '</pre>';
+            }
         }
         else
         {

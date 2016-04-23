@@ -47,6 +47,20 @@ $config['groups'] = array(
 
 /*
 | -----------------------------------------------------------------
+|							USE ACL							
+| -----------------------------------------------------------------
+| This definition turns on an additional query to retreive a logged
+| in user's ACL records when they login or when login status is checked. 
+| If you're not going to implement your own ACL categories, actions, 
+| and take the time to create an interface to manage the ACL, then 
+| you should leave this set to FALSE.
+|
+*/
+
+$config['use_acl'] = FALSE;
+
+/*
+| -----------------------------------------------------------------
 |						MAX_ALLOWED_ATTEMPTS						
 | -----------------------------------------------------------------
 | This definition sets the maximum amount of failed login attempts

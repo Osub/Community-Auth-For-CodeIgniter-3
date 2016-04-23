@@ -142,3 +142,47 @@ END;$$
 delimiter ;
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_categories`
+-- 
+
+CREATE TABLE `acl_categories` (
+  `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_actions`
+-- 
+
+CREATE TABLE `acl_actions` (
+  `action_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `action_name` varchar(100) NOT NULL,
+  `category_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`action_id`),
+  FOREIGN KEY (`category_id`) REFERENCES `acl_categories`(`category_id`) 
+  ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl`
+-- 
+
+CREATE TABLE `acl` (
+  `ai` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `action_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ai`),
+  FOREIGN KEY (`action_id`) REFERENCES `acl_actions`(`action_id`) 
+  ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) 
+  ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
