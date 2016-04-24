@@ -214,6 +214,41 @@ class Auth_model extends CI_Model {
 	// -----------------------------------------------------------------------
 
 	/**
+	 * Check if logged in user has permission to take an action,
+	 * as defined by ACL category name and ACL action name
+	 *
+	 * @param  int  the logged in user's user ID
+	 * @param  string  the ACL category name
+	 * @param  string  the ACL action name
+	 */
+	public function acl_permits( $user_id, $category_name, $action_name )
+	{
+		// Ensure the user ID is an integer
+		$user_id = (int) $user_id;
+
+		/**
+		 * Even though an action name is specified, if
+		 * the user has an ACL record with "*" or "all" 
+		 * as the action ID, the user is considered to have 
+		 * permissions to take action.
+		 */
+		$count = $this->db->from( config_item('acl_table') . ' a' )
+			->join( config_item('acl_actions_table') . ' b', 'a.action_id = b.action_id' )
+			->join( config_item('acl_categories_table') . ' c', 'b.category_id = c.category_id' )
+			->where( 'a.user_id', $user_id )
+			->where( 'c.category_name', $category_name )
+			->where_in( 'b.action_name', array( $action_name, '*', 'all' ) )
+			->count_all_results();
+
+		if( $count )
+			return TRUE;
+
+		return FALSE;
+	}
+	
+	// -----------------------------------------------------------------------
+
+	/**
 	 * Update a user's user record session ID if it was regenerated
 	 */
 	public function update_user_session_id( $user_id )

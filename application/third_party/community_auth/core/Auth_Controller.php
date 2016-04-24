@@ -505,6 +505,24 @@ class Auth_Controller extends CI_Controller {
 	}
 
 	// --------------------------------------------------------------
+	
+	/**
+	 * Check if ACL permits user to take action.
+	 *
+	 * @param  string  the concatenation of ACL category 
+	 *                 and action, joined by a period.
+	 * @return bool
+	 */
+	public function acl_permits( $str )
+	{
+		list( $category_name, $action_name ) = explode( '.', $str );
+
+		$auth_model = $this->authentication->auth_model;
+
+		return $this->$auth_model->acl_permits( $this->auth_user_id, $category_name, $action_name );
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Force the request to be redirected to HTTPS, or optionally show 404.
