@@ -132,6 +132,16 @@ class Examples extends MY_Controller
 
                 echo '</pre>';
             }
+
+            /**
+             * ACL usage doesn't require ACL be added to auth vars.
+             * If query not performed during authentication, 
+             * the acl_permits function will query the DB.
+             */
+            if( $this->acl_permits('general.secret_action') )
+            {
+                echo '<p>ACL permission grants action!</p>';
+            }
         }
         else
         {

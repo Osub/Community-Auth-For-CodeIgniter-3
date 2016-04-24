@@ -53,7 +53,10 @@ $config['groups'] = array(
 | in user's ACL records when they login or when login status is checked. 
 | If you're not going to implement your own ACL categories, actions, 
 | and take the time to create an interface to manage the ACL, then 
-| you would leave this set to FALSE.
+| you would leave this set to FALSE. Furthermore, basic ACL usage doesn't
+| require that this option be set to true, because usage of the 
+| Auth_model->acl_permits method will query the database if it hasn't
+| already been done.
 |
 */
 

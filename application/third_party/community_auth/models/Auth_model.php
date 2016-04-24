@@ -16,6 +16,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Auth_model extends CI_Model {
 
 	/**
+	 * ACL for a logged in user
+	 * @var mixed
+	 */
+	public $acl = NULL;
+
+	/**
 	 * Check the user table to see if a user exists by username or email address.
 	 *
 	 * While this query is rather limited, you could easily join with
@@ -48,7 +54,10 @@ class Auth_model extends CI_Model {
 		{
 			$row = $query->row_array();
 
-			return (object) array_merge( $row, $this->get_acl( $row['user_id'] ) );
+			// ACL is added 
+			$acl = $this->add_acl_to_auth_query( $row['user_id'] );
+
+			return (object) array_merge( $row, $acl );
 		}
 
 		return FALSE;
@@ -162,7 +171,10 @@ class Auth_model extends CI_Model {
 		{
 			$row = $query->row_array();
 
-			return (object) array_merge( $row, $this->get_acl( $row['user_id'] ) );
+			// ACL is added
+			$acl = $this->add_acl_to_auth_query( $row['user_id'] );
+
+			return (object) array_merge( $row, $acl );
 		}
 
 		return FALSE;
@@ -171,44 +183,57 @@ class Auth_model extends CI_Model {
 	// --------------------------------------------------------------
 
 	/**
-	 * Get all of the logged in user's ACL records, 
-	 * and put the actions they have permission to take in an array.
+	 * During a login attempt or when checking login status, 
+	 * ACL permissions may be added to authentication variables, 
+	 * but only if the "add_acl_to_auth_vars" option is set to 
+	 * TRUE in config/authentication.php
 	 *
 	 * @param  int  the logged in user's user ID
 	 */
-	public function get_acl( $user_id )
+	public function add_acl_to_auth_query( $user_id )
 	{
 		// Add ACL query only if turned on in authentication config
 		if( config_item('add_acl_to_auth_vars') )
 		{
-			// ACL table query
-			$query = $this->db->select('b.action_id, b.action_name, c.category_name')
-				->from( config_item('acl_table') . ' a' )
-				->join( config_item('acl_actions_table') . ' b', 'a.action_id = b.action_id' )
-				->join( config_item('acl_categories_table') . ' c', 'b.category_id = c.category_id' )
-				->where( 'a.user_id', $user_id )
-				->get();
+			$this->acl_query( $user_id );
+		}
 
-			if( $query->num_rows() > 0 )
-			{
-				// Add each permission to an array
-				foreach( $query->result() as $row )
-				{
-					// Permission identified by category + "." + action name
-					$acl[$row->action_id] = $row->category_name . '.' . $row->action_name;
-				}
+		return array( 'acl' => $this->acl );
+	}
+	
+	// -----------------------------------------------------------------------
 
-				if( isset( $acl ) )
-					return array( 'acl' => $acl );
-			}
-			else
+	/**
+	 * Get all of the ACL records for a specific user
+	 */
+	public function acl_query( $user_id )
+	{
+		// ACL table query
+		$query = $this->db->select('b.action_id, b.action_name, c.category_name')
+			->from( config_item('acl_table') . ' a' )
+			->join( config_item('acl_actions_table') . ' b', 'a.action_id = b.action_id' )
+			->join( config_item('acl_categories_table') . ' c', 'b.category_id = c.category_id' )
+			->where( 'a.user_id', $user_id )
+			->get();
+
+		/**
+		 * ACL becomes an array, even if there were no results.
+		 * It is this change that indicates that the query was 
+		 * actually performed.
+		 */
+		$this->acl = array();
+
+		if( $query->num_rows() > 0 )
+		{
+			// Add each permission to the ACL array
+			foreach( $query->result() as $row )
 			{
-				return array( 'acl' => array() );
+				// Permission identified by category + "." + action name
+				$this->acl[$row->action_id] = $row->category_name . '.' . $row->action_name;
 			}
 		}
 
-		// By setting ACL to NULL, we can know that the query was not run
-		return array( 'acl' => NULL );
+		return $this->acl;
 	}
 	
 	// -----------------------------------------------------------------------
@@ -223,25 +248,24 @@ class Auth_model extends CI_Model {
 	 */
 	public function acl_permits( $user_id, $category_name, $action_name )
 	{
-		// Ensure the user ID is an integer
-		$user_id = (int) $user_id;
+		// If ACL not already queried for
+		if( is_null( $this->acl ) )
+		{
+			// Get ACL for this user
+			$this->acl_query( (int) $user_id );
+		}
 
-		/**
-		 * Even though an action name is specified, if
-		 * the user has an ACL record with "*" or "all" 
-		 * as the action ID, the user is considered to have 
-		 * permissions to take action.
-		 */
-		$count = $this->db->from( config_item('acl_table') . ' a' )
-			->join( config_item('acl_actions_table') . ' b', 'a.action_id = b.action_id' )
-			->join( config_item('acl_categories_table') . ' c', 'b.category_id = c.category_id' )
-			->where( 'a.user_id', $user_id )
-			->where( 'c.category_name', $category_name )
-			->where_in( 'b.action_name', array( $action_name, '*', 'all' ) )
-			->count_all_results();
+		if( 
+			// If ACL gives permission for entire category
+			in_array( $category_name . '.*', $this->acl ) OR  
+			in_array( $category_name . '.all', $this->acl ) OR 
 
-		if( $count )
+			// If ACL gives permission for specific action
+			in_array( $category_name . '.' . $action_name, $this->acl )
+		)
+		{
 			return TRUE;
+		}
 
 		return FALSE;
 	}

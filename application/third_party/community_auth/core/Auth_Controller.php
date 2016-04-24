@@ -517,7 +517,15 @@ class Auth_Controller extends CI_Controller {
 	{
 		list( $category_name, $action_name ) = explode( '.', $str );
 
+		// We must have a legit category and action to proceed
+		if( strlen( $category_name ) < 1 OR strlen( $action_name ) < 1 )
+			return FALSE;
+
 		$auth_model = $this->authentication->auth_model;
+
+		// Get ACL for this user if not already available
+		if( is_null( $this->acl ) )
+			$this->acl = $this->$auth_model->acl_query( $this->auth_user_id );
 
 		return $this->$auth_model->acl_permits( $this->auth_user_id, $category_name, $action_name );
 	}
