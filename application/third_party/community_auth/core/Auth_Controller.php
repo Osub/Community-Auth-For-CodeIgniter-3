@@ -407,7 +407,7 @@ class Auth_Controller extends CI_Controller {
 		$this->config->set_item( 'auth_email',    $this->auth_email );
 
 		// Add ACL permissions if ACL query turned on
-		if( config_item('add_acl_to_auth_vars') )
+		if( config_item('add_acl_query_to_auth_functions') )
 		{
 			$this->acl   = $this->auth_data->acl;
 			$data['acl'] = $this->acl;

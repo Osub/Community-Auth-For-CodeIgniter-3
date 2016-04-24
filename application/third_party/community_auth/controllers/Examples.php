@@ -123,7 +123,7 @@ class Examples extends MY_Controller
                 echo '</pre>';
             }
 
-            if( config_item('add_acl_to_auth_vars') && $this->acl )
+            if( config_item('add_acl_query_to_auth_functions') && $this->acl )
             {
                 echo '<br />
                     <pre>';

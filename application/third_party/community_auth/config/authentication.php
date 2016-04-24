@@ -47,9 +47,9 @@ $config['groups'] = array(
 
 /*
 | -----------------------------------------------------------------
-|					ADD ACL TO AUTH VARS							
+|				ADD ACL QUERY TO AUTH FUNCTIONS							
 | -----------------------------------------------------------------
-| This definition turns on an additional query to retreive a logged
+| This config option turns on an additional query to retreive a logged
 | in user's ACL records when they login or when login status is checked. 
 | If you're not going to implement your own ACL categories, actions, 
 | and take the time to create an interface to manage the ACL, then 
@@ -60,7 +60,7 @@ $config['groups'] = array(
 |
 */
 
-$config['add_acl_to_auth_vars'] = FALSE;
+$config['add_acl_query_to_auth_functions'] = FALSE;
 
 /*
 | -----------------------------------------------------------------

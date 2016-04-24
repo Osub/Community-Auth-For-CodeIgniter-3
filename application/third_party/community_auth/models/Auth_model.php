@@ -55,7 +55,7 @@ class Auth_model extends CI_Model {
 			$row = $query->row_array();
 
 			// ACL is added 
-			$acl = $this->add_acl_to_auth_query( $row['user_id'] );
+			$acl = $this->add_acl_to_auth_data( $row['user_id'] );
 
 			return (object) array_merge( $row, $acl );
 		}
@@ -172,7 +172,7 @@ class Auth_model extends CI_Model {
 			$row = $query->row_array();
 
 			// ACL is added
-			$acl = $this->add_acl_to_auth_query( $row['user_id'] );
+			$acl = $this->add_acl_to_auth_data( $row['user_id'] );
 
 			return (object) array_merge( $row, $acl );
 		}
@@ -185,15 +185,15 @@ class Auth_model extends CI_Model {
 	/**
 	 * During a login attempt or when checking login status, 
 	 * ACL permissions may be added to authentication variables, 
-	 * but only if the "add_acl_to_auth_vars" option is set to 
+	 * but only if the "add_acl_query_to_auth_functions" option is set to 
 	 * TRUE in config/authentication.php
 	 *
 	 * @param  int  the logged in user's user ID
 	 */
-	public function add_acl_to_auth_query( $user_id )
+	public function add_acl_to_auth_data( $user_id )
 	{
 		// Add ACL query only if turned on in authentication config
-		if( config_item('add_acl_to_auth_vars') )
+		if( config_item('add_acl_query_to_auth_functions') )
 		{
 			$this->acl_query( $user_id );
 		}
