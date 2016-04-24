@@ -525,9 +525,13 @@ class Auth_Controller extends CI_Controller {
 
 		// Get ACL for this user if not already available
 		if( is_null( $this->acl ) )
+		{
 			$this->acl = $this->$auth_model->acl_query( $this->auth_user_id );
+			$this->load->vars( array('acl' => $this->acl) );
+			$this->config->set_item( 'acl', $this->acl );
+		}
 
-		return $this->$auth_model->acl_permits( $this->auth_user_id, $category_name, $action_name );
+		return $this->$auth_model->acl_permits( $category_name, $action_name );
 	}
 	
 	// -----------------------------------------------------------------------

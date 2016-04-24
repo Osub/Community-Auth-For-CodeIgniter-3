@@ -246,15 +246,8 @@ class Auth_model extends CI_Model {
 	 * @param  string  the ACL category name
 	 * @param  string  the ACL action name
 	 */
-	public function acl_permits( $user_id, $category_name, $action_name )
+	public function acl_permits( $category_name, $action_name )
 	{
-		// If ACL not already queried for
-		if( is_null( $this->acl ) )
-		{
-			// Get ACL for this user
-			$this->acl_query( (int) $user_id );
-		}
-
 		if( 
 			// If ACL gives permission for entire category
 			in_array( $category_name . '.*', $this->acl ) OR  
