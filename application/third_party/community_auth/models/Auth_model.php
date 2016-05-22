@@ -33,14 +33,14 @@ class Auth_model extends CI_Model {
 	public function get_auth_data( $user_string )
 	{
 		// Selected user table data
-		$selected_columns = array(
+		$selected_columns = [
 			'username',
 			'email',
 			'auth_level',
 			'passwd',
 			'user_id',
 			'banned'
-		);
+		];
 
 		// User table query
 		$query = $this->db->select( $selected_columns )
@@ -80,18 +80,18 @@ class Auth_model extends CI_Model {
 				->delete( config_item('auth_sessions_table') );
 		}
 
-		$data = array( 'last_login' => $login_time );
+		$data = ['last_login' => $login_time];
 
 		$this->db->where( 'user_id' , $user_id )
 			->update( config_item('user_table') , $data );
 
-		$data = array(
+		$data = [
 			'id'         => $session_id,
 			'user_id'    => $user_id,
 			'login_time' => $login_time,
 			'ip_address' => $this->input->ip_address(),
 			'user_agent' => $this->_user_agent()
-		);
+		];
 
 		$this->db->insert( config_item('auth_sessions_table') , $data );
 	}
@@ -138,13 +138,13 @@ class Auth_model extends CI_Model {
 	public function check_login_status( $user_id, $login_time )
 	{
 		// Selected user table data
-		$selected_columns = array(
+		$selected_columns = [
 			'u.username',
 			'u.email',
 			'u.auth_level',
 			'u.user_id',
 			'u.banned'
-		);
+		];
 
 		$this->db->select( $selected_columns )
 			->from( config_item('user_table') . ' u' )
@@ -198,7 +198,7 @@ class Auth_model extends CI_Model {
 			$this->acl_query( $user_id );
 		}
 
-		return array( 'acl' => $this->acl );
+		return ['acl' => $this->acl];
 	}
 	
 	// -----------------------------------------------------------------------
@@ -221,7 +221,7 @@ class Auth_model extends CI_Model {
 		 * It is this change that indicates that the query was 
 		 * actually performed.
 		 */
-		$this->acl = array();
+		$this->acl = [];
 
 		if( $query->num_rows() > 0 )
 		{
@@ -276,7 +276,7 @@ class Auth_model extends CI_Model {
 				->where( 'id', $this->session->pre_regenerated_session_id )
 				->update( 
 					config_item('auth_sessions_table'),
-					array( 'id' => $this->session->regenerated_session_id )
+					['id' => $this->session->regenerated_session_id]
 			);
 		}
 	}
@@ -290,9 +290,9 @@ class Auth_model extends CI_Model {
 	{
 		$expiration = date('Y-m-d H:i:s', time() - config_item('seconds_on_hold') );
 
-		$this->db->delete( config_item('IP_hold_table'), array( 'time <' => $expiration ) );
+		$this->db->delete( config_item('IP_hold_table'), ['time <' => $expiration] );
 
-		$this->db->delete( config_item('username_or_email_hold_table'), array( 'time <' => $expiration ) );
+		$this->db->delete( config_item('username_or_email_hold_table'), ['time <' => $expiration] );
 	}
 
 	// --------------------------------------------------------------
@@ -304,7 +304,7 @@ class Auth_model extends CI_Model {
 	{
 		$expiration = date('Y-m-d H:i:s', time() - config_item('seconds_on_hold') );
 
-		$this->db->delete( config_item('errors_table'), array( 'time <' => $expiration ) );
+		$this->db->delete( config_item('errors_table'), ['time <' => $expiration] );
 	}
 
 	// --------------------------------------------------------------
@@ -338,7 +338,7 @@ class Auth_model extends CI_Model {
 	{
 		$ip_hold = $this->db->get_where( 
 			config_item('IP_hold_table'), 
-			array( 'ip_address' => $this->input->ip_address() ) 
+			['ip_address' => $this->input->ip_address()] 
 		);
 
 		if( $ip_hold->num_rows() > 0 )
@@ -366,7 +366,7 @@ class Auth_model extends CI_Model {
 		{
 			$string_hold = $this->db->get_where( 
 				config_item('username_or_email_hold_table'), 
-				array( 'username_or_email' => $posted_string ) 
+				['username_or_email' => $posted_string] 
 			);
 
 			if( $string_hold->num_rows() > 0 )
@@ -408,10 +408,10 @@ class Auth_model extends CI_Model {
 		if( $count1 == config_item('max_allowed_attempts') )
 		{
 			// Place the IP on hold
-			$data = array(
+			$data = [
 				'ip_address' => $ip_address,
 				'time'       => date('Y-m-d H:i:s')
-			);
+			];
 
 			$this->db->set( $data )
 				->insert( config_item('IP_hold_table') );
@@ -434,11 +434,11 @@ class Auth_model extends CI_Model {
 			if( config_item('deny_access_at') > 0 )
 			{
 				// Log the IP address in the denied_access database
-				$data = array(
+				$data = [
 					'ip_address'  => $ip_address,
 					'time'        => date('Y-m-d H:i:s'),
 					'reason_code' => '1'
-				);
+				];
 
 				$this->_insert_denial( $data );
 
@@ -463,10 +463,10 @@ class Auth_model extends CI_Model {
 			if( $count2 == config_item('max_allowed_attempts') )
 			{
 				// Place the username/email-address on hold
-				$data = array(
+				$data = [
 					'username_or_email' => $string,
 					'time'              => date('Y-m-d H:i:s')
-				);
+				];
 
 				$this->db->set( $data )
 					->insert( config_item('username_or_email_hold_table') );

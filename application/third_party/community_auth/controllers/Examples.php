@@ -173,12 +173,12 @@ class Examples extends MY_Controller
     public function create_user()
     {
         // Customize this array for your user
-        $user_data = array(
+        $user_data = [
             'username'   => 'skunkbot',
             'passwd'     => 'PepeLePew7',
             'email'      => 'skunkbot@example.com',
             'auth_level' => '1', // 9 if you want to login @ examples/index.
-        );
+        ];
 
         $this->is_logged_in();
 
@@ -191,44 +191,44 @@ class Examples extends MY_Controller
 
         $this->form_validation->set_data( $user_data );
 
-        $validation_rules = array(
-			array(
+        $validation_rules = [
+			[
 				'field' => 'username',
 				'label' => 'username',
 				'rules' => 'max_length[12]|is_unique[' . config_item('user_table') . '.username]',
-                'errors' => array(
+                'errors' => [
                     'is_unique' => 'Username already in use.'
-                )
-			),
-			array(
+                ]
+			],
+			[
 				'field' => 'passwd',
 				'label' => 'passwd',
-				'rules' => array(
+				'rules' => [
                     'trim',
                     'required',
-                    array( 
+                    [ 
                         '_check_password_strength', 
-                        array( $this->validation_callables, '_check_password_strength' ) 
-                    )
-                ),
-                'errors' => array(
+                        [ $this->validation_callables, '_check_password_strength' ] 
+                    ]
+                ],
+                'errors' => [
                     'required' => 'The password field is required.'
-                )
-			),
-			array(
+                ]
+			],
+			[
                 'field'  => 'email',
                 'label'  => 'email',
                 'rules'  => 'trim|required|valid_email|is_unique[' . config_item('user_table') . '.email]',
-                'errors' => array(
+                'errors' => [
                     'is_unique' => 'Email address already in use.'
-                )
-			),
-			array(
+                ]
+			],
+			[
 				'field' => 'auth_level',
 				'label' => 'auth_level',
 				'rules' => 'required|integer|in_list[1,6,9]'
-			)
-		);
+			]
+		];
 
 		$this->form_validation->set_rules( $validation_rules );
 
@@ -346,10 +346,10 @@ class Examples extends MY_Controller
                         // Update user record with recovery code and time
                         $this->examples_model->update_user_raw_data(
                             $user_data->user_id,
-                            array(
+                            [
                                 'passwd_recovery_code' => $this->authentication->hash_passwd($recovery_code),
                                 'passwd_recovery_date' => date('Y-m-d H:i:s')
-                            )
+                            ]
                         );
 
                         // Set the link protocol
@@ -481,9 +481,9 @@ class Examples extends MY_Controller
 
         $this->tokens->name = 'login_token';
 
-        $data['javascripts'] = array(
+        $data['javascripts'] = [
             'https://code.jquery.com/jquery-1.12.0.min.js'
-        );
+        ];
 
         if( $this->authentication->on_hold === TRUE )
         {
@@ -547,7 +547,7 @@ class Examples extends MY_Controller
         if( $this->input->is_ajax_request() )
         {
             // Allow this page to be an accepted login page
-            $this->config->set_item('allowed_pages_for_login', array('examples/ajax_attempt_login') );
+            $this->config->set_item('allowed_pages_for_login', ['examples/ajax_attempt_login'] );
 
             // Make sure we aren't redirecting after a successful login
             $this->authentication->redirect_after_login = FALSE;
@@ -565,14 +565,14 @@ class Examples extends MY_Controller
             // Login attempt was successful
             if( $this->auth_data )
             {
-                echo json_encode(array(
+                echo json_encode([
                     'status'   => 1,
                     'user_id'  => $this->auth_user_id,
                     'username' => $this->auth_username,
                     'level'    => $this->auth_level,
                     'role'     => $this->auth_role,
                     'email'    => $this->auth_email
-                ));
+                ]);
             }
 
             // Login attempt not successful
@@ -586,12 +586,12 @@ class Examples extends MY_Controller
                 )
                 ? 1 : 0;
 
-                echo json_encode(array(
+                echo json_encode([
                     'status'  => 0,
                     'count'   => $this->authentication->login_errors_count,
                     'on_hold' => $on_hold, 
                     'token'   => $this->tokens->token()
-                ));
+                ]);
             }
         }
 

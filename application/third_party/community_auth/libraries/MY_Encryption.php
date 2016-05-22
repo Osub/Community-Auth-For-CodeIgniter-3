@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Encryption extends CI_Encryption {
 
-	public $saved_settings = array();
+	public $saved_settings = [];
 
 	/**
 	 * Constructor
@@ -35,11 +35,11 @@ class MY_Encryption extends CI_Encryption {
 	 */
 	public function save_settings()
 	{
-		$this->saved_settings = array(
+		$this->saved_settings = [
 			'_key'    => $this->_key,
 			'_cipher' => $this->_cipher,
 			'_mode'   => $this->_mode
-		);
+		];
 	}
 	
 	// -----------------------------------------------------------------------

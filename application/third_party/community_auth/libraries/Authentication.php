@@ -80,7 +80,7 @@ class Authentication
 	 * @var array
 	 * @access private
 	 */
-	private $auth_identifiers = array();
+	private $auth_identifiers = [];
 
 	/**
 	 * If the session is regenerated and the request 
@@ -428,11 +428,11 @@ class Authentication
 		$this->CI->{$this->auth_model}->clear_login_errors();
 
 		// Insert the error
-		$data = array(
+		$data = [
 			'username_or_email' => $string,
 			'ip_address'        => $this->CI->input->ip_address(),
 			'time'              => date('Y-m-d H:i:s')
-		);
+		];
 
 		$this->CI->{$this->auth_model}->create_login_error( $data );
 
@@ -512,14 +512,13 @@ class Authentication
 
 		// PHP 5.5+ uses new password hashing function
 		if( is_php('5.5') ){
-			return password_hash( $password, PASSWORD_BCRYPT, array( 'cost' => 11 ) );
+			return password_hash( $password, PASSWORD_BCRYPT, ['cost' => 11] );
 		}
 
-		// Older versions of PHP use crypt
-		else if( is_php('5.3.7') ){
+		// PHP < 5.5 uses crypt
+		else
+		{
 			return crypt( $password, '$2y$10$' . $random_salt );
-		}else{
-			return crypt( $password, '$2a$09$' . $random_salt );
 		}
 	}
 
@@ -667,13 +666,13 @@ class Authentication
 		 * the secure flag, we want to hold some of the user's 
 		 * data in another cookie.
 		 */
-		$http_user_cookie = array(
+		$http_user_cookie = [
 			'name'   => config_item('http_user_cookie_name'),
 			'domain' => config_item('cookie_domain'),
 			'path'   => config_item('cookie_path'),
 			'prefix' => config_item('cookie_prefix'),
 			'secure' => FALSE
-		);
+		];
 		
 		// Initialize the HTTP user cookie data
 		$http_user_cookie_elements = config_item('http_user_cookie_elements');
@@ -693,7 +692,7 @@ class Authentication
 		// Check if remember me requested, and set cookie if yes
 		if( config_item('allow_remember_me') && $this->CI->input->post('remember_me') )
 		{
-			$remember_me_cookie = array(
+			$remember_me_cookie = [
 				'name'   => config_item('remember_me_cookie_name'),
 				'value'  => config_item('remember_me_expiration') + time(),
 				'expire' => config_item('remember_me_expiration'),
@@ -701,7 +700,7 @@ class Authentication
 				'path'   => config_item('cookie_path'),
 				'prefix' => config_item('cookie_prefix'),
 				'secure' => FALSE
-			);
+			];
 
 			$this->CI->input->set_cookie( $remember_me_cookie );
 
@@ -723,10 +722,10 @@ class Authentication
 			$this->CI->input->set_cookie( $http_user_cookie );
 
 		// Create the auth identifier
-		$auth_identifiers = serialize( array(
+		$auth_identifiers = serialize([
 			'user_id'    => $auth_data->user_id,
 			'login_time' => $login_time
-		));
+		]);
 
 		// Encrypt the auth identifier if necessary
 		if( config_item('encrypt_auth_identifiers') )

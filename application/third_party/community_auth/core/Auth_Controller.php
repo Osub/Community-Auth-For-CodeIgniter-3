@@ -175,7 +175,7 @@ class Auth_Controller extends CI_Controller {
 		$group_array = array_map( 'trim', $group_array );
 
 		// Initialize array of roles allowed to login
-		$roles = array();
+		$roles = [];
 
 		// Add group members to roles array
 		foreach( $group_array as $group )
@@ -391,13 +391,13 @@ class Auth_Controller extends CI_Controller {
 		$this->auth_email    = $this->auth_data->email;
 
 		// Set user specific variables to be available in all views
-		$data = array(
+		$data = [
 			'auth_user_id'  => $this->auth_user_id,
 			'auth_username' => $this->auth_username,
 			'auth_level'    => $this->auth_level,
 			'auth_role'     => $this->auth_role,
 			'auth_email'    => $this->auth_email
-		);
+		];
 
 		// Set user specific variables to be available as config items
 		$this->config->set_item( 'auth_user_id',  $this->auth_user_id );
@@ -527,7 +527,7 @@ class Auth_Controller extends CI_Controller {
 		if( is_null( $this->acl ) )
 		{
 			$this->acl = $this->$auth_model->acl_query( $this->auth_user_id );
-			$this->load->vars( array('acl' => $this->acl) );
+			$this->load->vars( ['acl' => $this->acl] );
 			$this->config->set_item( 'acl', $this->acl );
 		}
 

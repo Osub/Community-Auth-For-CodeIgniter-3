@@ -45,7 +45,7 @@ if( ! isset( $on_hold_message ) )
 		';
 	}
 
-	echo form_open( $login_url, array( 'class' => 'std-form' ) ); 
+	echo form_open( $login_url, ['class' => 'std-form'] ); 
 ?>
 
 	<div>

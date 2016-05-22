@@ -27,11 +27,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['levels_and_roles'] = array(
+$config['levels_and_roles'] = [
 	'1' => 'customer',
 	'6' => 'manager',
 	'9' => 'admin'
-);
+];
 
 /*
 | -----------------------------------------------------------------
@@ -41,9 +41,9 @@ $config['levels_and_roles'] = array(
 |
 */
 
-$config['groups'] = array(
+$config['groups'] = [
 	'employees' => 'manager,admin'
-);
+];
 
 /*
 | -----------------------------------------------------------------
@@ -97,7 +97,7 @@ $config['deny_access_at'] = 10;
 | 
 */
 
-$config['denied_access_reason'] = array(
+$config['denied_access_reason'] = [
 	'0' => 'Not Specified',
 	'1' => 'Login Attempts',
 	'2' => 'Malicious User',
@@ -105,7 +105,7 @@ $config['denied_access_reason'] = array(
 	'4' => 'Spam',
 	'5' => 'Obscene Language',
 	'6' => 'Threatening Language'
-);
+];
 
 /*
 | -----------------------------------------------------------------
@@ -229,7 +229,7 @@ $config['http_user_cookie_name'] = 'httpUser';
 |
 */
 
-$config['http_user_cookie_elements'] = array('username');
+$config['http_user_cookie_elements'] = ['username'];
 
 /*
 | -----------------------------------------------------------------
@@ -309,7 +309,7 @@ $config['default_login_redirect'] = '';
 | added, so you just put in optional login pages here.
 */
 
-$config['allowed_pages_for_login'] = array();
+$config['allowed_pages_for_login'] = [];
 
 /*
 | -----------------------------------------------------------------

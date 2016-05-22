@@ -26,7 +26,7 @@ if( ! isset( $on_hold_message ) )
 
 	<?php
 
-	echo form_open( 'examples/ajax_attempt_login', array( 'class' => 'std-form' ) );
+	echo form_open( 'examples/ajax_attempt_login', ['class' => 'std-form'] );
 
 	?>
 
