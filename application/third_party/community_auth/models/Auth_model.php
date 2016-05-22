@@ -559,13 +559,7 @@ class Auth_model extends CI_Model {
 				$deny_list .= "\n" . 'deny from ' . $row->ip_address;
 			}
 
-			$deny_list .= "\n" . '</Limit>' . "\n# END DENY LIST --\n";
-		}
-
-		// Else we have no denials
-		else
-		{
-			$deny_list = "# END DENY LIST --\n";
+			$deny_list .= "\n" . '</Limit>' . "\n";
 		}
 
 		// Get the path to the Apache config file
@@ -587,7 +581,10 @@ class Auth_model extends CI_Model {
 
 		// Add the new deny list to the top of the file contents
 		$string = "# MAKE SURE TO LEAVE THE DENY LIST AT THE TOP OF THE FILE !!!\n" . 
-				"# BEGIN DENY LIST --\n" . $deny_list . "\n" . trim( $arr[1] ) . "\n";
+				"# BEGIN DENY LIST --\n" . 
+				$deny_list . 
+				"# END DENY LIST --\n\n" . 
+				trim( $arr[1] ) . "\n";
 
 		// Write the new file contents
 		if ( ! write_file( $htaccess, $string ) )
