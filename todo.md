@@ -40,3 +40,5 @@ To Do List
 
 	If the user's ACL has "general.*", "general.all", or "general.view_reports" 
 	then the acl_permits function would return TRUE.
+
+* Blog post on managing denials
