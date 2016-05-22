@@ -548,21 +548,24 @@ class Auth_model extends CI_Model {
 		// Get all of the IP addresses in the denied access database
 		$query_result = $this->get_deny_list('ip_address');
 
+		// If we have denials
 		if( $query_result !== FALSE )
 		{
 			// Create the denial list to be inserted into the Apache config file
-			$deny_list = "\n" . '<Limit GET POST>' . "\n" . 'order deny,allow';
+			$deny_list = '<Limit GET POST>' . "\n" . 'order deny,allow';
 
 			foreach( $query_result as $row )
 			{
 				$deny_list .= "\n" . 'deny from ' . $row->ip_address;
 			}
 
-			$deny_list .= "\n" . '</Limit>' . "\n";
+			$deny_list .= "\n" . '</Limit>' . "\n# END DENY LIST --\n";
 		}
+
+		// Else we have no denials
 		else
 		{
-			$deny_list = "\n";
+			$deny_list = "# END DENY LIST --\n";
 		}
 
 		// Get the path to the Apache config file
@@ -579,10 +582,12 @@ class Auth_model extends CI_Model {
 		// Read in the contents of the Apache config file
 		$string = read_file( $htaccess );
 
-		$pattern = '/(?<=# BEGIN DENY LIST --)(.|\n)*(?=# END DENY LIST --)/';
+		// Remove the original deny list
+		$arr = explode( 'END DENY LIST --', $string );
 
-		// Within the string, replace the denial list with the new one
-		$string = preg_replace( $pattern, $deny_list, $string );
+		// Add the new deny list to the top of the file contents
+		$string = "# MAKE SURE TO LEAVE THE DENY LIST AT THE TOP OF THE FILE !!!\n" . 
+				"# BEGIN DENY LIST --\n" . $deny_list . "\n" . trim( $arr[1] ) . "\n";
 
 		// Write the new file contents
 		if ( ! write_file( $htaccess, $string ) )

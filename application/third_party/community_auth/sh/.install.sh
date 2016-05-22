@@ -31,5 +31,5 @@ if [ ! -f ./../.htaccess ];
 then
 	cp ./third_party/community_auth/public_root/.htaccess ./../.htaccess
 else
-	sed -i '1s/^/# MAKE SURE TO LEAVE THE NEXT TWO LINES HERE.\n# BEGIN DENY LIST --\n# END DENY LIST --\n\n/' ./../.htaccess
+	sed -i '1s/^/# MAKE SURE TO LEAVE THE DENY LIST AT THE TOP OF THE FILE !!!\n# BEGIN DENY LIST --\n# END DENY LIST --\n\n/' ./../.htaccess
 fi
