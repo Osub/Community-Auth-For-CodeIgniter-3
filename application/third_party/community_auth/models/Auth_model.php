@@ -543,7 +543,7 @@ class Auth_model extends CI_Model {
 	/**
 	 * Rebuild the deny list in the local Apache configuration file
 	 */
-	private function _rebuild_deny_list()
+	protected function _rebuild_deny_list()
 	{
 		// Get all of the IP addresses in the denied access database
 		$query_result = $this->get_deny_list('ip_address');
