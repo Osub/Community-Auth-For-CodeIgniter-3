@@ -7,7 +7,7 @@ Website: [http://community-auth.com](http://community-auth.com)
 Server Requirements
 -------------------
 
-- CodeIgniter 3 server requirements also apply to Community Auth, however, Community Auth will not attempt to be compatible with PHP versions less than 5.4. It may very well work on PHP 5.3, but certainly not on PHP 5.2 (especially on Windows machines).
+- CodeIgniter 3 server requirements also apply to Community Auth. Community Auth is currently developed using PHP 5.5 and PHP 7. Support for PHP versions less than 5.4 has been discontinued.
 - A MySQL database is required. Community Auth is tested on versions 5.5 and 5.6 of MySQL, and MariaDB 10.1.10.
 - A Linux or Mac operating system will allow you to take advantage of either of the installer scripts that are provided. I'm not opposed to working with somebody on some Windows installer scripts, but they don't exist as of right now.
 
