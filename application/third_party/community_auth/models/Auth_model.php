@@ -599,6 +599,20 @@ class Auth_model extends CI_Model {
 	// --------------------------------------------------------------
 
 	/**
+	 * After a failed login attempt, this hook may be called to 
+	 * do anything you wish.
+	 *
+	 * @param  int  the number of failed login attempts as 
+	 *              determined by check_login_attempts()
+	 */
+	public function failed_login_attempt_hook( $login_errors_count )
+	{
+		return;
+	}
+	
+	// -----------------------------------------------------------------------
+
+	/**
 	 * Remove the auth session record when somebody logs out
 	 * 
 	 * @param  int  the user's ID 

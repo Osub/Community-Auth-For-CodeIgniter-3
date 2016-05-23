@@ -437,6 +437,8 @@ class Authentication
 		$this->CI->{$this->auth_model}->create_login_error( $data );
 
 		$this->login_errors_count = $this->CI->{$this->auth_model}->check_login_attempts( $string );
+
+		$this->CI->{$this->auth_model}->failed_login_attempt_hook( $this->login_errors_count );
 	}
 
 	// --------------------------------------------------------------
