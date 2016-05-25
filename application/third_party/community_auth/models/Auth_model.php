@@ -444,7 +444,7 @@ class Auth_model extends CI_Model {
 
 				// Output white screen of death
 				header('HTTP/1.1 403 Forbidden');
-				die('<h1>Forbidden</h1><p>You don\'t have permission to access ANYTHING on this server.</p><hr><address>Go fly a kite!</address>');
+				die();
 			}
 		}
 
