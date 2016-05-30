@@ -486,8 +486,9 @@ class Authentication
 		// Delete the http user cookie
 		delete_cookie( config_item('http_user_cookie_name') );
 
-		// Delete the https tokens cookie
-		delete_cookie( config_item('https_tokens_name') );
+		// Delete all token cookies
+		delete_cookie( config_item('http_tokens_cookie') );
+		delete_cookie( config_item('https_tokens_cookie') );
 
 		// Garbage collection for the auth_sessions table
 		if( config_item('auth_sessions_gc_on_logout') )
