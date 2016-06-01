@@ -8,6 +8,10 @@ if [ ! -f ./core/MY_Input.php ]; then
 	cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php 
 fi
 
+if [ ! -f ./core/MY_Model.php ]; then
+	cp ./third_party/community_auth/core/MY_Model.php ./core/MY_Model.php 
+fi
+
 # hooks
 if [ ! -f ./hooks/auth_constants.php ]; then
 	cp ./third_party/community_auth/hooks/auth_constants.php ./hooks/auth_constants.php

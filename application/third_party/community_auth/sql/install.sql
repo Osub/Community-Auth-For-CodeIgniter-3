@@ -154,7 +154,8 @@ delimiter ;
 
 CREATE TABLE `acl_categories` (
   `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(100) NOT NULL,
+  `category_name` varchar(100) NOT NULL COMMENT 'No periods allowed!',
+  `category_desc` varchar(100) NOT NULL COMMENT 'Human readable description',
   PRIMARY KEY (`category_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
@@ -166,7 +167,8 @@ CREATE TABLE `acl_categories` (
 
 CREATE TABLE `acl_actions` (
   `action_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `action_name` varchar(100) NOT NULL,
+  `action_name` varchar(100) NOT NULL COMMENT 'No periods allowed!',
+  `action_desc` varchar(100) NOT NULL COMMENT 'Human readable description',
   `category_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`action_id`),
   FOREIGN KEY (`category_id`) REFERENCES `acl_categories`(`category_id`) 
