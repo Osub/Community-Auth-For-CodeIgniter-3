@@ -38,7 +38,7 @@ class MY_Model extends CI_Model
 	/**
 	 * Get all of the ACL records for a specific user
 	 */
-	public function acl_query( $user_id )
+	public function acl_query( $user_id, $called_during_auth = FALSE )
 	{
 		// ACL table query
 		$query = $this->db->select('b.action_id, b.action_name, c.category_name')
@@ -53,7 +53,7 @@ class MY_Model extends CI_Model
 		 * It is this change that indicates that the query was 
 		 * actually performed.
 		 */
-		$this->acl = [];
+		$acl = [];
 
 		if( $query->num_rows() > 0 )
 		{
@@ -61,11 +61,14 @@ class MY_Model extends CI_Model
 			foreach( $query->result() as $row )
 			{
 				// Permission identified by category + "." + action name
-				$this->acl[$row->action_id] = $row->category_name . '.' . $row->action_name;
+				$acl[$row->action_id] = $row->category_name . '.' . $row->action_name;
 			}
 		}
 
-		return $this->acl;
+		if( $called_during_auth OR $user_id == config_item('auth_user_id') )
+			$this->acl = $acl;
+
+		return $acl;
 	}
 	
 	// -----------------------------------------------------------------------

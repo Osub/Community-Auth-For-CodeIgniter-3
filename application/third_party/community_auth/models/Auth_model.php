@@ -191,7 +191,7 @@ class Auth_model extends MY_Model {
 		// Add ACL query only if turned on in authentication config
 		if( config_item('add_acl_query_to_auth_functions') )
 		{
-			$acl = $this->acl_query( $user_id );
+			$acl = $this->acl_query( $user_id, TRUE );
 		}
 
 		return ['acl' => $acl];
