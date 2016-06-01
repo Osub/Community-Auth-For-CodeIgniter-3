@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class Validation_callables extends CI_Model {
+class Validation_callables extends MY_Model {
 
 	/**
 	 * Check the supplied password strength
