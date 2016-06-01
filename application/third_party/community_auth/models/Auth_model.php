@@ -186,6 +186,8 @@ class Auth_model extends MY_Model {
 	 */
 	public function add_acl_to_auth_data( $user_id )
 	{
+		$acl = [];
+		
 		// Add ACL query only if turned on in authentication config
 		if( config_item('add_acl_query_to_auth_functions') )
 		{
