@@ -517,7 +517,14 @@ class Auth_Controller extends CI_Controller {
 	{
 		$auth_model = $this->authentication->auth_model;
 
-		return $this->$auth_model->acl_permits( $str );
+		// Bool indicates permission
+		$bool = $this->$auth_model->acl_permits( $str );
+
+		// Update the controller's ACL property
+		if( is_null( $this->acl ) )
+			$this->acl = $this->$auth_model->acl;
+
+		return $bool;
 	}
 	
 	// -----------------------------------------------------------------------
