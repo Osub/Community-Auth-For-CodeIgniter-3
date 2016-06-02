@@ -51,6 +51,24 @@ class Examples extends MY_Controller
     // -----------------------------------------------------------------------
 
     /**
+     * A basic page that shows verification that the user is logged in or not.
+     * If the user is logged in, a link to "Logout" will be in the menu.
+     * If they are not logged in, a link to "Login" will be in the menu.
+     */
+    public function home()
+    {
+        $this->is_logged_in();
+        
+        echo $this->load->view('examples/page_header', '', TRUE);
+
+        echo '<p>Welcome Home</p>';
+
+        echo $this->load->view('examples/page_footer', '', TRUE);
+    }
+    
+    // -----------------------------------------------------------------------
+
+    /**
      * Demonstrate an optional login.
      * Remember to add "examples/optional_login_test" to the
      * allowed_pages_for_login array in config/authentication.php.

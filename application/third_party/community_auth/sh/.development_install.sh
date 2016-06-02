@@ -99,6 +99,9 @@ s/\['model'\] = array()/\['model'\] = array(\n\t'auth_model'\n)/g;" ./config/aut
 		# Add route to login page
 		echo "\$route[LOGIN_PAGE] = 'examples/login';" >> ./config/routes.php
 
+		# Change home page to examples/home
+		sed -i "s/\['default_controller'\] = 'welcome'/\['default_controller'\] = 'examples\/home'/g" ./config/routes.php
+
 		# Set base_url, index_page, turn hooks on, add an encryption key, and configure sessions
 		sed -i "s/\['base_url'\] = ''/\['base_url'\] = '$BASEURL'/g; \
 s/\['index_page'\] = 'index.php'/\['index_page'\] = ''/g; \
