@@ -139,6 +139,9 @@ s/'database' => ''/'database' => '$DBNAME'/g;" ./config/database.php
 		# Pretty URLs
 		printf "\n\nRewriteEngine On\nRewriteBase /\n\nRewriteRule ^(system|application|cgi-bin) - [F,L]\nRewriteCond %%{REQUEST_FILENAME} !-f\nRewriteCond %%{REQUEST_FILENAME} !-d\nRewriteRule .* index.php/\$0 [PT,L]" >> ./../.htaccess
 
+		# Checkout develop from origin
+		git checkout -b develop origin/develop
+
 		# Success
 		echo "REMOVE INSTALLER SCRIPT (THIS FILE)."
 	else
