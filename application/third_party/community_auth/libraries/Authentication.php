@@ -275,10 +275,10 @@ class Authentication
 					else
 					{
 						// Setup redirection if redirect required
-						$this->_redirect_after_login();
+						$this->redirect_after_login();
 
 						// Set session cookie and HTTP user data delete_cookie
-						$this->_maintain_state( $auth_data );
+						$this->maintain_state( $auth_data );
 
 						// Send the auth data back to the controller
 						return $auth_data;
@@ -578,58 +578,11 @@ class Authentication
 	}
 
 	// --------------------------------------------------------------
-	
-	/**
-	 * Confirm the User During Login Attempt or Status Check
-	 *
-	 * 1) Is the user banned?
-	 * 2) If a login attempt, does the password match the one in the user record?
-	 * 3) Is the user the appropriate level for the request?
-	 * 4) Is the user the appropriate role for the request?
-	 *
-	 * @param   obj    the user record
-	 * @param   mixed  the required user level or array of roles
-	 * @param   mixed  the posted password during a login attempt
-	 * @return  bool
-	 */
-	private function _user_confirmed( $auth_data, $requirement, $passwd = FALSE )
-	{
-		// Check if user is banned
-		$is_banned = ( $auth_data->banned === '1' );
-
-		// Is this a login attempt
-		if( $passwd )
-		{
-			// Check if the posted password matches the one in the user record
-			$wrong_password = ( ! $this->check_passwd( $auth_data->passwd, $passwd ) );
-		}
-
-		// Else we are checking login status
-		else
-		{
-			// Password check doesn't apply to a login status check
-			$wrong_password = FALSE;
-		}
-
-		// Check if the user has the appropriate user level
-		$wrong_level = ( is_int( $requirement ) && $auth_data->auth_level < $requirement );
-
-		// Check if the user has the appropriate role
-		$wrong_role = ( is_array( $requirement ) && ! in_array( $this->roles[$auth_data->auth_level], $requirement ) );
-
-		// If anything wrong
-		if( $is_banned OR $wrong_level OR $wrong_role OR $wrong_password )
-			return FALSE;
-
-		return TRUE;
-	}
-	
-	// ---------------------------------------------------------------
 
 	/**
 	 * Redirect after login, or not if redirect turned off
 	 */
-	private function _redirect_after_login()
+	public function redirect_after_login()
 	{
 		if( $this->redirect_after_login )
 		{
@@ -651,15 +604,15 @@ class Authentication
 	}
 	
 	// -----------------------------------------------------------------------
-	
+
 	/**
 	 * Setup session, HTTP user cookie, and remember me cookie 
-	 * during a successful login attempt. Redirect is specified here.
+	 * during a successful login attempt.
 	 *
 	 * @param   obj  the user record
 	 * @return  void
 	 */
-	private function _maintain_state( $auth_data )
+	public function maintain_state( $auth_data )
 	{
 		// Store login time in database and cookie
 		$login_time = date('Y-m-d H:i:s');
@@ -749,12 +702,59 @@ class Authentication
 	}
 	
 	// -----------------------------------------------------------------------
+	
+	/**
+	 * Confirm the User During Login Attempt or Status Check
+	 *
+	 * 1) Is the user banned?
+	 * 2) If a login attempt, does the password match the one in the user record?
+	 * 3) Is the user the appropriate level for the request?
+	 * 4) Is the user the appropriate role for the request?
+	 *
+	 * @param   obj    the user record
+	 * @param   mixed  the required user level or array of roles
+	 * @param   mixed  the posted password during a login attempt
+	 * @return  bool
+	 */
+	protected function _user_confirmed( $auth_data, $requirement, $passwd = FALSE )
+	{
+		// Check if user is banned
+		$is_banned = ( $auth_data->banned === '1' );
+
+		// Is this a login attempt
+		if( $passwd )
+		{
+			// Check if the posted password matches the one in the user record
+			$wrong_password = ( ! $this->check_passwd( $auth_data->passwd, $passwd ) );
+		}
+
+		// Else we are checking login status
+		else
+		{
+			// Password check doesn't apply to a login status check
+			$wrong_password = FALSE;
+		}
+
+		// Check if the user has the appropriate user level
+		$wrong_level = ( is_int( $requirement ) && $auth_data->auth_level < $requirement );
+
+		// Check if the user has the appropriate role
+		$wrong_role = ( is_array( $requirement ) && ! in_array( $this->roles[$auth_data->auth_level], $requirement ) );
+
+		// If anything wrong
+		if( $is_banned OR $wrong_level OR $wrong_role OR $wrong_password )
+			return FALSE;
+
+		return TRUE;
+	}
+	
+	// ---------------------------------------------------------------
 
 	/**
 	 * Just make sure that the login is not on any page
 	 * except for the ones we define in authentication config.
 	 */
-	private function _login_page_is_allowed()
+	protected function _login_page_is_allowed()
 	{
 		// Get the current URI string
 		$uri_string = $this->CI->uri->uri_string();

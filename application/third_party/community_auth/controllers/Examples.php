@@ -621,6 +621,49 @@ class Examples extends MY_Controller
     }
     
     // -----------------------------------------------------------------------
+
+    /**
+     * If you are using some other way to authenticate a created user, 
+     * such as Facebook, Twitter, etc., you will simply call the user's 
+     * record from the database, and pass it to the maintain_state method.
+     *
+     * So, you must know either the user's username or email address to 
+     * log them in.
+     *
+     * How you would safely implement this in your application is your choice.
+     * Please keep in mind that such functionality bypasses all of the 
+     * checks that Community Auth does during a normal login.
+     */
+    public function social_login()
+    {
+        // Add the username or email address of the user you want logged in:
+        $username_or_email_address = '';
+
+        if( ! empty( $username_or_email_address ) )
+        {
+            $auth_model = $this->authentication->auth_model;
+
+            // Get normal authentication data using username or email address
+            if( $auth_data = $this->{$auth_model}->get_auth_data( $username_or_email_address ) )
+            {
+                /**
+                 * If redirect param exists, user redirected there.
+                 * This is entirely optional, and can be removed if 
+                 * no redirect is desired.
+                 */
+                $this->authentication->redirect_after_login();
+
+                // Set auth related session / cookies
+                $this->authentication->maintain_state( $auth_data );
+            }
+        }
+        else
+        {
+            echo 'Example requires that you set a username or email address.';
+        }
+    }
+    
+    // -----------------------------------------------------------------------
 }
 
 /* End of file Examples.php */
