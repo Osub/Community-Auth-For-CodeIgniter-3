@@ -114,6 +114,33 @@ class MY_Model extends CI_Model
 	}
 	
 	// -----------------------------------------------------------------------
+
+	/**
+	 * Check if the logged in user is a certain role or 
+	 * in a comma delimited string of roles.
+	 *
+	 * @param  string  the role to check, or a comma delimited
+	 *                 string of roles to check.
+	 * @return bool
+	 */
+	public function is_role( $role = '' )
+	{
+		$auth_role = config_item('auth_role');
+
+		if( $role != '' && ! empty( $auth_role ) )
+		{
+			$role_array = explode( ',', $role );
+
+			if( in_array( $auth_role, $role_array ) )
+			{
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	// -----------------------------------------------------------------------
 }
 
 /* End of file MY_Model.php */

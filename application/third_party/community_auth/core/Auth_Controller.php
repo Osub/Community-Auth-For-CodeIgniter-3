@@ -491,17 +491,9 @@ class Auth_Controller extends CI_Controller {
 	 */
 	protected function is_role( $role = '' )
 	{
-		if( $role != '' && ! empty( $this->auth_role ) )
-		{
-			$role_array = explode( ',', $role );
+		$auth_model = $this->authentication->auth_model;
 
-			if( in_array( $this->auth_role, $role_array ) )
-			{
-				return TRUE;
-			}
-		}
-
-		return FALSE;
+		return $this->$auth_model->is_role( $role );
 	}
 
 	// --------------------------------------------------------------
