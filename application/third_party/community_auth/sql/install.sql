@@ -154,10 +154,10 @@ delimiter ;
 
 CREATE TABLE `acl_categories` (
   `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(100) NOT NULL COMMENT 'No periods allowed!',
+  `category_code` varchar(100) NOT NULL COMMENT 'No periods allowed!',
   `category_desc` varchar(100) NOT NULL COMMENT 'Human readable description',
   PRIMARY KEY (`category_id`),
-  UNIQUE KEY `category_name` (`category_name`),
+  UNIQUE KEY `category_code` (`category_code`),
   UNIQUE KEY `category_desc` (`category_desc`)
 ) ENGINE = InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
