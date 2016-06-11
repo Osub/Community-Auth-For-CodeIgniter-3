@@ -38,7 +38,7 @@ if( ! function_exists('is_role') )
 /**
  * Allows to check ACL permissions just about anywhere
  *
- * @param string The category name and action name to check for the logged in user.
+ * @param string The category name and action code to check for the logged in user.
  *               This string is joined with a period.
  * @return bool 
  */

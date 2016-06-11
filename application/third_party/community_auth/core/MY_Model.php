@@ -41,7 +41,7 @@ class MY_Model extends CI_Model
 	public function acl_query( $user_id, $called_during_auth = FALSE )
 	{
 		// ACL table query
-		$query = $this->db->select('b.action_id, b.action_name, c.category_name')
+		$query = $this->db->select('b.action_id, b.action_code, c.category_name')
 			->from( config_item('acl_table') . ' a' )
 			->join( config_item('acl_actions_table') . ' b', 'a.action_id = b.action_id' )
 			->join( config_item('acl_categories_table') . ' c', 'b.category_id = c.category_id' )
@@ -60,8 +60,8 @@ class MY_Model extends CI_Model
 			// Add each permission to the ACL array
 			foreach( $query->result() as $row )
 			{
-				// Permission identified by category + "." + action name
-				$acl[$row->action_id] = $row->category_name . '.' . $row->action_name;
+				// Permission identified by category + "." + action code
+				$acl[$row->action_id] = $row->category_name . '.' . $row->action_code;
 			}
 		}
 
@@ -82,10 +82,10 @@ class MY_Model extends CI_Model
 	 */
 	public function acl_permits( $str )
 	{
-		list( $category_name, $action_name ) = explode( '.', $str );
+		list( $category_name, $action_code ) = explode( '.', $str );
 
 		// We must have a legit category and action to proceed
-		if( strlen( $category_name ) < 1 OR strlen( $action_name ) < 1 )
+		if( strlen( $category_name ) < 1 OR strlen( $action_code ) < 1 )
 			return FALSE;
 
 		// Get ACL for this user if not already available
@@ -104,7 +104,7 @@ class MY_Model extends CI_Model
 			in_array( $category_name . '.all', $this->acl ) OR 
 
 			// If ACL gives permission for specific action
-			in_array( $category_name . '.' . $action_name, $this->acl )
+			in_array( $category_name . '.' . $action_code, $this->acl )
 		)
 		{
 			return TRUE;

@@ -9,7 +9,7 @@ To Do List
 
 * Blog post and/or docs to show ACL implementation:
 	The idea here is that a user interface needs to be created to manage permissions.
-	Each permission has a category name, and an action name.
+	Each permission has a category name, and an action code.
 	An interface would be created for user management, giving the admin the 
 	ability to designate a user to have or not have permissions to take certain
 	actions. When a user logs in, as long as "add_acl_to_auth_vars" is TRUE in the 
@@ -19,7 +19,7 @@ To Do List
 	not done, then any call to Auth_model->acl_permits will get ACL then.
 	ACL permissions are added to an array, where the category name and action 
 	name are joined with a period. So for instance, if you have a category named 
-	"general", and an action named "view_reports", and if the logged in user should 
+	"general", and an action code "view_reports", and if the logged in user should 
 	be able to take thataction, their ACL array would contain "general.view_reports".
 
 	The whole idea of using an ACL allows for a finer control over users. In 

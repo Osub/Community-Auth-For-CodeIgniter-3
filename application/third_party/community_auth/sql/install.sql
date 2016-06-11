@@ -169,7 +169,7 @@ CREATE TABLE `acl_categories` (
 
 CREATE TABLE `acl_actions` (
   `action_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `action_name` varchar(100) NOT NULL COMMENT 'No periods allowed!',
+  `action_code` varchar(100) NOT NULL COMMENT 'No periods allowed!',
   `action_desc` varchar(100) NOT NULL COMMENT 'Human readable description',
   `category_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`action_id`),
