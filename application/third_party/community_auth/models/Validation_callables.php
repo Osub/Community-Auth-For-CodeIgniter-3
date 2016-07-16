@@ -24,35 +24,44 @@ class Validation_callables extends MY_Model {
 	public function _check_password_strength( $password )
 	{
 		// Password length
-		$regex = '(?=.{' . config_item('min_chars_for_password') . ',' . config_item('max_chars_for_password') . '})';
-		$error = '<li>At least ' . config_item('min_chars_for_password') . ' characters</li>
-					<li>Not more than ' . config_item('max_chars_for_password') . ' characters</li>';
+		$max = config_item('max_chars_for_password') > 0
+			? config_item('max_chars_for_password') 
+			: '';
+		$regex = '(?=.{' . config_item('min_chars_for_password') . ',' . $max . '})';
+		$error = '<li>At least ' . config_item('min_chars_for_password') . ' characters</li>';
 
-		// At least one digit required
-		$regex .= '(?=.*\d)';
-		$error .= '<li>One number</li>';
-
-		// At least one lower case letter required
-		$regex .= '(?=.*[a-z])';
-		$error .= '<li>One lower case letter</li>';
-
-		// At least one upper case letter required
-		$regex .= '(?=.*[A-Z])';
-		$error .= '<li>One upper case letter</li>';
-
-		// No space, tab, or other whitespace chars allowed
-		$regex .= '(?!.*\s)';
-		$error .= '<li>No spaces, tabs, or other unseen characters</li>';
-
-		// No backslash, apostrophe or quote chars are allowed
-		$regex .= '(?!.*[\\\\\'"])';
-		$error .= '<li>No backslash, apostrophe or quote characters</li>';
-
-		// One of the following characters must be in the password,  @ # $ % ^ & + =
-		// $regex .= '(?=.*[@#$%^&+=])';
-		// $error .= '<li>One of the following characters must be in the password,  @ # $ % ^ & + =</li>';
-
-		if( preg_match( '/^' . $regex . '.*$/', $password, $matches ) )
+		if( config_item('max_chars_for_password') > 0 )
+			$error .= '<li>Not more than ' . config_item('max_chars_for_password') . ' characters</li>';
+		
+		// Digit(s) required
+		if( config_item('min_digits_for_password') > 0 )
+		{
+			$regex .= '(?=(?:.*[0-9].*){' . config_item('min_digits_for_password') . ',})';
+			$error .= '<li>' . config_item('min_digits_for_password') . ' number(s)</li>';
+		}
+		
+		// Lower case letter(s) required
+		if( config_item('min_lowercase_chars_for_password') > 0 )
+		{
+			$regex .= '(?=(?:.*[a-z].*){' . config_item('min_lowercase_chars_for_password') . ',})';
+			$error .= '<li>' . config_item('min_lowercase_chars_for_password') . ' lower case letter(s)</li>';
+		}
+		
+		// Upper case letter(s) required
+		if( config_item('min_uppercase_chars_for_password') > 0 )
+		{
+			$regex .= '(?=(?:.*[A-Z].*){' . config_item('min_uppercase_chars_for_password') . ',})';
+			$error .= '<li>' . config_item('min_uppercase_chars_for_password') . ' upper case letter(s)</li>';
+		}
+		
+		// Non-alphanumeric char(s) required
+		if( config_item('min_non_alphanumeric_chars_for_password') > 0 )
+		{
+			$regex .= '(?=(?:.*[^a-zA-Z0-9].*){' . config_item('min_non_alphanumeric_chars_for_password') . ',})';
+			$error .= '<li>' . config_item('min_non_alphanumeric_chars_for_password') . ' non-alphanumeric character(s)</li>';
+		}
+		
+		if( preg_match( '/^' . $regex . '.*$/', $password ) )
 		{
 			return TRUE;
 		}

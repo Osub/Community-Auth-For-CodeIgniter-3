@@ -325,7 +325,7 @@ $config['redirect_to_https'] = FALSE;
 | -----------------------------------------------------------------
 |				MIN CHARS FOR PASSWORD						
 | -----------------------------------------------------------------
-| The lease amount of characters for a valid password
+| The least amount of characters for a valid password
 */
 
 $config['min_chars_for_password'] = 8;
@@ -335,6 +335,7 @@ $config['min_chars_for_password'] = 8;
 |				MAX CHARS FOR PASSWORD						
 | -----------------------------------------------------------------
 | The maximum amount of characters for a valid password.
+| Set to 0 for unlimited length.
 | 
 | Because Community Auth uses CRYPT_BLOWFISH to hash passwords,
 | any password over 72 characters in length is truncated. You 
@@ -342,7 +343,47 @@ $config['min_chars_for_password'] = 8;
 | 72 characters are used for the resulting hash.
 */
 
-$config['max_chars_for_password'] = 72;
+$config['max_chars_for_password'] = 0;
+
+/*
+| -----------------------------------------------------------------
+|				DIGIT(S) REQUIRED FOR PASSWORD						
+| -----------------------------------------------------------------
+| The minimum amount of numeric characters for a valid password.
+| Set to 0 to require none.
+*/
+
+$config['min_digits_for_password'] = 1;
+
+/*
+| -----------------------------------------------------------------
+|			LOWERCASE LETTER(S) REQUIRED FOR PASSWORD						
+| -----------------------------------------------------------------
+| The minimum amount of lowercase alpha characters for a valid password.
+| Set to 0 to require none.
+*/
+
+$config['min_lowercase_chars_for_password'] = 1;
+
+/*
+| -----------------------------------------------------------------
+|			UPPERCASE LETTER(S) REQUIRED FOR PASSWORD						
+| -----------------------------------------------------------------
+| The minimum amount of uppercase alpha characters for a valid password.
+| Set to 0 to require none.
+*/
+
+$config['min_uppercase_chars_for_password'] = 1;
+
+/*
+| -----------------------------------------------------------------
+|			NON-ALPHANUMERIC CHAR(S) REQUIRED FOR PASSWORD						
+| -----------------------------------------------------------------
+| The minimum amount of non-alphanumeric characters for a valid password.
+| Set to 0 to require none.
+*/
+
+$config['min_non_alphanumeric_chars_for_password'] = 0;
 
 /*
 | -----------------------------------------------------------------
