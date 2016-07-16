@@ -16,6 +16,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // CI not normally available in config files
 $CI =& get_instance();
 
+// Load the external model for validation of passwords
+$CI->load->model('examples/validation_callables');
+
 // Login ---------------------------
 $config['login_rules'] = [
 	[
@@ -38,4 +41,4 @@ $config['login_rules'] = [
 ];
 
 /* End of file login.php */
-/* Location: /community_auth/config/form_validation/login.php */
+/* Location: /community_auth/config/form_validation/examples/login.php */

@@ -85,7 +85,7 @@ class Examples_model extends MY_Model {
 		$this->load->library('form_validation');
 
 		// Load form validation rules
-		$this->load->model('validation_callables');
+		$this->load->model('examples/validation_callables');
 		$this->form_validation->set_rules([
 			[
 				'field' => 'passwd',
@@ -197,4 +197,4 @@ class Examples_model extends MY_Model {
 }
 
 /* End of file Examples_model.php */
-/* Location: /community_auth/models/Examples_model.php */
+/* Location: /community_auth/models/examples/Examples_model.php */

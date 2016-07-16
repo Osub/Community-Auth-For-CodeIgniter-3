@@ -16,6 +16,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Validation_callables extends MY_Model {
 
 	/**
+	 * undocumented method
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->config->load('examples/password_strength');
+	}
+	
+	// -----------------------------------------------------------------------
+
+	/**
 	 * Check the supplied password strength.
 	 * Please keep in mind that this is a very rudimentary way to check 
 	 * password strength. Some devs may consider rolling their own solution,
@@ -91,4 +103,4 @@ class Validation_callables extends MY_Model {
 }
 
 /* End of file Validaton_callables.php */
-/* Location: /community_auth/models/Validation_callables.php */
+/* Location: /community_auth/models/examples/Validation_callables.php */
