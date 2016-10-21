@@ -7,7 +7,7 @@ Website: [http://community-auth.com](http://community-auth.com)
 Server Requirements
 -------------------
 
-- CodeIgniter 3 server requirements also apply to Community Auth, however, Community Auth will not attempt to be compatible with PHP versions less than 5.4. It may very well work on PHP 5.3, but certainly not on PHP 5.2 (especially on Windows machines).
+- CodeIgniter 3 server requirements also apply to Community Auth. Community Auth is currently developed using PHP 5.5 and PHP 7. Support for PHP versions less than 5.4 has been discontinued.
 - A MySQL database is required. Community Auth is tested on versions 5.5 and 5.6 of MySQL, and MariaDB 10.1.10.
 - A Linux or Mac operating system will allow you to take advantage of either of the installer scripts that are provided. I'm not opposed to working with somebody on some Windows installer scripts, but they don't exist as of right now.
 
@@ -23,7 +23,7 @@ Installation
 * If on linux or mac, if there is no existing application and no reason to worry about overwriting existing files, use the terminal and cd to the application directory, then execute ./third_party/community_auth/sh/.install.sh, then **skip to step 8**. You will probably need to set permissions of .install.sh to allow execution. After execution, remove permissions to execute or remove the file completely.
 * If not on linux or mac, or if you already have an existing application, **proceed to step 4**.
 
-**4)** Copy MY_Controller.php and MY_Input.php from community_auth/core to CodeIgniter's application/core directory. If you already had these files, merge them with your existing files.
+**4)** Copy MY_Controller.php, MY_Input.php, and MY_Model.php from community_auth/core to CodeIgniter's application/core directory. If you already had these files, merge them with your existing files.
 
 **5)** Copy auth_constants.php and auth_sess_check.php from community_auth/hooks to CodeIgniter's application/hooks directory.
 

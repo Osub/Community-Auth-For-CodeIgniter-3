@@ -26,5 +26,10 @@ $config['denied_access_table']          = 'denied_access';
 $config['sessions_table']               = 'ci_sessions';
 $config['auth_sessions_table']          = 'auth_sessions';
 
+// ACL
+$config['acl_categories_table']         = 'acl_categories';
+$config['acl_actions_table']            = 'acl_actions';
+$config['acl_table']                    = 'acl';
+
 /* End of file db_tables.php */
 /* Location: /community_auth/config/db_tables.php */

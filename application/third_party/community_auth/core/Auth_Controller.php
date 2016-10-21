@@ -59,6 +59,17 @@ class Auth_Controller extends CI_Controller {
 	protected $auth_data;
 
 	/**
+	 * The logged-in user's ACL permissions after login, 
+	 * or after login status check.
+	 *
+	 * If query for ACL performed, this variable becomes an array.
+	 *
+	 * @var mixed
+	 * @access public
+	 */
+	public $acl = NULL;
+
+	/**
 	 * Either 'https' or 'http' depending on the current environment
 	 *
 	 * @var string
@@ -164,7 +175,7 @@ class Auth_Controller extends CI_Controller {
 		$group_array = array_map( 'trim', $group_array );
 
 		// Initialize array of roles allowed to login
-		$roles = array();
+		$roles = [];
 
 		// Add group members to roles array
 		foreach( $group_array as $group )
@@ -380,13 +391,13 @@ class Auth_Controller extends CI_Controller {
 		$this->auth_email    = $this->auth_data->email;
 
 		// Set user specific variables to be available in all views
-		$data = array(
+		$data = [
 			'auth_user_id'  => $this->auth_user_id,
 			'auth_username' => $this->auth_username,
 			'auth_level'    => $this->auth_level,
 			'auth_role'     => $this->auth_role,
 			'auth_email'    => $this->auth_email
-		);
+		];
 
 		// Set user specific variables to be available as config items
 		$this->config->set_item( 'auth_user_id',  $this->auth_user_id );
@@ -394,6 +405,14 @@ class Auth_Controller extends CI_Controller {
 		$this->config->set_item( 'auth_level',    $this->auth_level );
 		$this->config->set_item( 'auth_role',     $this->auth_role );
 		$this->config->set_item( 'auth_email',    $this->auth_email );
+
+		// Add ACL permissions if ACL query turned on
+		if( config_item('add_acl_query_to_auth_functions') )
+		{
+			$this->acl   = $this->auth_data->acl;
+			$data['acl'] = $this->acl;
+			$this->config->set_item( 'acl', $this->acl );
+		}
 
 		// Load vars
 		$this->load->vars($data);
@@ -472,20 +491,35 @@ class Auth_Controller extends CI_Controller {
 	 */
 	protected function is_role( $role = '' )
 	{
-		if( $role != '' && ! empty( $this->auth_role ) )
-		{
-			$role_array = explode( ',', $role );
+		$auth_model = $this->authentication->auth_model;
 
-			if( in_array( $this->auth_role, $role_array ) )
-			{
-				return TRUE;
-			}
-		}
-
-		return FALSE;
+		return $this->$auth_model->is_role( $role );
 	}
 
 	// --------------------------------------------------------------
+	
+	/**
+	 * Check if ACL permits user to take action.
+	 *
+	 * @param  string  the concatenation of ACL category 
+	 *                 and action, joined by a period.
+	 * @return bool
+	 */
+	public function acl_permits( $str )
+	{
+		$auth_model = $this->authentication->auth_model;
+
+		// Bool indicates permission
+		$bool = $this->$auth_model->acl_permits( $str );
+
+		// Update the controller's ACL property
+		if( is_null( $this->acl ) )
+			$this->acl = $this->$auth_model->acl;
+
+		return $bool;
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Force the request to be redirected to HTTPS, or optionally show 404.

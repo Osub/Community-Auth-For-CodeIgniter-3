@@ -31,9 +31,19 @@
 <body>
 <div id="menu">
 	<ul>
-		<li><?php
+		<?php
 			$link_protocol = USE_SSL ? 'https' : NULL;
 
+			if( $this->router->default_controller == 'examples/home' )
+			{
+		?>
+		<li>
+			<?php echo anchor( site_url('', $link_protocol ),'Home'); ?>
+		</li>
+		<?php
+			}
+		?>
+		<li><?php
 			if( isset( $auth_user_id ) ){
 				echo anchor( site_url('examples/logout', $link_protocol ),'Logout');
 			}else{

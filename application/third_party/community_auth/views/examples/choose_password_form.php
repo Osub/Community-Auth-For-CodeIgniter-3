@@ -121,14 +121,14 @@ if( $showform == 1 )
 
 							<?php
 								// PASSWORD LABEL AND INPUT ********************************
-								echo form_label('Password','passwd',array('class'=>'form_label'));
+								echo form_label('Password','passwd', ['class'=>'form_label']);
 
-								$input_data = array(
+								$input_data = [
 									'name'       => 'passwd',
 									'id'         => 'passwd',
 									'class'      => 'form_input password',
 									'max_length' => config_item('max_chars_for_password')
-								);
+								];
 								echo form_password($input_data);
 							?>
 
@@ -137,14 +137,14 @@ if( $showform == 1 )
 
 							<?php
 								// CONFIRM PASSWORD LABEL AND INPUT ******************************
-								echo form_label('Confirm Password','passwd_confirm',array('class'=>'form_label'));
+								echo form_label('Confirm Password','passwd_confirm', ['class'=>'form_label']);
 
-								$input_data = array(
+								$input_data = [
 									'name'       => 'passwd_confirm',
 									'id'         => 'passwd_confirm',
 									'class'      => 'form_input password',
 									'max_length' => config_item('max_chars_for_password')
-								);
+								];
 								echo form_password($input_data);
 							?>
 
@@ -161,11 +161,11 @@ if( $showform == 1 )
 								echo form_hidden('user_identification',$user_id);
 
 								// SUBMIT BUTTON **************************************************************
-								$input_data = array(
+								$input_data = [
 									'name'  => 'form_submit',
 									'id'    => 'submit_button',
 									'value' => 'Change Password'
-								);
+								];
 								echo form_submit($input_data);
 							?>
 

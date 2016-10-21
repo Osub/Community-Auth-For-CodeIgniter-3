@@ -59,9 +59,11 @@ then
 		then
 			ln -s ../third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
 			ln -s ../third_party/community_auth/core/MY_Input.php ./core/MY_Input.php
+			ln -s ../third_party/community_auth/core/MY_Model.php ./core/MY_Model.php
 		else
 			cp ./third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
-			cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php 
+			cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php
+			cp ./third_party/community_auth/core/MY_Model.php ./core/MY_Model.php 
 		fi
 
 		# Copy or symlink hook files
@@ -96,6 +98,9 @@ s/\['model'\] = array()/\['model'\] = array(\n\t'auth_model'\n)/g;" ./config/aut
 
 		# Add route to login page
 		echo "\$route[LOGIN_PAGE] = 'examples/login';" >> ./config/routes.php
+
+		# Change home page to examples/home
+		sed -i "s/\['default_controller'\] = 'welcome'/\['default_controller'\] = 'examples\/home'/g" ./config/routes.php
 
 		# Set base_url, index_page, turn hooks on, add an encryption key, and configure sessions
 		sed -i "s/\['base_url'\] = ''/\['base_url'\] = '$BASEURL'/g; \
@@ -133,6 +138,9 @@ s/'database' => ''/'database' => '$DBNAME'/g;" ./config/database.php
 
 		# Pretty URLs
 		printf "\n\nRewriteEngine On\nRewriteBase /\n\nRewriteRule ^(system|application|cgi-bin) - [F,L]\nRewriteCond %%{REQUEST_FILENAME} !-f\nRewriteCond %%{REQUEST_FILENAME} !-d\nRewriteRule .* index.php/\$0 [PT,L]" >> ./../.htaccess
+
+		# Checkout develop from origin
+		git checkout -b develop origin/develop
 
 		# Success
 		echo "REMOVE INSTALLER SCRIPT (THIS FILE)."

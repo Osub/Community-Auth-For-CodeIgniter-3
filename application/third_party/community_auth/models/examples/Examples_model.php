@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class Examples_model extends CI_model {
+class Examples_model extends MY_Model {
 
 	/**
 	 * Update a user record with data not from POST
@@ -22,7 +22,7 @@ class Examples_model extends CI_model {
 	 * @param  array   the data to update in the user table
 	 * @return bool
 	 */
-	public function update_user_raw_data( $the_user, $user_data = array() )
+	public function update_user_raw_data( $the_user, $user_data = [] )
 	{
 		$this->db->where('user_id', $the_user)
 			->update( config_item('user_table'), $user_data );
@@ -85,37 +85,37 @@ class Examples_model extends CI_model {
 		$this->load->library('form_validation');
 
 		// Load form validation rules
-		$this->load->model('validation_callables');
-		$this->form_validation->set_rules(array(
-			array(
+		$this->load->model('examples/validation_callables');
+		$this->form_validation->set_rules([
+			[
 				'field' => 'passwd',
 				'label' => 'NEW PASSWORD',
-				'rules' => array(
+				'rules' => [
 					'trim',
 					'required',
 					'matches[passwd_confirm]',
-					array( 
+					[ 
 						'_check_password_strength', 
-						array( $this->validation_callables, '_check_password_strength' ) 
-					)
-				)
-			),
-			array(
+						[$this->validation_callables, '_check_password_strength'] 
+					]
+				]
+			],
+			[
 				'field' => 'passwd_confirm',
 				'label' => 'CONFIRM NEW PASSWORD',
 				'rules' => 'trim|required'
-			),
-			array(
+			],
+			[
 				'field' => 'recovery_code'
-			),
-			array(
+			],
+			[
 				'field' => 'user_identification'
-			)
-		));
+			]
+		]);
 
 		if( $this->form_validation->run() !== FALSE )
 		{
-			$this->load->vars( array( 'validation_passed' => 1 ) );
+			$this->load->vars( ['validation_passed' => 1] );
 
 			$this->_change_password(
 				set_value('passwd'),
@@ -126,7 +126,7 @@ class Examples_model extends CI_model {
 		}
 		else
 		{
-			$this->load->vars( array( 'validation_errors' => validation_errors() ) );
+			$this->load->vars( ['validation_errors' => validation_errors()] );
 		}
 	}
 
@@ -159,7 +159,7 @@ class Examples_model extends CI_model {
 				$this->db->where( 'user_id', $user_data->user_id )
 					->update( 
 						config_item('user_table'), 
-						array( 'passwd' => $this->authentication->hash_passwd( $password ) ) 
+						['passwd' => $this->authentication->hash_passwd( $password )] 
 					);
 			}
 		}
@@ -197,4 +197,4 @@ class Examples_model extends CI_model {
 }
 
 /* End of file Examples_model.php */
-/* Location: /community_auth/models/Examples_model.php */
+/* Location: /community_auth/models/examples/Examples_model.php */

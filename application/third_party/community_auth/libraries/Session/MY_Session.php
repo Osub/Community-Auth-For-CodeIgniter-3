@@ -7,7 +7,7 @@ class MY_Session extends CI_Session {
 	public $pre_regenerated_session_id = NULL;
 	public $regenerated_session_id     = NULL;
 
-	public function __construct(array $params = array())
+	public function __construct(array $params = [])
 	{
 		parent::__construct($params);
 	}

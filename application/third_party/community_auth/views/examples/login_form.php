@@ -45,7 +45,7 @@ if( ! isset( $on_hold_message ) )
 		';
 	}
 
-	echo form_open( $login_url, array( 'class' => 'std-form' ) ); 
+	echo form_open( $login_url, ['class' => 'std-form'] ); 
 ?>
 
 	<div>
@@ -56,7 +56,10 @@ if( ! isset( $on_hold_message ) )
 		<br />
 
 		<label for="login_pass" class="form_label">Password</label>
-		<input type="password" name="login_pass" id="login_pass" class="form_input password" maxlength="<?php echo config_item('max_chars_for_password'); ?>" autocomplete="off" readonly="readonly" onfocus="this.removeAttribute('readonly');" />
+		<input type="password" name="login_pass" id="login_pass" class="form_input password" <?php 
+			if( config_item('max_chars_for_password') > 0 )
+				echo 'maxlength="' . config_item('max_chars_for_password') . '"'; 
+		?> autocomplete="off" readonly="readonly" onfocus="this.removeAttribute('readonly');" />
 
 
 		<?php

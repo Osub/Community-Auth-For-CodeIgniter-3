@@ -16,26 +16,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // CI not normally available in config files
 $CI =& get_instance();
 
+// Load the external model for validation of passwords
+$CI->load->model('examples/validation_callables');
+
 // Login ---------------------------
-$config['login_rules'] = array(
-	array(
+$config['login_rules'] = [
+	[
 		'field' => 'login_string',
 		'label' => 'USERNAME OR EMAIL ADDRESS',
 		'rules' => 'trim|required|max_length[255]' /* Replace max_length w/ valid_email is site not using usernames */
-	),
-	array(
+	],
+	[
 		'field' => 'login_pass',
 		'label' => 'PASSWORD',
-		'rules' => array(
+		'rules' => [
             'trim',
             'required',
-            array( 
+            [ 
                 '_check_password_strength', 
-                array( $CI->validation_callables, '_check_password_strength' ) 
-            )
-        )
-	)
-);
+                [ $CI->validation_callables, '_check_password_strength' ] 
+            ]
+        ]
+	]
+];
 
 /* End of file login.php */
-/* Location: /community_auth/config/form_validation/login.php */
+/* Location: /community_auth/config/form_validation/examples/login.php */

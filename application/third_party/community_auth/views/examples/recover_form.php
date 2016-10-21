@@ -114,14 +114,14 @@ if( isset( $show_form ) )
 
 						<?php
 							// EMAIL ADDRESS *************************************************
-							echo form_label('Email Address','email',array('class'=>'form_label'));
+							echo form_label('Email Address','email', ['class'=>'form_label'] );
 
-							$input_data = array(
+							$input_data = [
 								'name'		=> 'email',
 								'id'		=> 'email',
 								'class'		=> 'form_input',
 								'maxlength' => 255
-							);
+							];
 							echo form_input($input_data);
 						?>
 
@@ -132,11 +132,11 @@ if( isset( $show_form ) )
 
 						<?php
 							// SUBMIT BUTTON **************************************************************
-							$input_data = array(
+							$input_data = [
 								'name'  => 'submit',
 								'id'    => 'submit_button',
 								'value' => 'Send Email'
-							);
+							];
 							echo form_submit($input_data);
 						?>
 

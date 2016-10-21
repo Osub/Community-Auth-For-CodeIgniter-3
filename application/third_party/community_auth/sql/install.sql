@@ -13,15 +13,20 @@
 --
 -- Table structure for table `ci_sessions`
 --
+-- Note that if sess_match_ip == true, then the 
+-- primary key for ci_sessions needs to be changed after table creation:
+--
+-- ALTER TABLE ci_sessions DROP PRIMARY KEY;
+-- ALTER TABLE ci_sessions ADD PRIMARY KEY (id, ip_address);
 
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
   `id` varchar(40) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
   `data` blob NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ci_sessions_timestamp` (`timestamp`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE = MyISAM DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -43,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `auth_sessions` (
   `ip_address` varchar(45) NOT NULL,
   `user_agent` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE = MyISAM DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -56,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `ips_on_hold` (
   `ip_address` varchar(45) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`ai`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE = MyISAM DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -70,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `login_errors` (
   `ip_address` varchar(45) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`ai`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE = MyISAM DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -84,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `denied_access` (
   `time` datetime NOT NULL,
   `reason_code` tinyint(1) unsigned DEFAULT 0,
   PRIMARY KEY (`ai`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE = MyISAM DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -97,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `username_or_email_on_hold` (
   `username_or_email` varchar(255) NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`ai`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE = MyISAM DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -121,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -140,5 +145,53 @@ BEGIN
     END IF;
 END;$$
 delimiter ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_categories`
+-- 
+
+CREATE TABLE `acl_categories` (
+  `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_code` varchar(100) NOT NULL COMMENT 'No periods allowed!',
+  `category_desc` varchar(100) NOT NULL COMMENT 'Human readable description',
+  PRIMARY KEY (`category_id`),
+  UNIQUE KEY `category_code` (`category_code`),
+  UNIQUE KEY `category_desc` (`category_desc`)
+) ENGINE = InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl_actions`
+-- 
+
+CREATE TABLE `acl_actions` (
+  `action_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `action_code` varchar(100) NOT NULL COMMENT 'No periods allowed!',
+  `action_desc` varchar(100) NOT NULL COMMENT 'Human readable description',
+  `category_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`action_id`),
+  FOREIGN KEY (`category_id`) REFERENCES `acl_categories`(`category_id`) 
+  ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acl`
+-- 
+
+CREATE TABLE `acl` (
+  `ai` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `action_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ai`),
+  FOREIGN KEY (`action_id`) REFERENCES `acl_actions`(`action_id`) 
+  ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) 
+  ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 -- --------------------------------------------------------

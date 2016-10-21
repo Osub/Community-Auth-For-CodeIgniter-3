@@ -80,7 +80,7 @@ class Authentication
 	 * @var array
 	 * @access private
 	 */
-	private $auth_identifiers = array();
+	private $auth_identifiers = [];
 
 	/**
 	 * If the session is regenerated and the request 
@@ -244,7 +244,6 @@ class Authentication
 		 * Validate the posted username / email address and password.
 		 */
 		$this->CI->load->library('form_validation');
-		$this->CI->load->model('validation_callables');
 		$this->CI->config->load( config_item('login_form_validation_file') );
 		$this->CI->form_validation->set_rules( config_item('login_rules') );
 
@@ -275,10 +274,10 @@ class Authentication
 					else
 					{
 						// Setup redirection if redirect required
-						$this->_redirect_after_login();
+						$this->redirect_after_login();
 
 						// Set session cookie and HTTP user data delete_cookie
-						$this->_maintain_state( $auth_data );
+						$this->maintain_state( $auth_data );
 
 						// Send the auth data back to the controller
 						return $auth_data;
@@ -428,15 +427,17 @@ class Authentication
 		$this->CI->{$this->auth_model}->clear_login_errors();
 
 		// Insert the error
-		$data = array(
+		$data = [
 			'username_or_email' => $string,
 			'ip_address'        => $this->CI->input->ip_address(),
 			'time'              => date('Y-m-d H:i:s')
-		);
+		];
 
 		$this->CI->{$this->auth_model}->create_login_error( $data );
 
 		$this->login_errors_count = $this->CI->{$this->auth_model}->check_login_attempts( $string );
+
+		$this->CI->{$this->auth_model}->failed_login_attempt_hook( $this->login_errors_count );
 	}
 
 	// --------------------------------------------------------------
@@ -484,8 +485,9 @@ class Authentication
 		// Delete the http user cookie
 		delete_cookie( config_item('http_user_cookie_name') );
 
-		// Delete the https tokens cookie
-		delete_cookie( config_item('https_tokens_name') );
+		// Delete all token cookies
+		delete_cookie( config_item('http_tokens_cookie') );
+		delete_cookie( config_item('https_tokens_cookie') );
 
 		// Garbage collection for the auth_sessions table
 		if( config_item('auth_sessions_gc_on_logout') )
@@ -512,14 +514,13 @@ class Authentication
 
 		// PHP 5.5+ uses new password hashing function
 		if( is_php('5.5') ){
-			return password_hash( $password, PASSWORD_BCRYPT, array( 'cost' => 11 ) );
+			return password_hash( $password, PASSWORD_BCRYPT, ['cost' => 11] );
 		}
 
-		// Older versions of PHP use crypt
-		else if( is_php('5.3.7') ){
+		// PHP < 5.5 uses crypt
+		else
+		{
 			return crypt( $password, '$2y$10$' . $random_salt );
-		}else{
-			return crypt( $password, '$2a$09$' . $random_salt );
 		}
 	}
 
@@ -576,6 +577,130 @@ class Authentication
 	}
 
 	// --------------------------------------------------------------
+
+	/**
+	 * Redirect after login, or not if redirect turned off
+	 */
+	public function redirect_after_login()
+	{
+		if( $this->redirect_after_login )
+		{
+			// Redirect to specified page, or home page if none provided
+			$redirect = $this->CI->input->get('redirect')
+				? urldecode( $this->CI->input->get('redirect') ) 
+				: '';
+
+			// Set the redirect protocol
+			$redirect_protocol = USE_SSL ? 'https' : NULL;
+
+			// Load URL helper for the site_url function
+			$this->CI->load->helper('url');
+
+			$url = site_url( $redirect, $redirect_protocol );
+
+			header( "Location: " . $url, TRUE, 302 );
+		}
+	}
+	
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Setup session, HTTP user cookie, and remember me cookie 
+	 * during a successful login attempt.
+	 *
+	 * @param   obj  the user record
+	 * @return  void
+	 */
+	public function maintain_state( $auth_data )
+	{
+		// Store login time in database and cookie
+		$login_time = date('Y-m-d H:i:s');
+
+		/**
+		 * Since the session cookie needs to be able to use
+		 * the secure flag, we want to hold some of the user's 
+		 * data in another cookie.
+		 */
+		$http_user_cookie = [
+			'name'   => config_item('http_user_cookie_name'),
+			'domain' => config_item('cookie_domain'),
+			'path'   => config_item('cookie_path'),
+			'prefix' => config_item('cookie_prefix'),
+			'secure' => FALSE
+		];
+		
+		// Initialize the HTTP user cookie data
+		$http_user_cookie_elements = config_item('http_user_cookie_elements');
+		if( is_array( $http_user_cookie_elements ) && ! empty( $http_user_cookie_elements ) )
+		{
+			foreach( $http_user_cookie_elements as $element )
+			{
+				if( isset( $auth_data->$element ) )
+					$http_user_cookie_data[ $element ] = $auth_data->$element;
+			}
+		}
+
+		// Serialize the HTTP user cookie data
+		if( isset( $http_user_cookie_data ) )
+			$http_user_cookie['value'] = serialize_data( $http_user_cookie_data );
+
+		// Check if remember me requested, and set cookie if yes
+		if( config_item('allow_remember_me') && $this->CI->input->post('remember_me') )
+		{
+			$remember_me_cookie = [
+				'name'   => config_item('remember_me_cookie_name'),
+				'value'  => config_item('remember_me_expiration') + time(),
+				'expire' => config_item('remember_me_expiration'),
+				'domain' => config_item('cookie_domain'),
+				'path'   => config_item('cookie_path'),
+				'prefix' => config_item('cookie_prefix'),
+				'secure' => FALSE
+			];
+
+			$this->CI->input->set_cookie( $remember_me_cookie );
+
+			// Make sure the CI session cookie doesn't expire on close
+			$this->CI->session->sess_expire_on_close = FALSE;
+			$this->CI->session->sess_expiration = config_item('remember_me_expiration');
+
+			// Set the expiration of the http user cookie
+			$http_user_cookie['expire'] = config_item('remember_me_expiration') + time();
+		}
+		else
+		{
+			// Unless remember me is requested, the http user cookie expires when the browser closes.
+			$http_user_cookie['expire'] = 0;
+		}
+
+		// Only set the HTTP user cookie is there is data to set.
+		if( isset( $http_user_cookie_data ) )
+			$this->CI->input->set_cookie( $http_user_cookie );
+
+		// Create the auth identifier
+		$auth_identifiers = serialize([
+			'user_id'    => $auth_data->user_id,
+			'login_time' => $login_time
+		]);
+
+		// Encrypt the auth identifier if necessary
+		if( config_item('encrypt_auth_identifiers') )
+			$auth_identifiers = $this->CI->encryption->encrypt( $auth_identifiers );
+
+		// Set CI session cookie
+		$this->CI->session->set_userdata( 'auth_identifiers', $auth_identifiers );
+
+		// For security, force regenerate the session ID
+		$session_id = $this->CI->session->sess_regenerate( TRUE );
+
+		// Update user record in database
+		$this->CI->{$this->auth_model}->login_update( 
+			$auth_data->user_id, 
+			$login_time, 
+			$session_id
+		);
+	}
+	
+	// -----------------------------------------------------------------------
 	
 	/**
 	 * Confirm the User During Login Attempt or Status Check
@@ -590,7 +715,7 @@ class Authentication
 	 * @param   mixed  the posted password during a login attempt
 	 * @return  bool
 	 */
-	private function _user_confirmed( $auth_data, $requirement, $passwd = FALSE )
+	protected function _user_confirmed( $auth_data, $requirement, $passwd = FALSE )
 	{
 		// Check if user is banned
 		$is_banned = ( $auth_data->banned === '1' );
@@ -625,134 +750,10 @@ class Authentication
 	// ---------------------------------------------------------------
 
 	/**
-	 * Redirect after login, or not if redirect turned off
-	 */
-	private function _redirect_after_login()
-	{
-		if( $this->redirect_after_login )
-		{
-			// Redirect to specified page, or home page if none provided
-			$redirect = $this->CI->input->get('redirect')
-				? urldecode( $this->CI->input->get('redirect') ) 
-				: '';
-
-			// Set the redirect protocol
-			$redirect_protocol = USE_SSL ? 'https' : NULL;
-
-			// Load URL helper for the site_url function
-			$this->CI->load->helper('url');
-
-			$url = site_url( $redirect, $redirect_protocol );
-
-			header( "Location: " . $url, TRUE, 302 );
-		}
-	}
-	
-	// -----------------------------------------------------------------------
-	
-	/**
-	 * Setup session, HTTP user cookie, and remember me cookie 
-	 * during a successful login attempt. Redirect is specified here.
-	 *
-	 * @param   obj  the user record
-	 * @return  void
-	 */
-	private function _maintain_state( $auth_data )
-	{
-		// Store login time in database and cookie
-		$login_time = date('Y-m-d H:i:s');
-
-		/**
-		 * Since the session cookie needs to be able to use
-		 * the secure flag, we want to hold some of the user's 
-		 * data in another cookie.
-		 */
-		$http_user_cookie = array(
-			'name'   => config_item('http_user_cookie_name'),
-			'domain' => config_item('cookie_domain'),
-			'path'   => config_item('cookie_path'),
-			'prefix' => config_item('cookie_prefix'),
-			'secure' => FALSE
-		);
-		
-		// Initialize the HTTP user cookie data
-		$http_user_cookie_elements = config_item('http_user_cookie_elements');
-		if( is_array( $http_user_cookie_elements ) && ! empty( $http_user_cookie_elements ) )
-		{
-			foreach( $http_user_cookie_elements as $element )
-			{
-				if( isset( $auth_data->$element ) )
-					$http_user_cookie_data[ $element ] = $auth_data->$element;
-			}
-		}
-
-		// Serialize the HTTP user cookie data
-		if( isset( $http_user_cookie_data ) )
-			$http_user_cookie['value'] = serialize_data( $http_user_cookie_data );
-
-		// Check if remember me requested, and set cookie if yes
-		if( config_item('allow_remember_me') && $this->CI->input->post('remember_me') )
-		{
-			$remember_me_cookie = array(
-				'name'   => config_item('remember_me_cookie_name'),
-				'value'  => config_item('remember_me_expiration') + time(),
-				'expire' => config_item('remember_me_expiration'),
-				'domain' => config_item('cookie_domain'),
-				'path'   => config_item('cookie_path'),
-				'prefix' => config_item('cookie_prefix'),
-				'secure' => FALSE
-			);
-
-			$this->CI->input->set_cookie( $remember_me_cookie );
-
-			// Make sure the CI session cookie doesn't expire on close
-			$this->CI->session->sess_expire_on_close = FALSE;
-			$this->CI->session->sess_expiration = config_item('remember_me_expiration');
-
-			// Set the expiration of the http user cookie
-			$http_user_cookie['expire'] = config_item('remember_me_expiration') + time();
-		}
-		else
-		{
-			// Unless remember me is requested, the http user cookie expires when the browser closes.
-			$http_user_cookie['expire'] = 0;
-		}
-
-		// Only set the HTTP user cookie is there is data to set.
-		if( isset( $http_user_cookie_data ) )
-			$this->CI->input->set_cookie( $http_user_cookie );
-
-		// Create the auth identifier
-		$auth_identifiers = serialize( array(
-			'user_id'    => $auth_data->user_id,
-			'login_time' => $login_time
-		));
-
-		// Encrypt the auth identifier if necessary
-		if( config_item('encrypt_auth_identifiers') )
-			$auth_identifiers = $this->CI->encryption->encrypt( $auth_identifiers );
-
-		// Set CI session cookie
-		$this->CI->session->set_userdata( 'auth_identifiers', $auth_identifiers );
-
-		// For security, force regenerate the session ID
-		$session_id = $this->CI->session->sess_regenerate( TRUE );
-
-		// Update user record in database
-		$this->CI->{$this->auth_model}->login_update( 
-			$auth_data->user_id, 
-			$login_time, 
-			$session_id
-		);
-	}
-	
-	// -----------------------------------------------------------------------
-
-	/**
 	 * Just make sure that the login is not on any page
 	 * except for the ones we define in authentication config.
 	 */
-	private function _login_page_is_allowed()
+	protected function _login_page_is_allowed()
 	{
 		// Get the current URI string
 		$uri_string = $this->CI->uri->uri_string();

@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://community-auth.com
  */
 
-class Auth_model extends CI_Model {
+class Auth_model extends MY_Model {
 
 	/**
 	 * Check the user table to see if a user exists by username or email address.
@@ -27,14 +27,14 @@ class Auth_model extends CI_Model {
 	public function get_auth_data( $user_string )
 	{
 		// Selected user table data
-		$selected_columns = array(
+		$selected_columns = [
 			'username',
 			'email',
 			'auth_level',
 			'passwd',
 			'user_id',
 			'banned'
-		);
+		];
 
 		// User table query
 		$query = $this->db->select( $selected_columns )
@@ -45,7 +45,14 @@ class Auth_model extends CI_Model {
 			->get();
 
 		if( $query->num_rows() == 1 )
-			return $query->row();
+		{
+			$row = $query->row_array();
+
+			// ACL is added 
+			$acl = $this->add_acl_to_auth_data( $row['user_id'] );
+
+			return (object) array_merge( $row, $acl );
+		}
 
 		return FALSE;
 	}
@@ -67,18 +74,18 @@ class Auth_model extends CI_Model {
 				->delete( config_item('auth_sessions_table') );
 		}
 
-		$data = array( 'last_login' => $login_time );
+		$data = ['last_login' => $login_time];
 
 		$this->db->where( 'user_id' , $user_id )
 			->update( config_item('user_table') , $data );
 
-		$data = array(
+		$data = [
 			'id'         => $session_id,
 			'user_id'    => $user_id,
 			'login_time' => $login_time,
 			'ip_address' => $this->input->ip_address(),
 			'user_agent' => $this->_user_agent()
-		);
+		];
 
 		$this->db->insert( config_item('auth_sessions_table') , $data );
 	}
@@ -125,13 +132,13 @@ class Auth_model extends CI_Model {
 	public function check_login_status( $user_id, $login_time )
 	{
 		// Selected user table data
-		$selected_columns = array(
+		$selected_columns = [
 			'u.username',
 			'u.email',
 			'u.auth_level',
 			'u.user_id',
 			'u.banned'
-		);
+		];
 
 		$this->db->select( $selected_columns )
 			->from( config_item('user_table') . ' u' )
@@ -155,12 +162,42 @@ class Auth_model extends CI_Model {
 		$query = $this->db->get();
 
 		if( $query->num_rows() == 1 )
-			return $query->row();
+		{
+			$row = $query->row_array();
+
+			// ACL is added
+			$acl = $this->add_acl_to_auth_data( $row['user_id'] );
+
+			return (object) array_merge( $row, $acl );
+		}
 
 		return FALSE;
 	}
 
 	// --------------------------------------------------------------
+
+	/**
+	 * During a login attempt or when checking login status, 
+	 * ACL permissions may be added to authentication variables, 
+	 * but only if the "add_acl_query_to_auth_functions" option is set to 
+	 * TRUE in config/authentication.php
+	 *
+	 * @param  int  the logged in user's user ID
+	 */
+	public function add_acl_to_auth_data( $user_id )
+	{
+		$acl = [];
+		
+		// Add ACL query only if turned on in authentication config
+		if( config_item('add_acl_query_to_auth_functions') )
+		{
+			$acl = $this->acl_query( $user_id, TRUE );
+		}
+
+		return ['acl' => $acl];
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Update a user's user record session ID if it was regenerated
@@ -173,7 +210,7 @@ class Auth_model extends CI_Model {
 				->where( 'id', $this->session->pre_regenerated_session_id )
 				->update( 
 					config_item('auth_sessions_table'),
-					array( 'id' => $this->session->regenerated_session_id )
+					['id' => $this->session->regenerated_session_id]
 			);
 		}
 	}
@@ -187,9 +224,9 @@ class Auth_model extends CI_Model {
 	{
 		$expiration = date('Y-m-d H:i:s', time() - config_item('seconds_on_hold') );
 
-		$this->db->delete( config_item('IP_hold_table'), array( 'time <' => $expiration ) );
+		$this->db->delete( config_item('IP_hold_table'), ['time <' => $expiration] );
 
-		$this->db->delete( config_item('username_or_email_hold_table'), array( 'time <' => $expiration ) );
+		$this->db->delete( config_item('username_or_email_hold_table'), ['time <' => $expiration] );
 	}
 
 	// --------------------------------------------------------------
@@ -201,7 +238,7 @@ class Auth_model extends CI_Model {
 	{
 		$expiration = date('Y-m-d H:i:s', time() - config_item('seconds_on_hold') );
 
-		$this->db->delete( config_item('errors_table'), array( 'time <' => $expiration ) );
+		$this->db->delete( config_item('errors_table'), ['time <' => $expiration] );
 	}
 
 	// --------------------------------------------------------------
@@ -235,7 +272,7 @@ class Auth_model extends CI_Model {
 	{
 		$ip_hold = $this->db->get_where( 
 			config_item('IP_hold_table'), 
-			array( 'ip_address' => $this->input->ip_address() ) 
+			['ip_address' => $this->input->ip_address()] 
 		);
 
 		if( $ip_hold->num_rows() > 0 )
@@ -263,7 +300,7 @@ class Auth_model extends CI_Model {
 		{
 			$string_hold = $this->db->get_where( 
 				config_item('username_or_email_hold_table'), 
-				array( 'username_or_email' => $posted_string ) 
+				['username_or_email' => $posted_string] 
 			);
 
 			if( $string_hold->num_rows() > 0 )
@@ -305,10 +342,10 @@ class Auth_model extends CI_Model {
 		if( $count1 == config_item('max_allowed_attempts') )
 		{
 			// Place the IP on hold
-			$data = array(
+			$data = [
 				'ip_address' => $ip_address,
 				'time'       => date('Y-m-d H:i:s')
-			);
+			];
 
 			$this->db->set( $data )
 				->insert( config_item('IP_hold_table') );
@@ -331,17 +368,17 @@ class Auth_model extends CI_Model {
 			if( config_item('deny_access_at') > 0 )
 			{
 				// Log the IP address in the denied_access database
-				$data = array(
+				$data = [
 					'ip_address'  => $ip_address,
 					'time'        => date('Y-m-d H:i:s'),
 					'reason_code' => '1'
-				);
+				];
 
 				$this->_insert_denial( $data );
 
 				// Output white screen of death
 				header('HTTP/1.1 403 Forbidden');
-				die('<h1>Forbidden</h1><p>You don\'t have permission to access ANYTHING on this server.</p><hr><address>Go fly a kite!</address>');
+				die();
 			}
 		}
 
@@ -360,10 +397,10 @@ class Auth_model extends CI_Model {
 			if( $count2 == config_item('max_allowed_attempts') )
 			{
 				// Place the username/email-address on hold
-				$data = array(
+				$data = [
 					'username_or_email' => $string,
 					'time'              => date('Y-m-d H:i:s')
-				);
+				];
 
 				$this->db->set( $data )
 					->insert( config_item('username_or_email_hold_table') );
@@ -440,15 +477,16 @@ class Auth_model extends CI_Model {
 	/**
 	 * Rebuild the deny list in the local Apache configuration file
 	 */
-	private function _rebuild_deny_list()
+	protected function _rebuild_deny_list()
 	{
 		// Get all of the IP addresses in the denied access database
 		$query_result = $this->get_deny_list('ip_address');
 
+		// If we have denials
 		if( $query_result !== FALSE )
 		{
 			// Create the denial list to be inserted into the Apache config file
-			$deny_list = "\n" . '<Limit GET POST>' . "\n" . 'order deny,allow';
+			$deny_list = '<Limit GET POST>' . "\n" . 'order deny,allow';
 
 			foreach( $query_result as $row )
 			{
@@ -456,10 +494,6 @@ class Auth_model extends CI_Model {
 			}
 
 			$deny_list .= "\n" . '</Limit>' . "\n";
-		}
-		else
-		{
-			$deny_list = "\n";
 		}
 
 		// Get the path to the Apache config file
@@ -476,10 +510,15 @@ class Auth_model extends CI_Model {
 		// Read in the contents of the Apache config file
 		$string = read_file( $htaccess );
 
-		$pattern = '/(?<=# BEGIN DENY LIST --)(.|\n)*(?=# END DENY LIST --)/';
+		// Remove the original deny list
+		$arr = explode( 'END DENY LIST --', $string );
 
-		// Within the string, replace the denial list with the new one
-		$string = preg_replace( $pattern, $deny_list, $string );
+		// Add the new deny list to the top of the file contents
+		$string = "# MAKE SURE TO LEAVE THE DENY LIST AT THE TOP OF THE FILE !!!\n" . 
+				"# BEGIN DENY LIST --\n" . 
+				$deny_list . 
+				"# END DENY LIST --\n\n" . 
+				trim( $arr[1] ) . "\n";
 
 		// Write the new file contents
 		if ( ! write_file( $htaccess, $string ) )
@@ -492,6 +531,20 @@ class Auth_model extends CI_Model {
 	}
 
 	// --------------------------------------------------------------
+
+	/**
+	 * After a failed login attempt, this hook may be called to 
+	 * do anything you wish.
+	 *
+	 * @param  int  the number of failed login attempts as 
+	 *              determined by check_login_attempts()
+	 */
+	public function failed_login_attempt_hook( $login_errors_count )
+	{
+		return;
+	}
+	
+	// -----------------------------------------------------------------------
 
 	/**
 	 * Remove the auth session record when somebody logs out

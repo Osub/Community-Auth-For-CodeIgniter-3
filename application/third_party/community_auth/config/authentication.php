@@ -27,11 +27,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['levels_and_roles'] = array(
+$config['levels_and_roles'] = [
 	'1' => 'customer',
 	'6' => 'manager',
 	'9' => 'admin'
-);
+];
 
 /*
 | -----------------------------------------------------------------
@@ -41,9 +41,26 @@ $config['levels_and_roles'] = array(
 |
 */
 
-$config['groups'] = array(
+$config['groups'] = [
 	'employees' => 'manager,admin'
-);
+];
+
+/*
+| -----------------------------------------------------------------
+|				ADD ACL QUERY TO AUTH FUNCTIONS							
+| -----------------------------------------------------------------
+| This config option turns on an additional query to retreive a logged
+| in user's ACL records when they login or when login status is checked. 
+| If you're not going to implement your own ACL categories, actions, 
+| and take the time to create an interface to manage the ACL, then 
+| you would leave this set to FALSE. Furthermore, basic ACL usage doesn't
+| require that this option be set to true, because usage of the 
+| Auth_model->acl_permits method will query the database if it hasn't
+| already been done.
+|
+*/
+
+$config['add_acl_query_to_auth_functions'] = FALSE;
 
 /*
 | -----------------------------------------------------------------
@@ -80,7 +97,7 @@ $config['deny_access_at'] = 10;
 | 
 */
 
-$config['denied_access_reason'] = array(
+$config['denied_access_reason'] = [
 	'0' => 'Not Specified',
 	'1' => 'Login Attempts',
 	'2' => 'Malicious User',
@@ -88,7 +105,7 @@ $config['denied_access_reason'] = array(
 	'4' => 'Spam',
 	'5' => 'Obscene Language',
 	'6' => 'Threatening Language'
-);
+];
 
 /*
 | -----------------------------------------------------------------
@@ -212,7 +229,7 @@ $config['http_user_cookie_name'] = 'httpUser';
 |
 */
 
-$config['http_user_cookie_elements'] = array('username');
+$config['http_user_cookie_elements'] = ['username'];
 
 /*
 | -----------------------------------------------------------------
@@ -292,7 +309,7 @@ $config['default_login_redirect'] = '';
 | added, so you just put in optional login pages here.
 */
 
-$config['allowed_pages_for_login'] = array();
+$config['allowed_pages_for_login'] = [];
 
 /*
 | -----------------------------------------------------------------
@@ -306,29 +323,6 @@ $config['redirect_to_https'] = FALSE;
 
 /*
 | -----------------------------------------------------------------
-|				MIN CHARS FOR PASSWORD						
-| -----------------------------------------------------------------
-| The lease amount of characters for a valid password
-*/
-
-$config['min_chars_for_password'] = 8;
-
-/*
-| -----------------------------------------------------------------
-|				MAX CHARS FOR PASSWORD						
-| -----------------------------------------------------------------
-| The maximum amount of characters for a valid password.
-| 
-| Because Community Auth uses CRYPT_BLOWFISH to hash passwords,
-| any password over 72 characters in length is truncated. You 
-| could certainly allow more characters, but only the first 
-| 72 characters are used for the resulting hash.
-*/
-
-$config['max_chars_for_password'] = 72;
-
-/*
-| -----------------------------------------------------------------
 |				LOGIN FORM VALIDATION FILE						
 | -----------------------------------------------------------------
 | The config file that handles the form validation for login attempts.
@@ -336,7 +330,7 @@ $config['max_chars_for_password'] = 72;
 | Make sure to remove any file extension, as this string is passed to config->load().
 */
 
-$config['login_form_validation_file'] = 'form_validation/login';
+$config['login_form_validation_file'] = 'form_validation/examples/login';
 
 /*
 | -----------------------------------------------------------------

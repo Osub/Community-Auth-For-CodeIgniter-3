@@ -26,7 +26,8 @@ then
 
 	# Copy core files from Community Auth to CodeIgniter application
 	cp ./third_party/community_auth/core/MY_Controller.php ./core/MY_Controller.php
-	cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php 
+	cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php
+	cp ./third_party/community_auth/core/MY_Model.php ./core/MY_Model.php 
 
 	# Copy hook files from Community Auth to CodeIgniter application
 	cp ./third_party/community_auth/hooks/auth_constants.php ./hooks/auth_constants.php

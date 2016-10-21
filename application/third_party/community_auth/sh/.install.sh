@@ -8,6 +8,10 @@ if [ ! -f ./core/MY_Input.php ]; then
 	cp ./third_party/community_auth/core/MY_Input.php ./core/MY_Input.php 
 fi
 
+if [ ! -f ./core/MY_Model.php ]; then
+	cp ./third_party/community_auth/core/MY_Model.php ./core/MY_Model.php 
+fi
+
 # hooks
 if [ ! -f ./hooks/auth_constants.php ]; then
 	cp ./third_party/community_auth/hooks/auth_constants.php ./hooks/auth_constants.php
@@ -31,5 +35,5 @@ if [ ! -f ./../.htaccess ];
 then
 	cp ./third_party/community_auth/public_root/.htaccess ./../.htaccess
 else
-	sed -i '1s/^/# MAKE SURE TO LEAVE THE NEXT TWO LINES HERE.\n# BEGIN DENY LIST --\n# END DENY LIST --\n\n/' ./../.htaccess
+	sed -i '1s/^/# MAKE SURE TO LEAVE THE DENY LIST AT THE TOP OF THE FILE !!!\n# BEGIN DENY LIST --\n# END DENY LIST --\n\n/' ./../.htaccess
 fi
